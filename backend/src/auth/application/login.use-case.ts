@@ -1,0 +1,32 @@
+import { UserRepository } from '../domain/user.repository';
+import InvalidCredentialsError from '../domain/auth.erros';
+import { JwtService } from '@nestjs/jwt';
+
+export class LoginUseCase {
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+    private readonly passwordCompare: (a: string, b: string) => boolean,
+  ) {}
+
+  async execute(email: string, password: string) {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (!user) {
+      throw new InvalidCredentialsError();
+    }
+
+    const isValid = user.validatePassword(password, this.passwordCompare);
+
+    if (!isValid) {
+      throw new InvalidCredentialsError();
+    }
+
+    const token = this.jwtService.sign({
+      sub: user.id,
+      email: user.email,
+    });
+
+    return { access_token: token };
+  }
+}
