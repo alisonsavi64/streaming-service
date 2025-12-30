@@ -1,14 +1,26 @@
 import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import multipart from '@fastify/multipart';
 import { AppModule } from './app.module';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter(
-    {logger: true}
-  ));
-   app.enableCors({
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({logger: true}),
+  );
+
+  await app.register(multipart, {
+    limits: {
+      fileSize: 100 * 1024 * 1024,
+    },
+  });
+  app.enableCors({
     origin: '*',
   });
-  await app.listen(process.env.PORT ?? 3001, '0.0.0.0');
+
+  await app.listen(3001, '0.0.0.0');
 }
 bootstrap();
