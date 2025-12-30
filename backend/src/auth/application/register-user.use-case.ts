@@ -2,8 +2,10 @@ import { UserRepository } from '../domain/user.repository';
 import { UserAlreadyExistsError } from '../domain/auth.erros';
 import { User } from '../domain/user.entity';
 import { randomUUID } from 'crypto';
+import { Logger } from '@nestjs/common';
 
 export class RegisterUserUseCase {
+  private readonly logger = new Logger(RegisterUserUseCase.name);
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashPassword: (password: string) => string,
@@ -26,6 +28,8 @@ export class RegisterUserUseCase {
     );
 
     await this.userRepository.save(user);
+
+    this.logger.log(`New user created - ${user.id} - ${user.email} - ${user.name}`);
 
     return {
       id: user.id,
