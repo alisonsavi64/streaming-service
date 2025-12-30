@@ -14,12 +14,10 @@ import { StoragePort } from './domain/storage.port';
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
 import { EventBus } from 'src/shared/application/messaging/event-bus.port';
 import { MarkContentProcessedUseCase } from './application/mark-content-processed.use-case';
-import { MessagingModule } from 'src/shared/infra/messaging/messaging.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ContentOrmEntity]),
-    MessagingModule
+    TypeOrmModule.forFeature([ContentOrmEntity])
   ],
   controllers: [ContentController],
   providers: [

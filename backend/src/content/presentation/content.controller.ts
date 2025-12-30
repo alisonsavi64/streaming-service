@@ -41,7 +41,7 @@ export class ContentController {
         }
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Post()
     async create(@Req() req: FastifyRequest) {
       const parts = req.parts();

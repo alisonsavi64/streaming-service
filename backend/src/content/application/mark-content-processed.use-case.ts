@@ -12,13 +12,13 @@ export class MarkContentProcessedUseCase {
   ) {}
 
   async execute(contentId: string, processedPath: string) {
-    await this.repo.update(
-      { id: contentId, status: ContentStatus.PROCESSING },
+    const result = await this.repo.update(
+      { id: contentId },
       {
         status: ContentStatus.PROCESSED,
         location: processedPath,
         processedAt: new Date(),
       },
-    );
+    )
   }
 }
