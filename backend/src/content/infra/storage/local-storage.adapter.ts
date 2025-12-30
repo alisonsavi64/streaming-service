@@ -6,10 +6,7 @@ import { randomUUID } from 'crypto';
 
 @Injectable()
 export class LocalStorageAdapter implements StoragePort {
-  private readonly basePath = path.resolve(
-    process.cwd(),
-    'storage',
-  );
+  private readonly basePath = '/storage';
 
   async upload({ file, filename }: {
     file: Buffer;

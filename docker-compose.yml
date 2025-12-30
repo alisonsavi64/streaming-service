@@ -1,0 +1,68 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
+
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+
+  video-processor:
+    build:
+      context: ./video-processor
+    container_name: video-processor
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BROKER: kafka:29092
+    ports:
+      - "4001:4001"
+    volumes:
+      - storage:/storage
+  
+  postgres:
+    image: postgres:15
+    container_name: streaming-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: streaming
+      POSTGRES_USER: streaming
+      POSTGRES_PASSWORD: streaming
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  backend:
+      build:
+        context: ./backend
+      container_name: backend
+      depends_on:
+        - kafka
+        - postgres
+      environment:
+        KAFKA_BROKER: kafka:29092
+        DATABASE_URL: postgres://streaming:streaming@postgres:5432/streaming
+      ports:
+        - "3001:3001"
+      volumes:
+        - storage:/storage
+
+volumes:
+  postgres_data:
+  storage:

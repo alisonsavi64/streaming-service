@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ContentModule } from './content/content.module';
+import { MessagingModule } from './shared/infra/messaging/messaging.module';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { ContentModule } from './content/content.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: 5432,
       username: 'streaming',
       password: 'streaming',
@@ -20,7 +21,8 @@ import { ContentModule } from './content/content.module';
       synchronize: true
     }),
     AuthModule,
-    ContentModule
+    ContentModule,
+    MessagingModule
   ],
 })
 export class AppModule {}

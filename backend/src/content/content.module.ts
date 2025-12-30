@@ -12,10 +12,12 @@ import { GetContentByIdUseCase } from './application/get-content-by-id.use-case'
 import { UploadContentUseCase } from './application/upload-content.use-case';
 import { StoragePort } from './domain/storage.port';
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
+import { EventBus } from 'src/shared/application/messaging/event-bus.port';
+import { MarkContentProcessedUseCase } from './application/mark-content-processed.use-case';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ContentOrmEntity]),
+    TypeOrmModule.forFeature([ContentOrmEntity])
   ],
   controllers: [ContentController],
   providers: [
@@ -41,11 +43,13 @@ import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
     },
      {
       provide: UploadContentUseCase,
-      useFactory: (storage: StoragePort, repository: ContentRepository) =>
-        new UploadContentUseCase(storage, repository),
-      inject: [STORAGE_PORT, CONTENT_REPOSITORY],
+      useFactory: (storage: StoragePort, repository: ContentRepository, eventBus: EventBus) =>
+        new UploadContentUseCase(storage, repository, eventBus),
+      inject: [STORAGE_PORT, CONTENT_REPOSITORY, 'EventBus'],
     },
+    MarkContentProcessedUseCase
   ],
+  exports: [MarkContentProcessedUseCase],
 })
 export class ContentModule {}
 
