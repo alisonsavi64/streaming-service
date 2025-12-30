@@ -12,8 +12,9 @@ import { GetContentByIdUseCase } from './application/get-content-by-id.use-case'
 import { UploadContentUseCase } from './application/upload-content.use-case';
 import { StoragePort } from './domain/storage.port';
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
-import { MessagingModule } from 'src/shared/infra/messaging/messaging.module';
 import { EventBus } from 'src/shared/application/messaging/event-bus.port';
+import { MarkContentProcessedUseCase } from './application/mark-content-processed.use-case';
+import { MessagingModule } from 'src/shared/infra/messaging/messaging.module';
 
 @Module({
   imports: [
@@ -48,7 +49,9 @@ import { EventBus } from 'src/shared/application/messaging/event-bus.port';
         new UploadContentUseCase(storage, repository, eventBus),
       inject: [STORAGE_PORT, CONTENT_REPOSITORY, 'EventBus'],
     },
+    MarkContentProcessedUseCase
   ],
+  exports: [MarkContentProcessedUseCase],
 })
 export class ContentModule {}
 

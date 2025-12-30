@@ -20,6 +20,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                     title: row.title,
                     description: row.description,
                     location: row.location,
+                    status: row.status,
                     createdAt: row.createdAt
                 }),
         );
@@ -33,6 +34,7 @@ export class TypeOrmContentRepository implements ContentRepository {
             title: row.title,
             description: row.description,
             location: row.location,
+             status: row.status,
             createdAt: row.createdAt,
         })
     }

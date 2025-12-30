@@ -1,0 +1,6 @@
+export enum ContentStatus {
+  UPLOADED = 'UPLOADED',
+  PROCESSING = 'PROCESSING',
+  PROCESSED = 'PROCESSED',
+  FAILED = 'FAILED',
+}
