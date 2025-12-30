@@ -5,6 +5,7 @@ import {
 } from '@nestjs/platform-fastify';
 import multipart from '@fastify/multipart';
 import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -20,6 +21,7 @@ async function bootstrap() {
   app.enableCors({
     origin: '*',
   });
+  app.useLogger(app.get(Logger));
 
   await app.listen(3001, '0.0.0.0');
 }

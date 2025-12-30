@@ -1,11 +1,13 @@
-import { StoragePort } from '../domain/storage.port';
-import { ContentRepository } from '../domain/content.repository';
+import type { StoragePort } from '../domain/storage.port';
+import type { ContentRepository } from '../domain/content.repository';
 import { Content } from '../domain/content.entity';
+import type { EventBus } from 'src/shared/application/messaging/event-bus.port';
 
 export class UploadContentUseCase {
   constructor(
     private readonly storage: StoragePort,
     private readonly contentRepository: ContentRepository,
+    private readonly eventBus: EventBus
   ) {}
 
   async execute(params: {
@@ -28,6 +30,12 @@ export class UploadContentUseCase {
     });
 
     await this.contentRepository.save(content);
+
+    await this.eventBus.publish('content.uploaded', {
+      contentId: content.id,
+      videoPath: content.location,
+      userId: 1,
+    })
 
     return content;
   }

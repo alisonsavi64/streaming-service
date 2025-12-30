@@ -9,6 +9,7 @@ import { RegisterUserUseCase } from './application/register-user.use-case';
 import { TypeOrmUserRepository } from './infra/typeorm/typeorm-user.repository';
 import { UserOrmEntity } from './infra/typeorm/user.orm-entity';
 import { UserRepository } from './domain/user.repository';
+import { JwtStrategy } from './application/jwt.strategy';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { UserRepository } from './domain/user.repository';
         ),
       inject: ['UserRepository'],
     },
+    JwtStrategy
   ],
 })
 export class AuthModule {}
