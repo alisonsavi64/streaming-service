@@ -22,7 +22,6 @@ export class UploadContentUseCase {
       filename: params.filename,
       mimeType: params.mimeType,
     });
-    console.log(location)
     const content = Content.create({
       title: params.title,
       description: params.description,
