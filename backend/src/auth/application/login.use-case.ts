@@ -1,5 +1,5 @@
 import { UserRepository } from '../domain/user.repository';
-import InvalidCredentialsError from '../domain/auth.erros';
+import { InvalidCredentialsError } from '../domain/auth.erros';
 import { JwtService } from '@nestjs/jwt';
 
 export class LoginUseCase {
