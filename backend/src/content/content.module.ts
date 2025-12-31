@@ -14,6 +14,8 @@ import { StoragePort } from './domain/storage.port';
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
 import { EventBus } from 'src/shared/application/messaging/event-bus.port';
 import { MarkContentProcessedUseCase } from './application/mark-content-processed.use-case';
+import { DeleteContentUseCase } from './application/delete-content.use-case';
+import { UpdateContentUseCase } from './application/update-content.use-case';
 
 @Module({
   imports: [
@@ -47,9 +49,21 @@ import { MarkContentProcessedUseCase } from './application/mark-content-processe
         new UploadContentUseCase(storage, repository, eventBus),
       inject: [STORAGE_PORT, CONTENT_REPOSITORY, 'EventBus'],
     },
+    {
+      provide: DeleteContentUseCase,
+      useFactory: (repository: ContentRepository, storage: StoragePort, eventBus: EventBus) =>
+        new DeleteContentUseCase(repository, storage, eventBus),
+      inject: [CONTENT_REPOSITORY, STORAGE_PORT, 'EventBus'],
+    },
+    {
+      provide: UpdateContentUseCase,
+      useFactory: (repository: ContentRepository) =>
+        new UpdateContentUseCase(repository),
+      inject: [CONTENT_REPOSITORY],
+    },
     MarkContentProcessedUseCase
   ],
-  exports: [MarkContentProcessedUseCase],
+  exports: [MarkContentProcessedUseCase, CONTENT_REPOSITORY],
 })
 export class ContentModule {}
 

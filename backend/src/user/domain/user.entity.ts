@@ -1,9 +1,9 @@
 export class User {
   constructor(
-    public readonly id: string,
-    public readonly name: string,
-    public readonly email: string,
-    private readonly passwordHash: string,
+    public id: string,
+    public name: string,
+    public email: string,
+    public passwordHash: string,
   ) {
     if (!name || name.trim().length < 2) {
       throw new Error('Invalid name');

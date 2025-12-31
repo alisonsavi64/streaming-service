@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ContentModule } from './content/content.module';
-import { LoggerModule } from 'nestjs-pino';
 import { MessagingModule } from './shared/infra/messaging/messaging.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -23,7 +23,8 @@ import { MessagingModule } from './shared/infra/messaging/messaging.module';
     }),
     AuthModule,
     ContentModule,
-    MessagingModule
+    MessagingModule,
+    UserModule
   ],
 })
 export class AppModule {}

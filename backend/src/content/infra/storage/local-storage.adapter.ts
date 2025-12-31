@@ -8,11 +8,7 @@ import { randomUUID } from 'crypto';
 export class LocalStorageAdapter implements StoragePort {
   private readonly basePath = '/storage';
 
-  async upload({ file, filename }: {
-    file: Buffer;
-    filename: string;
-    mimeType: string;
-  }): Promise<{ location: string }> {
+  async upload({ file, filename }: { file: Buffer; filename: string; mimeType: string; }): Promise<{ location: string }> {
     await fs.mkdir(this.basePath, { recursive: true });
 
     const fileId = randomUUID();
@@ -24,5 +20,16 @@ export class LocalStorageAdapter implements StoragePort {
     return {
       location: `/storage/${storedName}`,
     };
+  }
+
+  async delete(location: string): Promise<void> {
+    const filePath = path.join(this.basePath, path.basename(location));
+    try {
+      await fs.unlink(filePath);
+    } catch (error) {
+      if (error.code !== 'ENOENT') { 
+        throw error;
+      }
+    }
   }
 }

@@ -6,13 +6,19 @@ import {
     Req,
     NotFoundException,
     UseGuards,
+    Delete,
+    ForbiddenException,
+    Patch,
+    Body,
 } from '@nestjs/common';
 import type { FastifyRequest } from 'fastify';
 import { ListContentsUseCase } from '../application/list-contents.use-case';
 import { GetContentByIdUseCase } from '../application/get-content-by-id.use-case';
 import { UploadContentUseCase } from '../application/upload-content.use-case';
 import { ContentNotFoundError } from '../domain/content.errors';
-import { JwtAuthGuard } from 'src/auth/application/jwt-auth.guard';
+import { JwtAuthGuard } from '../../auth/application/jwt-auth.guard';
+import { DeleteContentUseCase } from '../application/delete-content.use-case';
+import { UpdateContentUseCase } from '../application/update-content.use-case';
 
 @Controller('contents')
 export class ContentController {
@@ -20,6 +26,8 @@ export class ContentController {
         private readonly listContentsUseCase: ListContentsUseCase,
         private readonly getContentByIdUseCase: GetContentByIdUseCase,
         private readonly uploadContentUseCase: UploadContentUseCase,
+        private readonly deleteContentUseCase: DeleteContentUseCase,
+        private readonly updateContentUseCase: UpdateContentUseCase
     ) { }
 
     @UseGuards(JwtAuthGuard)
@@ -41,9 +49,10 @@ export class ContentController {
         }
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Post()
-    async create(@Req() req: FastifyRequest) {
+    async create(@Req() req: any) {
+      const userId = req.user.userId;
       const parts = req.parts();
 
       let fileBuffer: Buffer | null = null;
@@ -78,7 +87,41 @@ export class ContentController {
         file: fileBuffer,
         filename,
         mimeType,
+        userId
       });
     }
+  
+    @UseGuards(JwtAuthGuard)
+    @Delete(':id')
+    async delete(@Param('id') id: string, @Req() req: any) {
+      try {
+        const userId = req.user.userId;
+        return await this.deleteContentUseCase.execute(id, userId);
+      } catch (error) {
+        if (error instanceof ContentNotFoundError) {
+          throw new NotFoundException(error.message);
+        }
+        if (error.message.includes('Unauthorized')) {
+          throw new ForbiddenException(error.message);
+        }
+        throw error;
+      }
+    }
 
+    @UseGuards(JwtAuthGuard)
+    @Patch(':id')
+    async update(@Param('id') id: string, @Req() req: any, @Body() body: { title?: string; description?: string }) {
+      try {
+        const userId = req.user.userId;
+        return await this.updateContentUseCase.execute(id, userId, body);
+       } catch (error) {
+        if (error instanceof ContentNotFoundError) {
+          throw new NotFoundException(error.message);
+        }
+        if (error.message.includes('Unauthorized')) {
+          throw new ForbiddenException(error.message);
+        }
+        throw error;
+      }
+    }
 }

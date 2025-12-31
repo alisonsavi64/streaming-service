@@ -1,5 +1,5 @@
 import { UserRepository } from '../domain/user.repository';
-import { UserAlreadyExistsError } from '../domain/auth.erros';
+import { UserAlreadyExistsError } from '../../user/domain/user.errors';
 import { User } from '../domain/user.entity';
 import { randomUUID } from 'crypto';
 import { Logger } from '@nestjs/common';

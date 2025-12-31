@@ -50,6 +50,7 @@ services:
   backend:
       build:
         context: ./backend
+        dockerfile: Dockerfile.dev
       container_name: backend
       depends_on:
         - kafka
@@ -85,6 +86,16 @@ services:
       - "16686:16686" 
       - "4318:4318"   
       - "6831:6831/udp"  
+      
+  k6:
+    build:
+      context: ./k6
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    volumes:
+      - ./k6/scripts:/scripts
+
 
 volumes:
   postgres_data:

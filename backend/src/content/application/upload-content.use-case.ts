@@ -16,6 +16,7 @@ export class UploadContentUseCase {
     file: Buffer;
     filename: string;
     mimeType: string;
+    userId: string;
   }): Promise<Content> {
     const { location } = await this.storage.upload({
       file: params.file,
@@ -25,7 +26,8 @@ export class UploadContentUseCase {
     const content = Content.create({
       title: params.title,
       description: params.description,
-      location
+      location,
+      userId: params.userId
     });
 
     await this.contentRepository.save(content);
@@ -33,7 +35,7 @@ export class UploadContentUseCase {
     await this.eventBus.publish('content.uploaded', {
       contentId: content.id,
       videoPath: content.location,
-      userId: 1,
+      userId: content.userId
     })
 
     return content;

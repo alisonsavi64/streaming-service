@@ -1,10 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { ContentStatus } from '../../domain/content.status';
+import { UserOrmEntity } from '../../../user/infra/typeorm/user.orm-entity';
 
 @Entity('contents')
 export class ContentOrmEntity {
@@ -32,4 +28,11 @@ export class ContentOrmEntity {
 
   @Column({ nullable: true })
   processedAt?: Date;
+
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => UserOrmEntity)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user: UserOrmEntity;
 }

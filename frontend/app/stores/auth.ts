@@ -1,23 +1,35 @@
+// stores/auth.ts
 import { defineStore } from 'pinia'
+import { useNuxtApp, useCookie } from '#app'
 
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
-        user: null as any,
-        token: null as string | null,
-    }),
-    actions: {
-        async login(email: string, password: string) {
-            const { $api } = useNuxtApp()
-            const { data } = await $api.post('/auth/login', { email, password })
-            this.token = data.token
-            this.user = data.user
-            localStorage.setItem('token', data.token)
-        },
-        logout() {
-            this.user = null
-            this.token = null
-            localStorage.removeItem('token')
-            navigateTo('/login')
-        }
-    }
+  state: () => ({
+    token: '',
+    user: null as any | null,
+  }),
+  actions: {
+    async fetchUser() {
+      if (!this.token) return
+
+      const { $api } = useNuxtApp()
+
+      try {
+        const { data } = await $api.get('/auth/me')
+        this.user = data
+      } catch {
+        this.logout()
+      }
+    },
+
+    login(token: string) {
+      this.token = token
+      useCookie('token').value = token
+    },
+
+    logout() {
+      this.token = ''
+      this.user = null
+      useCookie('token').value = null
+    },
+  },
 })

@@ -13,6 +13,7 @@ export class Content {
     public location: string,
     public status: ContentStatus,
     public readonly createdAt: Date,
+    public readonly userId: string, 
     public processedAt?: Date,
   ) {}
 
@@ -20,6 +21,7 @@ export class Content {
     title: string;
     description: string;
     location: string;
+    userId: string;
   }): Content {
     Content.validate(params);
 
@@ -30,6 +32,7 @@ export class Content {
       params.location,
       ContentStatus.UPLOADED,
       new Date(),
+      params.userId 
     );
   }
 
@@ -40,6 +43,7 @@ export class Content {
     location: string;
     status: ContentStatus;
     createdAt: Date;
+    userId: string; 
     processedAt?: Date;
   }): Content {
     return new Content(
@@ -49,34 +53,20 @@ export class Content {
       params.location,
       params.status,
       params.createdAt,
+      params.userId,
       params.processedAt,
     );
   }
 
-  markProcessing() {
-    if (this.status !== ContentStatus.UPLOADED) return;
-    this.status = ContentStatus.PROCESSING;
-  }
-
-  markProcessed(processedLocation: string) {
-    this.status = ContentStatus.PROCESSED;
-    this.location = processedLocation;
-    this.processedAt = new Date();
-  }
-
-  markFailed() {
-    this.status = ContentStatus.FAILED;
-  }
-
-  private static validate(params: {
-    title: string;
-    location: string;
-  }) {
+  private static validate(params: { title: string; location: string; userId: string }) {
     if (!params.title || params.title.trim().length < 2) {
       throw new InvalidContentTitleError();
     }
     if (!params.location) {
       throw new InvalidContentLocationError();
+    }
+    if (!params.userId) {
+      throw new Error('userId is required');
     }
   }
 }

@@ -3,7 +3,7 @@ export interface StoragePort {
     file: Buffer;
     filename: string;
     mimeType: string;
-  }): Promise<{
-    location: string;
-  }>;
+  }): Promise<{ location: string }>;
+
+  delete(location: string): Promise<void>; 
 }

@@ -3,9 +3,3 @@ export class InvalidCredentialsError extends Error {
     super('Invalid credentials');
   }
 }
-
-export class UserAlreadyExistsError extends Error {
-  constructor() {
-    super('User already exists');
-  }
-}
