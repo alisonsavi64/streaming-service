@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+definePageMeta({
+  middleware: 'only-auth',
+})
+
 const title = ref('')
 const description = ref('')
 const file = ref<File | null>(null)
@@ -12,25 +16,14 @@ const handleFileChange = (e: Event) => {
 }
 
 const submit = async () => {
-  if (!file.value) {
-    alert('Select a video')
-    return
-  }
+  if (!file.value) return alert('Select a video')
 
   const formData = new FormData()
   formData.append('title', title.value)
   formData.append('description', description.value)
   formData.append('upload', file.value)
 
-  try {
-    await $api.post('/contents', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
-    navigateTo('/contents')
-  } catch (error) {
-    console.error('Upload failed:', error)
-    alert('Upload failed. Please try again.')
-  }
+  navigateTo('/contents')
 }
 </script>
 

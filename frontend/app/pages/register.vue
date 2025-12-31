@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 definePageMeta({ layout: 'auth' })
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
-const { $api } = useNuxtApp()
 
 const submit = async () => {
-  await $api.post('/auth/register', {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-  })
+
   navigateTo('/login')
 }
 </script>
