@@ -18,25 +18,25 @@ export class UploadContentUseCase {
     mimeType: string;
     userId: string;
   }): Promise<Content> {
-    const { location } = await this.storage.upload({
-      file: params.file,
-      filename: params.filename,
-      mimeType: params.mimeType,
-    });
     const content = Content.create({
       title: params.title,
       description: params.description,
-      location,
-      userId: params.userId
+      userId: params.userId,
+    });
+
+    await this.storage.uploadRaw({
+      contentId: content.id,
+      file: params.file,
+      filename: params.filename,
+      mimeType: params.mimeType,
     });
 
     await this.contentRepository.save(content);
 
     await this.eventBus.publish('content.uploaded', {
       contentId: content.id,
-      videoPath: content.location,
-      userId: content.userId
-    })
+      userId: content.userId,
+    });
 
     return content;
   }

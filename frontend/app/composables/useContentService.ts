@@ -1,47 +1,67 @@
 
 
-export const useAuthService = () => {
-    async function create(email: string, password: string) : Promise<void> {
+export const useContentService = () => {
+    async function upload(formData: FormData): Promise<void> {
         try {
-            await $fetch('/api/content', {
-                body: {
-                    email,
-                    password
-                },
-                method: 'POST'
+        await $fetch('/api/content/upload', {
+            method: 'POST',
+            body: formData,
+            headers: useRequestHeaders(['cookies'])
+        })
+        } catch (err) {
+        return Promise.reject(err)
+    }
+  }
+
+  async function list(): Promise<any> {
+        try {
+        return await $fetch('/api/content/list', {
+            method: 'GET',
+            headers: useRequestHeaders(['cookies'])
+        })
+        } catch (err) {
+        return Promise.reject(err)
+    }
+  }
+
+   async function show(id: string): Promise<any> {
+        try {
+        return await $fetch(`/api/content/${id}`, {
+            method: 'GET',
+            headers: useRequestHeaders(['cookies'])
+        })
+        } catch (err) {
+        return Promise.reject(err)
+    }
+  }
+
+  async function update(id: string, data: any): Promise<any> {
+        try {
+        return await $fetch(`/api/content/${id}`, {
+            method: 'PATCH',
+            headers: useRequestHeaders(['cookies']),
+            body: JSON.stringify(data)
+        })
+        } catch (err) {
+        return Promise.reject(err)
+    }
+  }
+
+  async function remove(id: string): Promise<void> {
+        try {
+            await $fetch(`/api/content/${id}`, {
+                method: 'DELETE'
             })
-
         } catch(err) {
             return Promise.reject(err)
         }
     }
-
-    async function logout() : Promise<void> {
-        try {
-            await $fetch('/api/auth/logout', {
-                method: 'POST'
-            })
-
-        } catch(err) {
-            return Promise.reject(err)
-        }
-    }
-
-    async function me() : Promise<any> {
-        try {
-            const user = await $fetch('/api/auth/me', {
-                headers: useRequestHeaders(['cookies'])
-            });
-            return user
-        } catch(err) {
-            return Promise.reject(err)
-        }
-    }
-
     return {
-        login,
-        me,
-        logout
+        upload,
+        list,
+        show,
+        update,
+        remove
     }
 
 }

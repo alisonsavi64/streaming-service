@@ -35,6 +35,17 @@ services:
     volumes:
       - storage:/storage
   
+  video-streaming:
+    build:
+      context: ./video-streaming
+    container_name: video-streaming
+    depends_on:
+      - backend
+    ports:
+      - "3003:3003"
+    volumes:
+      - storage:/storage
+  
   postgres:
     image: postgres:15
     container_name: streaming-postgres
@@ -117,6 +128,17 @@ services:
       - "3002:3000"
     depends_on:
       - prometheus
+
+  nginx:
+    image: nginx:alpine
+    container_name: streaming-nginx
+    depends_on:
+      - video-processor
+    ports:
+      - "8080:80"
+    volumes:
+      - storage:/storage:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   postgres_data:

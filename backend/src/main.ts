@@ -27,6 +27,7 @@ async function bootstrap() {
         : {
             level: 'info',
           },
+      bodyLimit: 104857600
     }),
   );
 

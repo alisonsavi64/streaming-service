@@ -11,6 +11,7 @@ import {
   Patch,
   Body,
   UseInterceptors,
+  Res,
 } from '@nestjs/common';
 
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
@@ -23,6 +24,7 @@ import { UpdateContentUseCase } from '../application/update-content.use-case';
 
 import { ContentNotFoundError } from '../domain/content.errors';
 import { JwtAuthGuard } from '../../auth/application/jwt-auth.guard';
+import { createReadStream, statSync } from 'fs';
 
 @Controller('contents')
 export class ContentController {
@@ -59,7 +61,7 @@ export class ContentController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Req() req: any) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
     const parts = req.parts();
 
     let fileBuffer: Buffer | null = null;
@@ -97,7 +99,7 @@ export class ContentController {
   @Delete(':id')
   async delete(@Param('id') id: string, @Req() req: any) {
     try {
-      const userId = req.user.userId;
+      const userId = req.user.id;
       return await this.deleteContentUseCase.execute(id, userId);
     } catch (error) {
       if (error instanceof ContentNotFoundError) {
@@ -118,7 +120,7 @@ export class ContentController {
     @Body() body: { title?: string; description?: string },
   ) {
     try {
-      const userId = req.user.userId;
+      const userId = req.user.id;
       return await this.updateContentUseCase.execute(id, userId, body);
     } catch (error) {
       if (error instanceof ContentNotFoundError) {
@@ -130,4 +132,5 @@ export class ContentController {
       throw error;
     }
   }
+
 }

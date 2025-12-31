@@ -4,9 +4,10 @@ definePageMeta({ layout: 'auth' })
 const name = ref('')
 const email = ref('')
 const password = ref('')
+const userService = useUserService()
 
 const submit = async () => {
-
+  await userService.create(name.value, email.value, password.value)
   navigateTo('/login')
 }
 </script>

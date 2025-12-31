@@ -78,7 +78,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Delete('')
   async delete(@Req() req: any) {
-    const userId = req.user.userId;
+    const userId = req.user.id;
 
     this.logger.warn(
       { userId },

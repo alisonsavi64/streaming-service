@@ -10,10 +10,11 @@ import { UserRepository } from '../user/domain/user.repository';
 import { UpdateUserUseCase } from '../user/application/update-user.use-case';
 import { DeleteUserUseCase } from '../user/application/delete-user.usecase';
 import { ContentRepository } from 'src/content/domain/content.repository';
-import { CONTENT_REPOSITORY } from 'src/content/domain/content.tokens';
+import { CONTENT_REPOSITORY, STORAGE_PORT } from 'src/content/domain/content.tokens';
 import { USER_REPOSITORY } from '../user/domain/user.tokens';
 import { ContentModule } from 'src/content/content.module';
 import { UserController } from './presentation/user.controller';
+import { StoragePort } from 'src/content/domain/storage.port';
 
 @Module({
   imports: [
@@ -45,12 +46,13 @@ import { UserController } from './presentation/user.controller';
     },
     {
       provide: DeleteUserUseCase,
-      useFactory: (userRepository: UserRepository, contentRepository: ContentRepository) =>
+      useFactory: (userRepository: UserRepository, contentRepository: ContentRepository, storage: StoragePort) =>
         new DeleteUserUseCase(
           userRepository,
-          contentRepository
+          contentRepository,
+          storage
         ),
-      inject: [USER_REPOSITORY, CONTENT_REPOSITORY],
+      inject: [USER_REPOSITORY, CONTENT_REPOSITORY, STORAGE_PORT],
     }
   ],
   exports: [USER_REPOSITORY],

@@ -1,80 +1,55 @@
-import type { FetchOptions } from 'ofetch'
+import axios from 'axios'
+import FormDataNode from 'form-data'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export default class Client {
-  options?: FetchOptions
-  baseUrl : string
+  private axiosInstance: AxiosInstance
 
-  constructor(baseUrl: string, options?: FetchOptions) {
-    this.options = options
-    this.baseUrl = baseUrl
+  constructor(baseUrl: string, config?: AxiosRequestConfig) {
+    this.axiosInstance = axios.create({
+      baseURL: baseUrl,
+      ...config,
+    })
   }
 
-  async raw<T>(url: string, method: "GET" | "HEAD" | "PATCH" | "POST" | "PUT" | "DELETE" | "CONNECT" | "OPTIONS" | "TRACE" | "get" | "head" | "patch" | "post" | "put" | "delete" | "connect" | "options" | "trace" | undefined, options?: FetchOptions) {
-    try {
-      const data = await $fetch.raw<T>(`${this.baseUrl}${url}`, {
-        ...options,
-        ...this.options,
-        method
-      })
+  async post<T = any>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<T>> { 
+    const headers =
+      data instanceof FormDataNode
+        ? { ...(config?.headers || {}), ...data.getHeaders() }
+        : config?.headers
 
-      return data
-    } catch (err) {
-      return Promise.reject(err)
-    }
+    const response = await this.axiosInstance.post(url, data, { ...config, headers })
+    return response
   }
 
-  async post<T>(url: string,options?: FetchOptions) {
-    try {
-      const data = await $fetch<T>(`${this.baseUrl}${url}`, {
-        ...options,
-        ...this.options,
-        method: 'POST'
-      })
 
-      return data
-    } catch (err) {
-      return Promise.reject(err)
-    }
+
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.axiosInstance.get<T>(url, config)
+    return response.data
   }
 
-  async get<T>(url: string, options?: FetchOptions) {
-    try {
-      const data = await $fetch<T>(`${this.baseUrl}${url}`, {
-        ...options,
-        ...this.options,
-        method: 'GET'
-      })
-      return data
-    } catch (err) {
-      return Promise.reject(err)
-    }
+  async put<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.axiosInstance.put<T>(url, data, config)
+    return response.data
   }
 
-  async put<T>(url: string, options?: FetchOptions) {
-    try {
-      const data = await $fetch<T>(`${this.baseUrl}${url}`, {
-        ...options,
-        ...this.options,
-        method: 'PUT'
-      })
-
-      return data
-    } catch (err) {
-      return Promise.reject(err)
-    }
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.axiosInstance.delete<T>(url, config)
+    return response.data
   }
 
-  async delete<T>(url: string, options?: FetchOptions) {
-    try {
-      const data = await $fetch<T>(`${this.baseUrl}${url}`, {
-        ...options,
-        ...this.options,
-        method: 'DELETE'
-      })
+  async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+    const headers =
+      data instanceof FormDataNode
+        ? { ...(config?.headers || {}), ...data.getHeaders() }
+        : config?.headers
 
-      return data
-    } catch (err) {
-      return Promise.reject(err)
-    }
+    const response = await this.axiosInstance.patch<T>(url, data, { ...config, headers })
+    return response.data
   }
 }

@@ -78,6 +78,6 @@ import { EventBus } from 'src/shared/application/messaging/event-bus.port';
     },
     MarkContentProcessedUseCase,
   ],
-  exports: [MarkContentProcessedUseCase, CONTENT_REPOSITORY],
+  exports: [MarkContentProcessedUseCase, CONTENT_REPOSITORY, STORAGE_PORT],
 })
 export class ContentModule {}

@@ -8,7 +8,7 @@ definePageMeta({
 const title = ref('')
 const description = ref('')
 const file = ref<File | null>(null)
-const { $api } = useNuxtApp()
+const contentService = useContentService()
 
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement
@@ -17,12 +17,11 @@ const handleFileChange = (e: Event) => {
 
 const submit = async () => {
   if (!file.value) return alert('Select a video')
-
   const formData = new FormData()
   formData.append('title', title.value)
   formData.append('description', description.value)
   formData.append('upload', file.value)
-
+  await contentService.upload(formData)
   navigateTo('/contents')
 }
 </script>

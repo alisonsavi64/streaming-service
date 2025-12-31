@@ -40,32 +40,6 @@ import { UserModule } from 'src/user/user.module';
         ),
       inject: [USER_REPOSITORY, JwtService],
     },
-    {
-      provide: RegisterUserUseCase,
-      useFactory: (repo: UserRepository) =>
-        new RegisterUserUseCase(
-          repo,
-          (password: string) => bcrypt.hashSync(password, 10),
-        ),
-      inject: [USER_REPOSITORY],
-    },
-    {
-      provide: UpdateUserUseCase,
-      useFactory: (repo: UserRepository) =>
-        new UpdateUserUseCase(
-          repo
-        ),
-      inject: [USER_REPOSITORY],
-    },
-    {
-      provide: DeleteUserUseCase,
-      useFactory: (userRepository: UserRepository, contentRepository: ContentRepository) =>
-        new DeleteUserUseCase(
-          userRepository,
-          contentRepository
-        ),
-      inject: [USER_REPOSITORY, CONTENT_REPOSITORY],
-    },
     JwtStrategy
   ],
 })

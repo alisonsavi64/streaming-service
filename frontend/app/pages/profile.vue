@@ -1,37 +1,36 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'only-auth',
-})
-
-
+import { ref } from 'vue'
+import { useAuthStore } from '~/store/auth'
 const { $api } = useNuxtApp()
+const auth = useAuthStore()
+const authService = useAuthService()
+const userService = useUserService()
 
-const name = ref('')
-const email = ref('')
+const name = ref(auth.user?.name || '')
+const email = ref(auth.user?.email || '')
 const password = ref('')
 
 const updateUser = async () => {
-
-  alert('Updated')
+  await userService.update(name.value, email.value, password.value)
+  alert('User updated')
 }
 
 const deleteUser = async () => {
-  if (!confirm('Delete account?')) return
-
- 
-  navigateTo('/login')
+  if (!confirm('Are you sure you want to delete your account?')) return
+  await userService.remove()
+  authService.logout()
 }
 </script>
 
 <template>
-  <div class="max-w-lg mx-auto p-6 bg-zinc-900 rounded-xl space-y-4">
-    <h1 class="text-2xl font-bold text-center">Profile</h1>
+  <div class="max-w-lg mx-auto space-y-4 p-6 bg-zinc-900 rounded-xl">
+    <h1 class="text-2xl font-bold text-center">Edit Profile</h1>
 
-    <BaseInput v-model="name" />
-    <BaseInput v-model="email" />
-    <BaseInput v-model="password" type="password" />
+    <BaseInput v-model="name" placeholder="Name" />
+    <BaseInput v-model="email" placeholder="Email" />
+    <BaseInput v-model="password" type="password" placeholder="New Password (leave blank to keep)" />
 
     <BaseButton @click="updateUser">Update</BaseButton>
-    <BaseButton class="bg-red-600" @click="deleteUser">Delete</BaseButton>
+    <BaseButton class="bg-red-600" @click="deleteUser">Delete Account</BaseButton>
   </div>
 </template>

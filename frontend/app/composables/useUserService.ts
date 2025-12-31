@@ -1,47 +1,54 @@
+ 
+ 
+ export const useUserService = () => {
+ 
+    async function create(name: string, email: string, password: string) : Promise<void> {
+            try {
+                await $fetch('/api/user/create', {
+                    body: {
+                        name,
+                        email,
+                        password
+                    },
+                    method: 'POST'
+                })
 
+            } catch(err) {
+                return Promise.reject(err)
+            }
+        }
+        async function update(name: string, email: string, password: string) : Promise<void> {
+            try {
+                await $fetch('/api/user/update', {
+                    body: {
+                        name,
+                        email,
+                        password
+                    },
+                    method: 'PUT' as any
+                })
 
-export const useAuthService = () => {
-    async function login(email: string, password: string) : Promise<void> {
+            } catch(err) {
+                return Promise.reject(err)
+            }
+        }
+
+    async function remove() : Promise<void> {
         try {
-            await $fetch('/api/auth/login', {
-                body: {
-                    email,
-                    password
-                },
-                method: 'POST'
+            await $fetch('/api/user/remove', {
+                method: 'DELETE'
             })
-
         } catch(err) {
             return Promise.reject(err)
         }
     }
-
-    async function logout() : Promise<void> {
-        try {
-            await $fetch('/api/auth/logout', {
-                method: 'POST'
-            })
-
-        } catch(err) {
-            return Promise.reject(err)
-        }
-    }
-
-    async function me() : Promise<any> {
-        try {
-            const user = await $fetch('/api/auth/me', {
-                headers: useRequestHeaders(['cookies'])
-            });
-            return user
-        } catch(err) {
-            return Promise.reject(err)
-        }
-    }
-
-    return {
-        login,
-        me,
-        logout
-    }
-
-}
+ 
+     return {
+        create,
+        update,
+        remove
+     }
+ 
+ }
+ 
+ 

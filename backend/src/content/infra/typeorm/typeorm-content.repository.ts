@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { ContentRepository } from '../../domain/content.repository';
 import { Content } from '../../domain/content.entity';
 import { ContentOrmEntity } from './content.orm-entity';
+import { ContentStatus } from 'src/content/domain/content.status';
 
 export class TypeOrmContentRepository implements ContentRepository {
     constructor(
@@ -11,13 +12,14 @@ export class TypeOrmContentRepository implements ContentRepository {
     ) { }
 
     async findAll(): Promise<Content[]> {
-        const rows = await this.repository.find();
+        const rows = await this.repository.find({
+            where: { status: ContentStatus.PROCESSED },
+        });
         return rows.map(row =>
             Content.restore({
                 id: row.id,
                 title: row.title,
                 description: row.description,
-                location: row.location,
                 status: row.status,
                 createdAt: row.createdAt,
                 userId: row.userId,
@@ -32,7 +34,6 @@ export class TypeOrmContentRepository implements ContentRepository {
             id: row.id,
             title: row.title,
             description: row.description,
-            location: row.location,
             status: row.status,
             createdAt: row.createdAt,
             userId: row.userId,
@@ -46,7 +47,6 @@ export class TypeOrmContentRepository implements ContentRepository {
                 id: row.id,
                 title: row.title,
                 description: row.description,
-                location: row.location,
                 status: row.status,
                 createdAt: row.createdAt,
                 userId: row.userId,
@@ -63,7 +63,6 @@ export class TypeOrmContentRepository implements ContentRepository {
             id: content.id,
             title: content.title,
             description: content.description,
-            location: content.location,
             userId: content.userId,
             createdAt: content.createdAt,
         });

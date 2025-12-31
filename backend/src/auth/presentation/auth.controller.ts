@@ -30,7 +30,7 @@ async login(
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24, // seconds
+      maxAge: 60 * 60 * 24, 
     });
 
     return result.user;

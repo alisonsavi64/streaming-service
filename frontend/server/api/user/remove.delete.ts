@@ -3,18 +3,8 @@ import { serverApi } from '../utils/serverApi'
 
 export default defineEventHandler(async event => {
   const api = serverApi(event)
-  const { password, email } = await readBody(event)
   try {
-    const res = await api.raw('/auth/login', 'POST', {
-      body: {
-        password,
-        email
-      }
-    })
-    const cookies = (res?.headers.get('set-cookie') || '').split(',')
-    for (const cookie of cookies) {
-      appendHeader(event, 'set-cookie', cookie)
-    }
+    const res = await api.delete('/user')
     return { message: 'success' }
   } catch (err) {
     throw createError('An error occurred while fetching the data.')

@@ -18,7 +18,7 @@ export class DeleteContentUseCase {
     if (content.userId !== userId) {
       throw new Error('Unauthorized: You can only delete your own content');
     }
-    await this.storage.delete(content.location);
+    await this.storage.delete(content.id);
     await this.contentRepository.delete(id);
     return { message: 'Content deleted successfully' };
   }

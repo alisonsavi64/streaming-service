@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { ContentStatus } from '../../domain/content.status';
 import { UserOrmEntity } from '../../../user/infra/typeorm/user.orm-entity';
 
@@ -12,9 +19,6 @@ export class ContentOrmEntity {
 
   @Column('text')
   description: string;
-
-  @Column()
-  location: string;
 
   @Column({
     type: 'enum',
