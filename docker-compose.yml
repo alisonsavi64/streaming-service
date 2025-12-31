@@ -59,6 +59,9 @@ services:
       environment:
         KAFKA_BROKER: kafka:29092
         DATABASE_URL: postgres://streaming:streaming@postgres:5432/streaming
+          - OTEL_SERVICE_NAME=backend-api
+          - OTEL_TRACES_EXPORTER=jaeger
+          - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
       ports:
         - "3001:3001"
       volumes:
@@ -84,7 +87,8 @@ services:
     container_name: jaeger
     ports:
       - "16686:16686" 
-      - "4318:4318"   
+      - "4318:4318" 
+      - "14268:14268"    
       - "6831:6831/udp"  
       
   k6:

@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ContentModule } from './content/content.module';
 import { MessagingModule } from './shared/infra/messaging/messaging.module';
 import { UserModule } from './user/user.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
@@ -20,6 +21,9 @@ import { UserModule } from './user/user.module';
       database: 'streaming',
       autoLoadEntities: true,
       synchronize: true
+    }),
+    PrometheusModule.register({
+      path: '/metrics',
     }),
     AuthModule,
     ContentModule,

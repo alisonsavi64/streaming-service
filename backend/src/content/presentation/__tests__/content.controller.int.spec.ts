@@ -8,7 +8,7 @@ describe('ContentController (e2e) via running API', () => {
 
   beforeAll(async () => {
     await request(BASE_URL)
-      .post('/auth/register')
+      .post('/user')
       .send({ name: 'Test', email: 'test@example.com', password: '123456' });
 
     const loginRes = await request(BASE_URL)
