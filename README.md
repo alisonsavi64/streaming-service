@@ -19,6 +19,50 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 - **Prometheus + Grafana + Jaeger** – Observabilidade
 - **K6** – Testes de carga
 
+flowchart LR
+    %% Frontend
+    FE[Frontend\n(Nuxt + Vue.js\nSSR)]
+
+    %% Backend
+    BE[Backend API\n(NestJS + Fastify)]
+
+    %% Streaming
+    VS[Video Streaming\nService]
+
+    %% Video Processor
+    VP[Video Processor\n(Fastify)]
+
+    %% Infra
+    NG[Nginx\n(HLS + Thumbnails)]
+    KAFKA[(Kafka)]
+    STORAGE[(Shared Storage\nVideos / HLS / Thumbnails)]
+
+    %% Observability
+    OBS[Observability Stack\nPrometheus | Grafana | Jaeger]
+
+    %% User flow
+    FE -->|HTTP (Auth via Cookie)| BE
+    FE -->|Request Stream| VS
+    FE -->|HLS Playback| NG
+
+    %% Backend responsibilities
+    BE -->|Produce Events| KAFKA
+    BE -->|Read/Write| STORAGE
+    BE --> OBS
+
+    %% Video processing
+    KAFKA -.->|Consume| VP
+    VP -->|Read/Write| STORAGE
+    VP -->|Produce Status Event| KAFKA
+    VP --> OBS
+
+    %% Streaming
+    VS -->|Read| STORAGE
+    VS --> OBS
+
+    %% Nginx
+    NG -->|Read| STORAGE
+
 ---
 
 ## Fluxo Principal da Aplicação
