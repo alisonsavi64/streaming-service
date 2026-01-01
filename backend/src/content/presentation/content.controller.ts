@@ -20,7 +20,16 @@ import { UploadContentUseCase } from '../application/upload-content.use-case';
 import { DeleteContentUseCase } from '../application/delete-content.use-case';
 import { UpdateContentUseCase } from '../application/update-content.use-case';
 import { ContentNotFoundError } from '../domain/content.errors';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiBody,
+} from '@nestjs/swagger';
 
+@ApiTags('contents')
 @Controller('contents')
 export class ContentController {
   private readonly logger = new Logger(ContentController.name);
@@ -33,13 +42,14 @@ export class ContentController {
     private readonly updateContentUseCase: UpdateContentUseCase,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
   @UseInterceptors(CacheInterceptor)
   @CacheKey('contents_list')
   @CacheTTL(30)
   @Get()
+  @ApiOperation({ summary: 'List all contents' })
+  @ApiResponse({ status: 200, description: 'Contents retrieved successfully.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
   async list(@Req() req: any) {
-    this.logger.log({ userId: req.user.id }, 'Listing contents');
     try {
       const contents = await this.listContentsUseCase.execute();
       this.logger.log({ count: contents.length }, 'Contents listed successfully');
@@ -50,10 +60,11 @@ export class ContentController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
+  @ApiOperation({ summary: 'Get content by ID' })
+  @ApiResponse({ status: 200, description: 'Content retrieved successfully.' })
+  @ApiResponse({ status: 404, description: 'Content not found.' })
   async getById(@Param('id') id: string, @Req() req: any) {
-    this.logger.log({ userId: req.user.id, contentId: id }, 'Fetching content by ID');
     try {
       const content = await this.getContentByIdUseCase.execute({ id });
       this.logger.log({ contentId: id }, 'Content fetched successfully');
@@ -69,6 +80,23 @@ export class ContentController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Upload new content' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        description: { type: 'string' },
+        upload: { type: 'string', format: 'binary' },
+        thumbnail: { type: 'string', format: 'binary' },
+      },
+      required: ['title', 'description', 'upload', 'thumbnail'],
+    },
+  })
+  @ApiResponse({ status: 201, description: 'Content uploaded successfully.' })
+  @ApiResponse({ status: 400, description: 'Bad request.' })
   async create(@Req() req: any) {
     const userId = req.user.id;
     this.logger.log({ userId }, 'Upload content requested');
@@ -127,6 +155,22 @@ export class ContentController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update content by ID' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        description: { type: 'string' },
+        thumbnail: { type: 'string', format: 'binary' },
+      },
+    },
+  })
+  @ApiResponse({ status: 200, description: 'Content updated successfully.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Content not found.' })
   async update(@Param('id') id: string, @Req() req: any) {
     const userId = req.user.id;
     this.logger.log({ userId, contentId: id }, 'Update content requested');
@@ -173,6 +217,11 @@ export class ContentController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete content by ID' })
+  @ApiResponse({ status: 200, description: 'Content deleted successfully.' })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 404, description: 'Content not found.' })
   async delete(@Param('id') id: string, @Req() req: any) {
     const userId = req.user.id;
     this.logger.warn({ userId, contentId: id }, 'Content deletion requested');

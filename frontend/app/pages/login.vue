@@ -15,18 +15,16 @@ const submit = async () => {
   await authService.login(email.value, password.value)
   const user = await authService.me()
   auth.setUser(user);
-  navigateTo('/contents')
+  navigateTo('/')
 }
 onMounted(async () => {
   const user = await authService.me()
   if(user) {
     auth.setUser(user);
-    navigateTo('/contents')
+    navigateTo('/')
   }
 })
 </script>
-
-
 
 <template>
   <form @submit.prevent="submit" class="bg-zinc-900 p-8 rounded-2xl w-96 space-y-4">

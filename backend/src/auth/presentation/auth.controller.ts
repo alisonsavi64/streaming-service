@@ -14,7 +14,15 @@ import { LoginUseCase } from '../application/login.use-case';
 import { InvalidCredentialsError } from '../domain/auth.erros';
 import { JwtAuthGuard } from '../application/jwt-auth.guard';
 import type { FastifyReply } from 'fastify';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
@@ -22,6 +30,10 @@ export class AuthController {
   constructor(private readonly loginUseCase: LoginUseCase) {}
 
   @Post('login')
+  @ApiOperation({ summary: 'User login' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: 200, description: 'Login successful, returns user info' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) reply: FastifyReply,
@@ -36,7 +48,7 @@ export class AuthController {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 60 * 24,
+        maxAge: 60 * 60 * 24, 
       });
 
       this.logger.log({ userId: result.user.id }, 'Login successful');
@@ -52,12 +64,18 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current logged-in user' })
+  @ApiResponse({ status: 200, description: 'Returns current user info' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   me(@Req() req: any) {
     this.logger.log({ userId: req.user.id }, 'Fetching current user');
     return req.user;
   }
 
   @Post('logout')
+  @ApiOperation({ summary: 'Logout user and clear cookies' })
+  @ApiResponse({ status: 200, description: 'Logout successful' })
   logout(@Res({ passthrough: true }) reply: FastifyReply) {
     this.logger.log('Logout requested');
     reply.clearCookie('access_token', { path: '/' });

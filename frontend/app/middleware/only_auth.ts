@@ -1,13 +1,22 @@
 import { useAuthStore } from "~/store/auth"
+import { useAuthService } from "~/composables/useAuthService"
 
-export default defineNuxtRouteMiddleware((to, from) => {
+export default defineNuxtRouteMiddleware(async (to, from) => {
   const authStore = useAuthStore()
-  console.log('store.user', authStore.user)
-  if (!authStore.user) {
-    if (to.path !== '/login') {
-      return navigateTo({ path: '/login' }, { replace: true })
+  const authService = useAuthService()
+
+  if (authStore.user) return
+
+  try {
+    const user = await authService.me()
+    if (user) {
+      authStore.setUser(user)
+      return
     }
-    return
+  } catch (err) {
+    console.error('User not authenticated', err)
   }
-  
+  if (to.path !== '/') {
+    return navigateTo('/', { replace: true })
+  }
 })

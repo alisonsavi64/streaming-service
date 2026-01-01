@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 definePageMeta({
-  middleware: 'only-auth',
+    middleware: 'only-auth'
 })
 
 const title = ref('')
@@ -34,7 +34,7 @@ const submit = async () => {
   formData.append('thumbnail', thumbnailFile.value)
 
   await contentService.upload(formData)
-  navigateTo('/contents')
+  navigateTo('/')
 }
 </script>
 

@@ -2,7 +2,9 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useContentService } from '../../../composables/useContentService'
-
+definePageMeta({
+    middleware: 'only-auth'
+})
 const route = useRoute()
 const router = useRouter()
 const contentService = useContentService()

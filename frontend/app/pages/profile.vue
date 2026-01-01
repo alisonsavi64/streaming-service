@@ -6,6 +6,10 @@ const auth = useAuthStore()
 const authService = useAuthService()
 const userService = useUserService()
 
+definePageMeta({
+    middleware: 'only-auth'
+})
+
 const name = ref(auth.user?.name || '')
 const email = ref(auth.user?.email || '')
 const password = ref('')
