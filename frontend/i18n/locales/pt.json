@@ -10,7 +10,8 @@
         "videos": "Carregando vídeos…"
     },
     "empty": {
-        "mineVideos": "Nenhum vídeo ainda. Envie o primeiro e comece agora."
+        "mineVideos": "Ainda não há vídeos. Envie o primeiro para começar.",
+        "allVideos": "Ainda não há vídeos disponíveis. Volte mais tarde ou envie algum!"
     },
     "status": {
         "uploaded": "Enviado",
@@ -34,5 +35,29 @@
         "submit": "Enviar",
         "selectVideo": "Selecione um vídeo",
         "selectThumbnail": "Selecione uma miniatura"
+    },
+    "profilePage": {
+        "title": "Editar Perfil",
+        "name": "Nome",
+        "email": "Email",
+        "password": "Nova Senha",
+        "passwordPlaceholder": "Deixe em branco para manter a senha atual",
+        "update": "Atualizar",
+        "delete": "Excluir Conta",
+        "confirmDelete": "Tem certeza que deseja excluir sua conta?",
+        "userUpdated": "Usuário atualizado com sucesso"
+    },
+    "auth": {
+        "loginTitle": "Entrar",
+        "email": "E-mail",
+        "emailPlaceholder": "Digite seu e-mail",
+        "password": "Senha",
+        "passwordPlaceholder": "Digite sua senha",
+        "login": "Entrar",
+        "createAccount": "Criar conta",
+        "registerTitle": "Registrar",
+        "name": "Nome",
+        "alreadyHaveAccount": "Já possui uma conta?",
+        "noAccount": "Não tem uma conta?"
     }
 }

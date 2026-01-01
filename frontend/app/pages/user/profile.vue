@@ -14,21 +14,18 @@ const { isDark } = useTheme()
 const auth = useAuthStore()
 const authService = useAuthService()
 const userService = useUserService()
-
-// Form fields
+console.log(auth.user)
 const name = ref(auth.user?.name || '')
 const email = ref(auth.user?.email || '')
 const password = ref('')
 
-// Update user info
 const updateUser = async () => {
   await userService.update(name.value, email.value, password.value)
-  alert(t('profile.userUpdated'))
+  alert(t('profilePage.userUpdated'))
 }
 
-// Delete account
 const deleteUser = async () => {
-  if (!confirm(t('profile.confirmDelete'))) return
+  if (!confirm(t('profilePage.confirmDelete'))) return
   await userService.remove()
   authService.logout()
 }
@@ -36,7 +33,7 @@ const deleteUser = async () => {
 
 <template>
   <div
-    class="min-h-screen flex items-center justify-center px-4 py-12
+    class="flex items-center justify-center px-4 py-12
            bg-zinc-100 dark:bg-zinc-950 transition-colors"
   >
     <form
@@ -47,21 +44,18 @@ const deleteUser = async () => {
              space-y-6 transition-colors"
     >
       <h1 class="text-3xl font-bold text-center text-zinc-900 dark:text-white">
-        {{ t('profile.title') }}
+        {{ t('profilePage.title') }}
       </h1>
 
-      <!-- Inputs -->
-      <BaseInput v-model="name" label="profile.name" />
-      <BaseInput v-model="email" label="profile.email" type="email" />
-      <BaseInput v-model="password" label="profile.password" type="password" placeholder="profile.passwordPlaceholder" />
-
-      <!-- Buttons -->
-      <BaseButton type="submit" label="profile.update" />
+      <BaseInput v-model="name" :label="t('profilePage.name')" />
+      <BaseInput v-model="email" :label="t('profilePage.email')" type="email" />
+      <BaseInput v-model="password" :label="t('profilePage.password')" type="password" :placeholder="t('profilePage.passwordPlaceholder')" />
+      <BaseButton type="submit" :label="t('profilePage.update')" />
       <BaseButton
         class="bg-red-600 hover:bg-red-700"
         @click.prevent="deleteUser"
       >
-        {{ t('profile.delete') }}
+        {{ t('profilePage.delete') }}
       </BaseButton>
     </form>
   </div>

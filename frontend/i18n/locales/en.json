@@ -10,7 +10,8 @@
         "videos": "Loading videos…"
     },
     "empty": {
-        "mineVideos": "No videos yet. Upload the first one and kick things off."
+        "mineVideos": "No videos yet. Upload the first one and kick things off.",
+        "allVideos": "No videos available yet. Come back later or upload some!"
     },
     "status": {
         "uploaded": "Uploaded",
@@ -34,5 +35,29 @@
         "submit": "Upload",
         "selectVideo": "Please select a video",
         "selectThumbnail": "Please select a thumbnail"
+    },
+    "profilePage": {
+        "title": "Edit Profile",
+        "name": "Name",
+        "email": "Email",
+        "password": "New Password",
+        "passwordPlaceholder": "Leave blank to keep current password",
+        "update": "Update",
+        "delete": "Delete Account",
+        "confirmDelete": "Are you sure you want to delete your account?",
+        "userUpdated": "User updated successfully"
+    },
+    "auth": {
+        "loginTitle": "Login",
+        "emailPlaceholder": "Enter your email",
+        "passwordPlaceholder": "Enter your password",
+        "login": "Login",
+        "createAccount": "Create an account",
+        "registerTitle": "Register",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "alreadyHaveAccount": "Already have an account?",
+        "noAccount": "Don't have an account?"
     }
 }

@@ -25,6 +25,7 @@ export class LoginUseCase {
     const token = this.jwtService.sign({
       sub: user.id,
       email: user.email,
+      name: user.name
     });
 
     return { access_token: token, user:  {name: user.name, email: user.email, id: user.id}};

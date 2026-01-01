@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
+    '@nuxt/test-utils/module'
   ],
 
   ssr: true,
@@ -25,4 +26,5 @@ i18n: {
     { code: 'pt', name: 'Português', file: 'pt.json' }
   ],
 }
+
 })

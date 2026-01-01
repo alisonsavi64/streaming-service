@@ -4,7 +4,7 @@ export interface Content {
   id: string
   title: string
   description: string
-  status: ContentStatus
+  status?: ContentStatus
   userId: string
   thumbnailUrl: string
 }

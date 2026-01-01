@@ -20,16 +20,17 @@
                opacity-0 group-hover:opacity-100 transition"
       />
 
-      <!-- Status badge -->
+      <!-- Status badge (only if status exists) -->
       <div
+        v-if="video.status"
         class="absolute top-3 left-3 status-badge"
-        :class="[statusClass, status.pulse && 'animate-pulse']"
+        :class="[statusClass, status?.pulse && 'animate-pulse']"
       >
         <span
           v-if="video.status === 'PROCESSING'"
           class="h-2 w-2 rounded-full bg-white"
         />
-        {{ t(status.label) }}
+        {{ status ? t(status.label) : '' }}
       </div>
     </div>
 
@@ -91,9 +92,11 @@ const { t } = useI18n()
 const router = useRouter()
 const auth = useAuthStore()
 
-const status = computed(() => contentStatusConfig[props.video.status])
+// Only compute status if it exists
+const status = computed(() => props.video.status ? contentStatusConfig[props.video.status] : undefined)
 
 const statusClass = computed(() => {
+  if (!props.video.status) return ''
   switch (props.video.status) {
     case 'UPLOADED': return 'bg-zinc-500'
     case 'PROCESSING': return 'bg-yellow-500'
@@ -105,9 +108,7 @@ const statusClass = computed(() => {
 
 const isOwner = computed(() => props.video.userId === auth.user?.id)
 
-const goToVideo = () => {
-  router.push(`/contents/${props.video.id}`)
-}
+const goToVideo = () => router.push(`/contents/${props.video.id}`)
 </script>
 
 <style scoped>
