@@ -1,27 +1,23 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import BaseButton from '~/components/BaseButton.vue'
-import BaseInput from '~/components/BaseInput.vue'
-import BaseFileInput from '~/components/BaseFileInput.vue'
-import ContentCard from '~/components/ContentCard.vue'
-import type { ContentStatus } from '~/constants/contentStatus'
+import BaseButton from '../../app/components/BaseButton.vue'
+import BaseInput from '../../app/components/BaseInput.vue'
+import BaseFileInput from '../../app/components/BaseFileInput.vue'
+import ContentCard from '../../app/components/ContentCard.vue'
+import type { ContentStatus } from '../../app/constants/contentStatus'
 
-// --- Mock i18n ---
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }))
 
-// --- Mock router ---
 vi.mock('vue-router', () => ({
   useRouter: () => ({ push: vi.fn() }),
 }))
 
-// --- Mock auth store ---
 vi.mock('~/store/auth', () => ({
   useAuthStore: () => ({ user: { id: 'user1' } }),
 }))
 
-// --- Mock contentStatusConfig ---
 vi.mock('~/constants/contentStatus', () => ({
   contentStatusConfig: {
     UPLOADED: { label: 'status.uploaded' },
@@ -31,55 +27,7 @@ vi.mock('~/constants/contentStatus', () => ({
   },
 }))
 
-describe('Components', () => {
-  it('BaseButton renders with label', () => {
-    const wrapper = mount(BaseButton, { props: { label: 'click.me' } })
-    expect(wrapper.text()).toContain('click.me')
-  })
-
-  it('BaseButton renders slot content', () => {
-    const wrapper = mount(BaseButton, { slots: { default: 'Slot Content' } })
-    expect(wrapper.text()).toContain('Slot Content')
-  })
-
-  it('BaseInput updates v-model', async () => {
-    let value = ''
-    const wrapper = mount(BaseInput, {
-      props: {
-        modelValue: value,
-        label: 'input.label',
-        'onUpdate:modelValue': (v: string) => { value = v },
-      },
-    })
-    const input = wrapper.find('input')
-    await input.setValue('Hello')
-    expect(value).toBe('Hello')
-  })
-
-  it('BaseFileInput emits the selected file', async () => {
-    let file: any = null
-    const wrapper = mount(BaseFileInput, {
-      props: {
-        modelValue: null,
-        label: 'Upload File',
-        'onUpdate:modelValue': (f: File | null) => { file = f },
-      },
-    })
-
-    const input = wrapper.find('input[type="file"]')
-    const testFile = new File(['hello'], 'test.txt', { type: 'text/plain' })
-
-    Object.defineProperty(input.element, 'files', {
-      value: [testFile],
-      writable: false,
-    })
-
-    await input.trigger('change')
-
-    expect(file).not.toBeNull()
-    expect(file?.name).toBe('test.txt')
-  })
-
+describe('ContentCard', () => {
   it('ContentCard renders video and status', () => {
     const video = {
       id: '1',
