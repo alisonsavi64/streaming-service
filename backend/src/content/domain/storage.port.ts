@@ -1,9 +1,15 @@
 export interface StoragePort {
-  upload(params: {
+  uploadRaw(params: {
+    contentId: string;
     file: Buffer;
     filename: string;
     mimeType: string;
-  }): Promise<{
-    location: string;
-  }>;
+  }): Promise<void>;
+  uploadThumbnail(params: {
+    contentId: string;
+    file: Buffer;
+    filename: string;
+    mimeType: string;
+  }): Promise<string>; 
+  delete(contentId: string): Promise<void>; 
 }

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES5",           // you can keep this
+    "lib": ["ES2015", "DOM"],  // <- add ES2015 so Promise exists
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true
+  }
+}

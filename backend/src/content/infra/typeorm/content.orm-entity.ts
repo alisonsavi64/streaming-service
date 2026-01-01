@@ -3,8 +3,11 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { ContentStatus } from '../../domain/content.status';
+import { UserOrmEntity } from '../../../user/infra/typeorm/user.orm-entity';
 
 @Entity('contents')
 export class ContentOrmEntity {
@@ -16,9 +19,6 @@ export class ContentOrmEntity {
 
   @Column('text')
   description: string;
-
-  @Column()
-  location: string;
 
   @Column({
     type: 'enum',
@@ -32,4 +32,14 @@ export class ContentOrmEntity {
 
   @Column({ nullable: true })
   processedAt?: Date;
+
+  @Column({ nullable: true })
+  thumbnailUrl?: string;
+
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => UserOrmEntity)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  user: UserOrmEntity;
 }

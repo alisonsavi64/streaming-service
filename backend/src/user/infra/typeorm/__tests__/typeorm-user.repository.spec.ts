@@ -1,0 +1,68 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { DataSource, Repository } from 'typeorm';
+import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
+import { TypeOrmUserRepository } from '../typeorm-user.repository';
+import { UserOrmEntity } from '../user.orm-entity';
+import { User } from '../../../domain/user.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { ContentOrmEntity } from '../../../../content/infra/typeorm/content.orm-entity';
+
+describe('TypeOrmUserRepository (integration)', () => {
+  let repo: TypeOrmUserRepository;
+  let repository: Repository<UserOrmEntity>;
+  let dataSource: DataSource;
+
+  beforeAll(async () => {
+    jest.setTimeout(30000);
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        TypeOrmModule.forRoot({
+          type: 'postgres',
+          host: 'postgres',
+          port: 5432,
+          username: 'streaming',
+          password: 'streaming',
+          database: 'streaming', 
+          synchronize: true,
+          dropSchema: true, 
+          autoLoadEntities: true,
+        }),
+        TypeOrmModule.forFeature([UserOrmEntity, ContentOrmEntity]),
+      ],
+      providers: [TypeOrmUserRepository],
+    }).compile();
+
+    repo = module.get(TypeOrmUserRepository);
+    repository = module.get<Repository<UserOrmEntity>>(getRepositoryToken(UserOrmEntity));
+    dataSource = module.get<DataSource>(DataSource);
+  }, 30000);
+
+  afterAll(async () => {
+    await dataSource.destroy();
+  });
+
+  beforeEach(async () => {
+    await repository.query('TRUNCATE TABLE "users" RESTART IDENTITY CASCADE');
+  });
+
+  it('should save and retrieve a user by ID and email', async () => {
+    const user = User.create(uuidv4(), 'Alice', 'alice@example.com', 'hashedPassword');
+    await repo.save(user);
+
+    const foundById = await repo.findById(user.id);
+    expect(foundById).toBeInstanceOf(User);
+    expect(foundById?.email).toBe('alice@example.com');
+
+    const foundByEmail = await repo.findByEmail('alice@example.com');
+    expect(foundByEmail?.name).toBe('Alice');
+  });
+
+  it('should delete a user', async () => {
+    const user = User.create(uuidv4(), 'Bob', 'bob@example.com', 'hashedPassword');
+    await repo.save(user);
+
+    await repo.delete(user.id);
+    const found = await repo.findById(user.id);
+    expect(found).toBeNull();
+  });
+});

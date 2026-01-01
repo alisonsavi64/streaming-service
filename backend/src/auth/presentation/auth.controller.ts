@@ -1,20 +1,60 @@
-import { Body, ConflictException, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Get, 
+  Post, 
+  Req, 
+  Res, 
+  UnauthorizedException, 
+  UseGuards, 
+  Logger 
+} from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { LoginUseCase } from '../application/login.use-case';
 import { InvalidCredentialsError } from '../domain/auth.erros';
-import { UserAlreadyExistsError } from '../domain/auth.erros';
-import { RegisterDto } from './register.dto';
-import { RegisterUserUseCase } from '../application/register-user.use-case';
+import { JwtAuthGuard } from '../application/jwt-auth.guard';
+import type { FastifyReply } from 'fastify';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly loginUseCase: LoginUseCase, private readonly registerUseCase: RegisterUserUseCase) {}
+  private readonly logger = new Logger(AuthController.name);
+
+  constructor(private readonly loginUseCase: LoginUseCase) {}
 
   @Post('login')
-  async login(@Body() dto: LoginDto) {
+  @ApiOperation({ summary: 'User login' })
+  @ApiBody({ type: LoginDto })
+  @ApiResponse({ status: 200, description: 'Login successful, returns user info' })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  async login(
+    @Body() dto: LoginDto,
+    @Res({ passthrough: true }) reply: FastifyReply,
+  ) {
+    this.logger.log({ email: dto.email }, 'Login attempt');
+
     try {
-      return await this.loginUseCase.execute(dto.email, dto.password);
+      const result = await this.loginUseCase.execute(dto.email, dto.password);
+
+      reply.setCookie('access_token', result.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 60 * 60 * 24, 
+      });
+
+      this.logger.log({ userId: result.user.id }, 'Login successful');
+      return result.user;
     } catch (error) {
+      this.logger.error(error, `Login failed for email ${dto.email}`);
       if (error instanceof InvalidCredentialsError) {
         throw new UnauthorizedException(error.message);
       }
@@ -22,20 +62,24 @@ export class AuthController {
     }
   }
 
-  @Post('register')
-  async register(@Body() dto: RegisterDto) {
-    try {
-        return await this.registerUseCase.execute(
-        dto.name,
-        dto.email,
-        dto.password,
-        );
-    } catch (error) {
-        if (error instanceof UserAlreadyExistsError) {
-        throw new ConflictException(error.message);
-        }
-        throw error;
-    }
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get current logged-in user' })
+  @ApiResponse({ status: 200, description: 'Returns current user info' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  me(@Req() req: any) {
+    this.logger.log({ userId: req.user.id }, 'Fetching current user');
+    return req.user;
   }
 
+  @Post('logout')
+  @ApiOperation({ summary: 'Logout user and clear cookies' })
+  @ApiResponse({ status: 200, description: 'Logout successful' })
+  logout(@Res({ passthrough: true }) reply: FastifyReply) {
+    this.logger.log('Logout requested');
+    reply.clearCookie('access_token', { path: '/' });
+    this.logger.log('Logout successful');
+    return { success: true };
+  }
 }

@@ -3,8 +3,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ContentModule } from './content/content.module';
-import { LoggerModule } from 'nestjs-pino';
 import { MessagingModule } from './shared/infra/messaging/messaging.module';
+import { UserModule } from './user/user.module';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
@@ -21,9 +22,13 @@ import { MessagingModule } from './shared/infra/messaging/messaging.module';
       autoLoadEntities: true,
       synchronize: true
     }),
+    PrometheusModule.register({
+      path: '/metrics',
+    }),
     AuthModule,
     ContentModule,
-    MessagingModule
+    MessagingModule,
+    UserModule
   ],
 })
 export class AppModule {}
