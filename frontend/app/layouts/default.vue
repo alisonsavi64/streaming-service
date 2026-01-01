@@ -6,16 +6,12 @@
       </h1>
 
       <div class="flex items-center gap-4 relative">
-        <!-- Upload Button -->
         <NuxtLink
-          v-if="auth.user"
           to="/upload"
           class="px-4 py-2 font-semibold rounded-lg bg-primary hover:bg-primary-dark transition shadow-md hover:shadow-lg"
         >
           Upload
         </NuxtLink>
-
-        <!-- User Dropdown -->
         <div v-if="auth.user" class="relative">
           <button
             @click="toggleDropdown"
@@ -56,8 +52,6 @@
             </NuxtLink>
           </div>
         </div>
-
-        <!-- Login Button -->
         <NuxtLink
           v-else
           to="/login"
@@ -89,11 +83,7 @@ const toggleDropdown = () => dropdownOpen.value = !dropdownOpen.value
 const logout = async () => {
   await authService.logout()
   auth.setUser(null)
-  navigateTo('/login')
+  navigateTo('/')
 }
 
-onMounted(async () => {
-  const user = await authService.me()
-  auth.setUser(user)
-})
 </script>

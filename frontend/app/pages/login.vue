@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/store/auth';
 
-definePageMeta({
-    middleware: 'no-auth',
-    layout: 'auth'
-})
+definePageMeta({ layout: 'auth' })
 
 const email = ref('')
 const password = ref('')
@@ -17,13 +14,6 @@ const submit = async () => {
   auth.setUser(user);
   navigateTo('/')
 }
-onMounted(async () => {
-  const user = await authService.me()
-  if(user) {
-    auth.setUser(user);
-    navigateTo('/')
-  }
-})
 </script>
 
 <template>

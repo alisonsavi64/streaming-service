@@ -1,22 +1,26 @@
-import { useAuthStore } from "~/store/auth"
-import { useAuthService } from "~/composables/useAuthService"
+import { useAuthStore } from '~/store/auth'
+import { navigateTo, useNuxtApp } from '#app'
+import cookie from 'cookie'
 
-export default defineNuxtRouteMiddleware(async (to, from) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   const authStore = useAuthStore()
-  const authService = useAuthService()
+  const nuxtApp = useNuxtApp()
 
-  if (authStore.user) return
+  let token: string | undefined
 
-  try {
-    const user = await authService.me()
-    if (user) {
-      authStore.setUser(user)
-      return
-    }
-  } catch (err) {
-    console.error('User not authenticated', err)
+  if (process.server) {
+    const headersCookie = nuxtApp.ssrContext?.event.node.req.headers.cookie || ''
+    const parsed = cookie.parse(headersCookie)
+    token = parsed.access_token
+  } else {
+    const parsed: Record<string, string | undefined> = {}
+    document.cookie.split(';').forEach(c => {
+      const [k, v] = c.split('=').map(s => s.trim())
+      if (k) parsed[k] = v
+    })
+    token = parsed.access_token
   }
-  if (to.path !== '/') {
-    return navigateTo('/', { replace: true })
+  if (!authStore.user && !token && !to.path.startsWith('/login')) {
+    return navigateTo('/login')
   }
 })

@@ -1,17 +1,28 @@
-import { defineNuxtPlugin } from '#imports'
+import { defineNuxtPlugin, useState } from '#app'
 import { useApi } from '~/composables/useApi'
-import { useAuthStore } from '~/store/auth'
+import type { AuthUser } from '~/types/auth'
 
 export default defineNuxtPlugin(async () => {
-  const client = useApi()
-  const store = useAuthStore()
+  const authUser = useState<AuthUser | null>('auth_user', () => null)
 
   try {
-    const user = await client.get('/auth/me')
-    if(user) {
-      store.setUser(user)
-    }   
-  } catch (err) {
-    console.error('No user found')
+    const api = useApi()
+    const res = await api.get('/auth/me')
+
+    if (res) {
+      authUser.value = {
+        id: res.id,
+        name: res.name,
+        email: res.email
+      }
+    }
+  } catch {
+    authUser.value = null
+  }
+
+  return {
+    provide: {
+      authUser
+    }
   }
 })
