@@ -8,7 +8,7 @@ on:
   push:
     branches: [develop, main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-and-test:
@@ -16,14 +16,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Build frontend Docker image
+
+      - name: Build and test frontend
         run: |
-          docker build -f Dockerfile.prod -t frontend:latest .
-      - name: Run frontend unit tests
+          docker build --target test -t frontend-test -f Dockerfile.prod .
+          docker run --rm frontend-test
+
+      - name: Build production image
         run: |
-          docker run --rm frontend npm run test:unit
-      - name: Run Nuxt tests
-        run: |
-          docker run --rm frontend npm run test:nuxt
+          docker build --target prod -t frontend:latest -f Dockerfile.prod .
