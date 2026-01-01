@@ -35,12 +35,12 @@ export const useContentService = () => {
     }
   }
 
-  async function update(id: string, data: any): Promise<any> {
+  async function update(id: string, data: FormData): Promise<any> {
         try {
         return await $fetch(`/api/content/${id}`, {
             method: 'PATCH',
             headers: useRequestHeaders(['cookies']),
-            body: JSON.stringify(data)
+            body: data
         })
         } catch (err) {
         return Promise.reject(err)

@@ -1,8 +1,6 @@
 import { generateHLS } from './video.hls';
 import { FastifyInstance } from 'fastify';
-import { kafka } from '../kafka/client';
-
-const producer = kafka.producer();
+import { sendKafkaMessage } from '../kafka/producer';
 
 export const processVideo = async (
   event: any,
@@ -16,37 +14,27 @@ export const processVideo = async (
   try {
     await generateHLS(inputPath, outputDir);
 
-    await producer.connect();
-    await producer.send({
-      topic: 'content.processed',
-      messages: [
-        {
-          key: contentId,
-          value: JSON.stringify({
-            event: 'CONTENT_READY',
-            contentId,
-          }),
-        },
-      ],
-    });
+    await sendKafkaMessage(
+      'content.processed',
+      contentId,
+      {
+        event: 'CONTENT_READY',
+        contentId,
+      }
+    );
 
     app.log.info({ contentId }, 'Video ready');
   } catch (err: any) {
     app.log.error(err);
 
-    await producer.connect();
-    await producer.send({
-      topic: 'content.failed',
-      messages: [
-        {
-          key: contentId,
-          value: JSON.stringify({
-            event: 'CONTENT_FAILED',
-            contentId,
-            error: err.message,
-          }),
-        },
-      ],
-    });
+    await sendKafkaMessage(
+      'content.failed',
+      contentId,
+      {
+        event: 'CONTENT_FAILED',
+        contentId,
+        error: err.message,
+      }
+    );
   }
 };

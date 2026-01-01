@@ -7,7 +7,7 @@
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       <div v-for="v in contents" :key="v.id" class="group relative bg-zinc-900 rounded-xl overflow-hidden cursor-pointer">
         <div @click="goToVideo(v.id)">
-          <img :src="v.thumbnail" class="h-40 w-full object-cover group-hover:scale-105 transition"/>
+          <img :src="v.thumbnailUrl" class="h-40 w-full object-cover group-hover:scale-105 transition"/>
           <div class="p-4">
             <p class="font-medium group-hover:text-primary">{{ v.title }}</p>
             <p class="text-sm text-zinc-400">{{ v.description }}</p>

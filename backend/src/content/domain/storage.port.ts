@@ -5,5 +5,11 @@ export interface StoragePort {
     filename: string;
     mimeType: string;
   }): Promise<void>;
-  delete(location: string): Promise<void>; 
+  uploadThumbnail(params: {
+    contentId: string;
+    file: Buffer;
+    filename: string;
+    mimeType: string;
+  }): Promise<string>; 
+  delete(contentId: string): Promise<void>; 
 }

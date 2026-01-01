@@ -1,28 +1,39 @@
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 import fs from 'fs';
 import path from 'path';
 
-const app = Fastify({ logger: true });
+async function bootstrap() {
+  const app = Fastify({ logger: true });
 
-app.get('/stream/:id', async (req, reply) => {
-  const { id } = req.params as { id: string };
+  await app.register(cors, {
+    origin: true,
+  });
 
-  const manifestPath = path.join(
-    '/storage/processed',
-    id,
-    'master.m3u8'
-  );
+  app.get('/stream/:id', async (req, reply) => {
+    const { id } = req.params as { id: string };
 
-  if (!fs.existsSync(manifestPath)) {
-    return reply.status(404).send({ error: 'Not ready' });
-  }
+    const manifestPath = path.join(
+      '/storage/processed',
+      id,
+      'master.m3u8'
+    );
 
-  return {
-    contentId: id,
-    manifestUrl: `http://nginx/videos/${id}/master.m3u8`,
-    type: 'HLS',
-  };
+    if (!fs.existsSync(manifestPath)) {
+      return reply.status(404).send({ error: 'Not ready' });
+    }
 
+    return {
+      contentId: id,
+      manifestUrl: `http://localhost:8080/videos/${id}/master.m3u8`,
+      type: 'HLS',
+    };
+  });
+
+  await app.listen({ port: 3003, host: '0.0.0.0' });
+}
+
+bootstrap().catch(err => {
+  console.error(err);
+  process.exit(1);
 });
-
-app.listen({ port: 4000, host: '0.0.0.0' });

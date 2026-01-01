@@ -33,6 +33,9 @@ export class ContentOrmEntity {
   @Column({ nullable: true })
   processedAt?: Date;
 
+  @Column({ nullable: true })
+  thumbnailUrl?: string;
+
   @Column()
   userId: string;
 

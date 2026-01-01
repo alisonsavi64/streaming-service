@@ -26,6 +26,27 @@ export class LocalStorageAdapter implements StoragePort {
     await fs.writeFile(fullPath, file);
   }
 
+  async uploadThumbnail({
+    contentId,
+    file,
+    filename,
+  }: {
+    contentId: string;
+    file: Buffer;
+    filename: string;
+  }) {
+    const dir = `/storage/thumbnails/${contentId}`;
+    await fs.mkdir(dir, { recursive: true });
+    const filePath = path.join(dir, 'thumbnail.jpg');
+    try {
+      await fs.unlink(filePath);
+    } catch (err: any) {
+      if (err.code !== 'ENOENT') throw err;
+    }
+    await fs.writeFile(filePath, file);
+    return `/thumbnails/${contentId}/thumbnail.jpg`;
+  }
+
   async delete(contentId: string): Promise<void> {
     const uploadDir = path.join(this.basePath, 'uploads', contentId);
     const processedDir = path.join(this.basePath, 'processed', contentId);

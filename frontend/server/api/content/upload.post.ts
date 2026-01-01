@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     for (const item of formItems) {
       console.log(item)
       if (!item.name) continue
-      if (item.name === 'upload') {
+      if (item.name === 'upload' || item.name === 'thumbnail') {
         console.log('Appending file:', item.name, item.filename, item.type);
         body.append(item.name, item.data, { filename: item.filename, contentType: item.type })
       } else if (item.data !== undefined) {
@@ -18,7 +18,6 @@ export default defineEventHandler(async (event) => {
       }
     }
     const headers = body.getHeaders(); 
-    console.log(headers);
     const res = await api.post('/contents', body, { headers }) 
     return res.data 
   } catch (err: any) {

@@ -5,12 +5,13 @@ import { randomUUID } from 'crypto';
 export class Content {
   private constructor(
     public readonly id: string,
-    public readonly title: string,
-    public readonly description: string,
+    public title: string,
+    public description: string,
     public readonly userId: string,
     public status: ContentStatus,
     public readonly createdAt: Date,
-    public processedAt?: Date
+    public processedAt?: Date,
+    public thumbnailUrl?: string
   ) {}
 
   static create(params: {
@@ -18,13 +19,17 @@ export class Content {
     description: string;
     userId: string;
   }): Content {
+    this.validate(params);
+
     return new Content(
       randomUUID(),
       params.title,
       params.description,
       params.userId,
       ContentStatus.UPLOADED,
-      new Date()
+      new Date(),
+      undefined,
+      undefined
     );
   }
 
@@ -41,6 +46,14 @@ export class Content {
     this.status = ContentStatus.FAILED;
   }
 
+  setThumbnail(url: string) {
+    if (!url) {
+      throw new Error('thumbnail url is required');
+    }
+
+    this.thumbnailUrl = url;
+  }
+
   static restore(params: {
     id: string;
     title: string;
@@ -49,6 +62,7 @@ export class Content {
     status: ContentStatus;
     createdAt: Date;
     processedAt?: Date;
+    thumbnailUrl?: string;
   }): Content {
     return new Content(
       params.id,
@@ -58,6 +72,7 @@ export class Content {
       params.status,
       params.createdAt,
       params.processedAt,
+      params.thumbnailUrl
     );
   }
 
@@ -65,6 +80,7 @@ export class Content {
     if (!params.title || params.title.trim().length < 2) {
       throw new InvalidContentTitleError();
     }
+
     if (!params.userId) {
       throw new Error('userId is required');
     }

@@ -72,9 +72,9 @@ import { EventBus } from 'src/shared/application/messaging/event-bus.port';
     },
     {
       provide: UpdateContentUseCase,
-      useFactory: (repository: ContentRepository) =>
-        new UpdateContentUseCase(repository),
-      inject: [CONTENT_REPOSITORY],
+      useFactory: (repository: ContentRepository, storage: StoragePort) =>
+        new UpdateContentUseCase(repository, storage),
+      inject: [CONTENT_REPOSITORY, STORAGE_PORT],
     },
     MarkContentProcessedUseCase,
   ],

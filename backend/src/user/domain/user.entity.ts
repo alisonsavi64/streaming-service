@@ -5,13 +5,9 @@ export class User {
     public email: string,
     public passwordHash: string,
   ) {
-    if (!name || name.trim().length < 2) {
-      throw new Error('Invalid name');
-    }
-
-    if (!email || !email.includes('@')) {
-      throw new Error('Invalid email');
-    }
+    this.validateName(name);
+    this.validateEmail(email);
+    this.validatePasswordHash(passwordHash);
   }
 
   static create(
@@ -20,11 +16,27 @@ export class User {
     email: string,
     passwordHash: string,
   ): User {
-    if (!passwordHash) {
-      throw new Error('Password hash is required');
-    }
-
     return new User(id, name, email, passwordHash);
+  }
+
+  private validateName(name: string) {
+    if (!name || name.trim().length < 2) {
+      throw new Error('Name must be at least 2 characters');
+    }
+  }
+
+  private validateEmail(email: string) {
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
+      throw new Error('Invalid email format');
+    }
+  }
+
+  private validatePasswordHash(hash: string) {
+    if (!hash || hash.length == 0) {
+      throw new Error('Invalid password hash');
+    }
   }
 
   validatePassword(

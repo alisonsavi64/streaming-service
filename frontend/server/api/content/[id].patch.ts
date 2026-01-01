@@ -1,22 +1,29 @@
-import { defineEventHandler, createError, readBody } from 'h3'
+import { defineEventHandler, createError, readMultipartFormData } from 'h3'
 import { serverApi } from '../utils/serverApi'
+import FormDataNode from 'form-data'
 
 export default defineEventHandler(async (event) => {
   try {
     const api = serverApi(event)
+    const formItems = await readMultipartFormData(event) || []
+    const body = new FormDataNode()
     const id = event.context.params?.id
     if (!id) {
       throw createError({ statusCode: 400, statusMessage: 'Content ID is required.' })
     }
-    const body = await readBody(event) as { title?: string; description?: string }
-    if (!body.title && !body.description) {
-      throw createError({ statusCode: 400, statusMessage: 'Nothing to update.' })
+    for (const item of formItems) {
+      if (!item.name) continue
+      if (item.name === 'thumbnail') {
+        body.append(item.name, item.data, { filename: item.filename, contentType: item.type })
+      } else if (item.data !== undefined) {
+        body.append(item.name, item.data.toString())
+      }
     }
-    console.log(body, id)
-    const updated = await api.patch(`/contents/${id}`, body)
-    return updated
+    const headers = body.getHeaders(); 
+    await api.patch(`/contents/${id}`, body, { headers }) 
+    return  {message: 'success' }
   } catch (err: any) {
     console.error(err)
-    throw createError({ statusCode: 500, statusMessage: 'Failed to update content.' })
+    throw createError({ statusCode: 500, statusMessage: 'Failed to upload content.' })
   }
 })
