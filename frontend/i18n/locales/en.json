@@ -1,8 +1,38 @@
 {
-        "search": "Search videos",
-        "upload": "Upload",
-        "profile": "Profile",
-        "logout": "Logout",
-        "login": "Login",
-        "register": "Register"
-      }
+    "search": "Search videos",
+    "upload": "Upload",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "myvideos": "My Videos",
+    "loading": {
+        "videos": "Loading videos…"
+    },
+    "empty": {
+        "mineVideos": "No videos yet. Upload the first one and kick things off."
+    },
+    "status": {
+        "uploaded": "Uploaded",
+        "processing": "Processing",
+        "processed": "Ready",
+        "failed": "Failed"
+    },
+    "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "confirm": {
+        "deleteVideo": "Delete this video?"
+    },
+    "uploadPage": {
+        "title": "Upload Video",
+        "videoTitle": "Title",
+        "videoDescription": "Description",
+        "videoFile": "Video",
+        "thumbnailFile": "Thumbnail",
+        "submit": "Upload",
+        "selectVideo": "Please select a video",
+        "selectThumbnail": "Please select a thumbnail"
+    }
+}

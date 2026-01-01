@@ -1,8 +1,38 @@
 {
-        "search": "Buscar vídeos",
-        "upload": "Enviar",
-        "profile": "Perfil",
-        "logout": "Sair",
-        "login": "Entrar",
-        "register": "Registrar"
-      }
+    "search": "Buscar videos",
+    "upload": "Enviar",
+    "profile": "Perfil",
+    "logout": "Sair",
+    "login": "Entrar",
+    "register": "Registrar",
+    "myvideos": "Meus Vídeos",
+    "loading": {
+        "videos": "Carregando vídeos…"
+    },
+    "empty": {
+        "mineVideos": "Nenhum vídeo ainda. Envie o primeiro e comece agora."
+    },
+    "status": {
+        "uploaded": "Enviado",
+        "processing": "Processando",
+        "processed": "Pronto",
+        "failed": "Falhou"
+    },
+    "actions": {
+        "edit": "Editar",
+        "delete": "Excluir"
+    },
+    "confirm": {
+        "deleteVideo": "Excluir este vídeo?"
+    },
+    "uploadPage": {
+        "title": "Enviar Vídeo",
+        "videoTitle": "Título",
+        "videoDescription": "Descrição",
+        "videoFile": "Vídeo",
+        "thumbnailFile": "Miniatura",
+        "submit": "Enviar",
+        "selectVideo": "Selecione um vídeo",
+        "selectThumbnail": "Selecione uma miniatura"
+    }
+}

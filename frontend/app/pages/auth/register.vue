@@ -8,7 +8,7 @@ const userService = useUserService()
 
 const submit = async () => {
   await userService.create(name.value, email.value, password.value)
-  navigateTo('/login')
+  navigateTo('/auth/login')
 }
 </script>
 

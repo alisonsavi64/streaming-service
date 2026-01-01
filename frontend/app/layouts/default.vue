@@ -34,6 +34,7 @@
         <div class="flex items-center gap-3 justify-end relative">
           <select
             v-model="locale"
+            @change="onLocaleChange"
             class="px-3 py-2 rounded-lg text-sm
                    bg-zinc-100 border border-zinc-300
                    dark:bg-zinc-900 dark:border-zinc-800
@@ -87,7 +88,7 @@
             </svg>
           </button>
           <NuxtLink
-            to="/upload"
+            to="/contents/upload"
             :title="t('upload')"
             class="p-2 rounded-lg bg-primary hover:bg-primary-dark
                    text-white transition shadow-md"
@@ -136,7 +137,13 @@
             >
               <template v-if="auth.user">
                 <NuxtLink
-                  to="/profile"
+                  to="/contents/mine"
+                  class="block px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                >
+                  {{ t('myvideos') }}
+                </NuxtLink>
+                <NuxtLink
+                  to="/user/profile"
                   class="block px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 >
                   {{ t('profile') }}
@@ -153,14 +160,14 @@
 
               <template v-else>
                 <NuxtLink
-                  to="/login"
+                  to="/auth/login"
                   class="block px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 >
                   {{ t('login') }}
                 </NuxtLink>
 
                 <NuxtLink
-                  to="/register"
+                  to="/auth/register"
                   class="block px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 >
                   {{ t('register') }}
@@ -185,7 +192,7 @@ import { navigateTo } from '#app'
 import { useAuthStore } from '~/store/auth'
 import { useTheme } from '~/composables/useTheme'
 
-const { t, locale, locales } = useI18n()
+const { t, locale, locales, setLocale } = useI18n()
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -197,6 +204,12 @@ const search = ref('')
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
+}
+type Locale = typeof locale.value
+
+const onLocaleChange = (e: Event) => {
+  const value = (e.target as HTMLSelectElement).value as Locale
+  setLocale(value)
 }
 
 const goSearch = () => {

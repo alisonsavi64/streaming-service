@@ -16,11 +16,13 @@ export default defineNuxtConfig({
     },
   },
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: [
-      { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'nl', name: 'Nederlands', file: 'nl.json' }
-    ]
-  }
+i18n: {
+   strategy: 'no_prefix',
+  langDir: 'locales',
+  defaultLocale: 'pt',
+  locales: [
+    { code: 'en', name: 'English', file: 'en.json' },
+    { code: 'pt', name: 'Português', file: 'pt.json' }
+  ],
+}
 })

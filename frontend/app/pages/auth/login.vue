@@ -25,7 +25,7 @@ const submit = async () => {
 
     <BaseButton>Entrar</BaseButton>
 
-    <NuxtLink to="/register" class="block text-sm text-center text-zinc-400">
+    <NuxtLink to="/auth/register" class="block text-sm text-center text-zinc-400">
       Criar conta
     </NuxtLink>
   </form>
