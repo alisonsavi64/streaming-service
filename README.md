@@ -1,4 +1,4 @@
-# Mini YouTube – Fullstack Distributed System
+# Mini YouTube 
 
 Este projeto é uma aplicação fullstack inspirada no funcionamento de plataformas de streaming de vídeo, desenvolvida como desafio técnico com foco em arquitetura distribuída, escalabilidade, observabilidade e boas práticas de engenharia de software.
 
@@ -10,78 +10,61 @@ O sistema permite upload, processamento assíncrono e streaming adaptativo de v�
 
 A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma síncrona e assíncrona:
 
-- **Frontend (Nuxt + Vue.js)** – Interface do usuário com SSR
-- **Backend Principal (NestJS + Fastify)** – API, autenticação, orquestração
-- **Video Processor** – Processamento assíncrono de vídeos via Kafka
-- **Video Streaming** – Serviço de entrega de streams HLS
-- **Nginx** – Servidor de arquivos HLS e thumbnails
-- **Kafka** – Mensageria para desacoplamento
-- **Prometheus + Grafana + Jaeger** – Observabilidade
-- **K6** – Testes de carga
+- **Frontend (Nuxt + Vue.js)**  
+  Interface do usuário com Server-Side Rendering (SSR)  
+  ➜ Veja detalhes em `frontend/README.md`
 
-flowchart LR
-    %% Frontend
-    FE[Frontend\n(Nuxt + Vue.js\nSSR)]
+- **Backend Principal - Core da aplicação - (NestJS + Fastify)**  
+  API responsável por autenticação (Http-only com cookies), regras de negócio e orquestração  
+  ➜ Veja detalhes em `backend/README.md`
 
-    %% Backend
-    BE[Backend API\n(NestJS + Fastify)]
+- **Video Processor**  
+  Microserviço responsável pelo processamento assíncrono de vídeos para hsl via Kafka  
+  ➜ Veja detalhes em `video-processor/README.md`
 
-    %% Streaming
-    VS[Video Streaming\nService]
+- **Video Streaming**  
+  Serviço responsável por fornecer os caminhos dos arquivos HLS  
+  ➜ Veja detalhes em `video-streaming/README.md`
 
-    %% Video Processor
-    VP[Video Processor\n(Fastify)]
+- **Nginx**  
+  Servidor responsável por servir arquivos HLS e thumbnails  
+  ➜ Veja detalhes em `nginx/README.md`
 
-    %% Infra
-    NG[Nginx\n(HLS + Thumbnails)]
-    KAFKA[(Kafka)]
-    STORAGE[(Shared Storage\nVideos / HLS / Thumbnails)]
+- **Kafka**  
+  Mensageria utilizada para desacoplamento entre serviços
 
-    %% Observability
-    OBS[Observability Stack\nPrometheus | Grafana | Jaeger]
+- **Observabilidade**  
+  Instrumentação com Prometheus, Grafana e Jaeger  
+  ➜ Veja detalhes em `backend/README.md`
 
-    %% User flow
-    FE -->|HTTP (Auth via Cookie)| BE
-    FE -->|Request Stream| VS
-    FE -->|HLS Playback| NG
-
-    %% Backend responsibilities
-    BE -->|Produce Events| KAFKA
-    BE -->|Read/Write| STORAGE
-    BE --> OBS
-
-    %% Video processing
-    KAFKA -.->|Consume| VP
-    VP -->|Read/Write| STORAGE
-    VP -->|Produce Status Event| KAFKA
-    VP --> OBS
-
-    %% Streaming
-    VS -->|Read| STORAGE
-    VS --> OBS
-
-    %% Nginx
-    NG -->|Read| STORAGE
+- **Testes de Carga (K6)**  
+  Testes de stress e performance da API  
+  ➜ Veja detalhes em `k6/README.md`
 
 ---
 
 ## Fluxo Principal da Aplicação
 
+### Visualização de Vídeos
 1. O usuário acessa o frontend e visualiza os vídeos disponíveis.
 2. Ao clicar em um vídeo:
    - O frontend solicita ao serviço de **video-streaming** o caminho do arquivo HLS.
    - O player consome o stream fornecido via **Nginx**, com suporte a múltiplas resoluções.
-3. Para upload:
-   - O usuário se autentica.
-   - O upload do vídeo e thumbnail é feito via backend principal.
-   - O backend salva o arquivo original e publica um evento no Kafka.
-   - O **video-processor** consome o evento e processa o vídeo para HLS.
-   - Após o processamento, um evento de retorno atualiza o status do vídeo para `processed`.
-   - O vídeo passa a ser exibido no frontend.
+
+### Upload e Processamento de Vídeos
+1. O usuário realiza autenticação no sistema.
+2. O upload do vídeo e thumbnail é feito via backend principal.
+3. O backend salva o arquivo original no storage compartilhado e publica um evento no Kafka.
+4. O **video-processor** consome o evento e processa o vídeo para o formato HLS.
+5. Após o processamento, um evento de retorno atualiza o status do vídeo para `processed`.
+6. O vídeo passa a ser exibido no frontend.
+<img width="921" height="321" alt="Diagrama sem nome drawio (2)" src="https://github.com/user-attachments/assets/a6ee28b2-9016-4b83-af27-df16391ba055" />
 
 ---
 
-## Como Executar o Projeto
+## Execução do Projeto
+
+Todo o ambiente pode ser executado localmente via Docker Compose:
 
 ```bash
 docker-compose up --build
