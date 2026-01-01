@@ -1,0 +1,63 @@
+{
+    "search": "Search videos",
+    "upload": "Upload",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register",
+    "myvideos": "My Videos",
+    "loading": {
+        "videos": "Loading videos…"
+    },
+    "empty": {
+        "mineVideos": "No videos yet. Upload the first one and kick things off.",
+        "allVideos": "No videos available yet. Come back later or upload some!"
+    },
+    "status": {
+        "uploaded": "Uploaded",
+        "processing": "Processing",
+        "processed": "Ready",
+        "failed": "Failed"
+    },
+    "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "confirm": {
+        "deleteVideo": "Delete this video?"
+    },
+    "uploadPage": {
+        "title": "Upload Video",
+        "videoTitle": "Title",
+        "videoDescription": "Description",
+        "videoFile": "Video",
+        "thumbnailFile": "Thumbnail",
+        "submit": "Upload",
+        "selectVideo": "Please select a video",
+        "selectThumbnail": "Please select a thumbnail"
+    },
+    "profilePage": {
+        "title": "Edit Profile",
+        "name": "Name",
+        "email": "Email",
+        "password": "New Password",
+        "passwordPlaceholder": "Leave blank to keep current password",
+        "update": "Update",
+        "delete": "Delete Account",
+        "confirmDelete": "Are you sure you want to delete your account?",
+        "userUpdated": "User updated successfully"
+    },
+    "auth": {
+        "loginTitle": "Login",
+        "emailPlaceholder": "Enter your email",
+        "passwordPlaceholder": "Enter your password",
+        "login": "Login",
+        "createAccount": "Create an account",
+        "registerTitle": "Register",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "alreadyHaveAccount": "Already have an account?",
+        "noAccount": "Don't have an account?"
+    }
+}

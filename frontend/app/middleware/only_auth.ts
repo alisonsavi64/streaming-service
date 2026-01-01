@@ -20,7 +20,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     })
     token = parsed.access_token
   }
-  if (!authStore.user && !token && !to.path.startsWith('/login')) {
-    return navigateTo('/login')
+  if (!authStore.user && !token && !to.path.startsWith('/auth/login')) {
+    return navigateTo('/auth/login')
   }
 })

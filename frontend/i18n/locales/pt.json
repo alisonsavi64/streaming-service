@@ -1,0 +1,63 @@
+{
+    "search": "Buscar videos",
+    "upload": "Enviar",
+    "profile": "Perfil",
+    "logout": "Sair",
+    "login": "Entrar",
+    "register": "Registrar",
+    "myvideos": "Meus Vídeos",
+    "loading": {
+        "videos": "Carregando vídeos…"
+    },
+    "empty": {
+        "mineVideos": "Ainda não há vídeos. Envie o primeiro para começar.",
+        "allVideos": "Ainda não há vídeos disponíveis. Volte mais tarde ou envie algum!"
+    },
+    "status": {
+        "uploaded": "Enviado",
+        "processing": "Processando",
+        "processed": "Pronto",
+        "failed": "Falhou"
+    },
+    "actions": {
+        "edit": "Editar",
+        "delete": "Excluir"
+    },
+    "confirm": {
+        "deleteVideo": "Excluir este vídeo?"
+    },
+    "uploadPage": {
+        "title": "Enviar Vídeo",
+        "videoTitle": "Título",
+        "videoDescription": "Descrição",
+        "videoFile": "Vídeo",
+        "thumbnailFile": "Miniatura",
+        "submit": "Enviar",
+        "selectVideo": "Selecione um vídeo",
+        "selectThumbnail": "Selecione uma miniatura"
+    },
+    "profilePage": {
+        "title": "Editar Perfil",
+        "name": "Nome",
+        "email": "Email",
+        "password": "Nova Senha",
+        "passwordPlaceholder": "Deixe em branco para manter a senha atual",
+        "update": "Atualizar",
+        "delete": "Excluir Conta",
+        "confirmDelete": "Tem certeza que deseja excluir sua conta?",
+        "userUpdated": "Usuário atualizado com sucesso"
+    },
+    "auth": {
+        "loginTitle": "Entrar",
+        "email": "E-mail",
+        "emailPlaceholder": "Digite seu e-mail",
+        "password": "Senha",
+        "passwordPlaceholder": "Digite sua senha",
+        "login": "Entrar",
+        "createAccount": "Criar conta",
+        "registerTitle": "Registrar",
+        "name": "Nome",
+        "alreadyHaveAccount": "Já possui uma conta?",
+        "noAccount": "Não tem uma conta?"
+    }
+}

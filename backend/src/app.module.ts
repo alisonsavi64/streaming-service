@@ -20,6 +20,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
       password: 'streaming',
       database: 'streaming',
       autoLoadEntities: true,
+      migrations: ['dist/migrations/*.js'], 
       synchronize: true
     }),
     PrometheusModule.register({

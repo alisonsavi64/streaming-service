@@ -28,6 +28,7 @@ import {
   ApiConsumes,
   ApiBody,
 } from '@nestjs/swagger';
+import { ListUserContentsUseCase } from '../application/list-user-contents.use-case';
 
 @ApiTags('contents')
 @Controller('contents')
@@ -40,6 +41,7 @@ export class ContentController {
     private readonly uploadContentUseCase: UploadContentUseCase,
     private readonly deleteContentUseCase: DeleteContentUseCase,
     private readonly updateContentUseCase: UpdateContentUseCase,
+    private readonly listUserContentsUseCase: ListUserContentsUseCase,
   ) {}
 
   @UseInterceptors(CacheInterceptor)
@@ -52,6 +54,24 @@ export class ContentController {
   async list(@Req() req: any) {
     try {
       const contents = await this.listContentsUseCase.execute();
+      this.logger.log({ count: contents.length }, 'Contents listed successfully');
+      return contents;
+    } catch (err) {
+      this.logger.error(err, 'Failed to list contents');
+      throw err;
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(CacheInterceptor)
+  @Get('mine')
+  @ApiOperation({ summary: 'List all the current user contents' })
+  @ApiResponse({ status: 200, description: 'Contents retrieved successfully.' })
+  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  async mine(@Req() req: any) {
+    const userId = req.user.id;
+    try {
+      const contents = await this.listUserContentsUseCase.execute(userId);
       this.logger.log({ count: contents.length }, 'Contents listed successfully');
       return contents;
     } catch (err) {

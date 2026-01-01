@@ -19,6 +19,7 @@ import { StoragePort } from './domain/storage.port';
 
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
 import { EventBus } from 'src/shared/application/messaging/event-bus.port';
+import { ListUserContentsUseCase } from './application/list-user-contents.use-case';
 
 @Module({
   imports: [
@@ -75,6 +76,12 @@ import { EventBus } from 'src/shared/application/messaging/event-bus.port';
       useFactory: (repository: ContentRepository, storage: StoragePort) =>
         new UpdateContentUseCase(repository, storage),
       inject: [CONTENT_REPOSITORY, STORAGE_PORT],
+    },
+    {
+      provide: ListUserContentsUseCase,
+      useFactory: (repository: ContentRepository) =>
+        new ListUserContentsUseCase(repository),
+      inject: [CONTENT_REPOSITORY],
     },
     MarkContentProcessedUseCase,
   ],

@@ -28,6 +28,23 @@ export class TypeOrmContentRepository implements ContentRepository {
         );
     }
 
+    async findAllByUserId(userId: string): Promise<Content[]> {
+        const rows = await this.repository.find({
+            where: { userId },
+        });
+        return rows.map(row =>
+            Content.restore({
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                status: row.status,
+                thumbnailUrl: row.thumbnailUrl,
+                createdAt: row.createdAt,
+                userId: row.userId,
+            }),
+        );
+    }
+
     async findById(id: string): Promise<Content | null> {
         const row = await this.repository.findOne({ where: { id } });
         if (!row) return null;
