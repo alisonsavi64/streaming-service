@@ -1,9 +1,9 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { ContentRepository } from '../../domain/content.repository';
 import { Content } from '../../domain/content.entity';
 import { ContentOrmEntity } from './content.orm-entity';
+import { ContentStatus } from '../../../content/domain/content.status';
 
 export class TypeOrmContentRepository implements ContentRepository {
     constructor(
@@ -12,17 +12,19 @@ export class TypeOrmContentRepository implements ContentRepository {
     ) { }
 
     async findAll(): Promise<Content[]> {
-        const rows = await this.repository.find();
-        return rows.map(
-            row =>
-                Content.restore({
-                    id: row.id,
-                    title: row.title,
-                    description: row.description,
-                    location: row.location,
-                    status: row.status,
-                    createdAt: row.createdAt
-                }),
+        const rows = await this.repository.find({
+            where: { status: ContentStatus.PROCESSED },
+        });
+        return rows.map(row =>
+            Content.restore({
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                status: row.status,
+                thumbnailUrl: row.thumbnailUrl,
+                createdAt: row.createdAt,
+                userId: row.userId,
+            }),
         );
     }
 
@@ -33,10 +35,30 @@ export class TypeOrmContentRepository implements ContentRepository {
             id: row.id,
             title: row.title,
             description: row.description,
-            location: row.location,
-             status: row.status,
+            status: row.status,
+            thumbnailUrl: row.thumbnailUrl,
             createdAt: row.createdAt,
-        })
+            userId: row.userId,
+        });
+    }
+
+    async findByUserId(userId: string): Promise<Content[]> {
+        const rows = await this.repository.find({ where: { userId } });
+        return rows.map(row =>
+            Content.restore({
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                status: row.status,
+                thumbnailUrl: row.thumbnailUrl,
+                createdAt: row.createdAt,
+                userId: row.userId,
+            }),
+        );
+    }
+
+    async deleteByUserId(userId: string): Promise<void> {
+        await this.repository.delete({ userId });
     }
 
     async save(content: Content): Promise<void> {
@@ -44,9 +66,18 @@ export class TypeOrmContentRepository implements ContentRepository {
             id: content.id,
             title: content.title,
             description: content.description,
-            location: content.location,
+            userId: content.userId,
+            thumbnailUrl: content.thumbnailUrl,
             createdAt: content.createdAt,
         });
         await this.repository.save(ormEntity);
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.repository.delete(id);
+    }
+
+    async update(id: string, fields: Partial<{ title: string; description: string }>): Promise<void> {
+        await this.repository.update(id, fields);
     }
 }

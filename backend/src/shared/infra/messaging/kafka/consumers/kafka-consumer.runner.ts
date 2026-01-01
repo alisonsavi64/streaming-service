@@ -23,8 +23,7 @@ export class KafkaConsumerRunner implements OnModuleInit {
 
         const event = JSON.parse(message.value.toString())
         await this.markProcessed.execute(
-          event.contentId,
-          event.processedPath,
+          event.contentId
         )
       },
     })

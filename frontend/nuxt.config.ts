@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   ssr: true,
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:3001',
+      apiBaseUrl: process.env.NUXT_API_BASE_URL || 'http://backend:3001',
     },
   },
 })

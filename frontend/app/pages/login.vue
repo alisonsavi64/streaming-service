@@ -1,13 +1,18 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/store/auth';
+
 definePageMeta({ layout: 'auth' })
 
 const email = ref('')
 const password = ref('')
 const auth = useAuthStore()
+const authService = useAuthService()
 
 const submit = async () => {
-  await auth.login(email.value, password.value)
-  navigateTo('/contents')
+  await authService.login(email.value, password.value)
+  const user = await authService.me()
+  auth.setUser(user);
+  navigateTo('/')
 }
 </script>
 
@@ -20,7 +25,7 @@ const submit = async () => {
 
     <BaseButton>Entrar</BaseButton>
 
-    <NuxtLink to="/register" class="text-sm text-center block text-zinc-400 hover:text-primary">
+    <NuxtLink to="/register" class="block text-sm text-center text-zinc-400">
       Criar conta
     </NuxtLink>
   </form>

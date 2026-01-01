@@ -11,12 +11,11 @@ export class MarkContentProcessedUseCase {
     private readonly repo: Repository<ContentOrmEntity>,
   ) {}
 
-  async execute(contentId: string, processedPath: string) {
+  async execute(contentId: string) {
     const result = await this.repo.update(
       { id: contentId },
       {
         status: ContentStatus.PROCESSED,
-        location: processedPath,
         processedAt: new Date(),
       },
     )

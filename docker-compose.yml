@@ -5,7 +5,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
-
+    restart: on-failure
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     depends_on:
@@ -21,7 +21,7 @@ services:
 
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+    restart: on-failure
   video-processor:
     build:
       context: ./video-processor
@@ -34,7 +34,19 @@ services:
       - "4001:4001"
     volumes:
       - storage:/storage
+    restart: on-failure
   
+  video-streaming:
+    build:
+      context: ./video-streaming
+    container_name: video-streaming
+    depends_on:
+      - backend
+    ports:
+      - "3003:3003"
+    volumes:
+      - storage:/storage
+    restart: on-failure 
   postgres:
     image: postgres:15
     container_name: streaming-postgres
@@ -46,10 +58,11 @@ services:
       POSTGRES_PASSWORD: streaming
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  
+    restart: on-failure  
   backend:
       build:
         context: ./backend
+        dockerfile: Dockerfile
       container_name: backend
       depends_on:
         - kafka
@@ -58,10 +71,14 @@ services:
       environment:
         KAFKA_BROKER: kafka:29092
         DATABASE_URL: postgres://streaming:streaming@postgres:5432/streaming
+          - OTEL_SERVICE_NAME=backend-api
+          - OTEL_TRACES_EXPORTER=jaeger
+          - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
       ports:
         - "3001:3001"
       volumes:
         - storage:/storage
+      restart: on-failure
   frontend:
     build:
       context: ./frontend
@@ -77,15 +94,55 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev
+    restart: on-failure
 
   jaeger:
     image: jaegertracing/all-in-one:1.41
     container_name: jaeger
     ports:
       - "16686:16686" 
-      - "4318:4318"   
+      - "4318:4318" 
+      - "14268:14268"    
       - "6831:6831/udp"  
+    restart: on-failure      
+  k6:
+    build:
+      context: ./k6
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    volumes:
+      - ./k6/scripts:/scripts
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - backend
+    restart: on-failure
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3002:3000"
+    depends_on:
+      - prometheus
+    restart: on-failure
+  nginx:
+    image: nginx:alpine
+    container_name: streaming-nginx
+    depends_on:
+      - video-processor
+    ports:
+      - "8080:80"
+    volumes:
+      - storage:/storage:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    restart: on-failure
 volumes:
   postgres_data:
   storage:
