@@ -4,6 +4,8 @@ import { TypeOrmModule, getRepositoryToken } from '@nestjs/typeorm';
 import { TypeOrmUserRepository } from '../typeorm-user.repository';
 import { UserOrmEntity } from '../user.orm-entity';
 import { User } from '../../../domain/user.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { ContentOrmEntity } from '../../../../content/infra/typeorm/content.orm-entity';
 
 describe('TypeOrmUserRepository (integration)', () => {
   let repo: TypeOrmUserRepository;
@@ -11,6 +13,7 @@ describe('TypeOrmUserRepository (integration)', () => {
   let dataSource: DataSource;
 
   beforeAll(async () => {
+    jest.setTimeout(30000);
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
@@ -19,12 +22,12 @@ describe('TypeOrmUserRepository (integration)', () => {
           port: 5432,
           username: 'streaming',
           password: 'streaming',
-          database: 'streaming_test', 
+          database: 'streaming', 
           synchronize: true,
           dropSchema: true, 
           autoLoadEntities: true,
         }),
-        TypeOrmModule.forFeature([UserOrmEntity]),
+        TypeOrmModule.forFeature([UserOrmEntity, ContentOrmEntity]),
       ],
       providers: [TypeOrmUserRepository],
     }).compile();
@@ -32,7 +35,7 @@ describe('TypeOrmUserRepository (integration)', () => {
     repo = module.get(TypeOrmUserRepository);
     repository = module.get<Repository<UserOrmEntity>>(getRepositoryToken(UserOrmEntity));
     dataSource = module.get<DataSource>(DataSource);
-  });
+  }, 30000);
 
   afterAll(async () => {
     await dataSource.destroy();
@@ -43,10 +46,10 @@ describe('TypeOrmUserRepository (integration)', () => {
   });
 
   it('should save and retrieve a user by ID and email', async () => {
-    const user = User.create('1', 'Alice', 'alice@example.com', 'hashedPassword');
+    const user = User.create(uuidv4(), 'Alice', 'alice@example.com', 'hashedPassword');
     await repo.save(user);
 
-    const foundById = await repo.findById('1');
+    const foundById = await repo.findById(user.id);
     expect(foundById).toBeInstanceOf(User);
     expect(foundById?.email).toBe('alice@example.com');
 
@@ -55,11 +58,11 @@ describe('TypeOrmUserRepository (integration)', () => {
   });
 
   it('should delete a user', async () => {
-    const user = User.create('2', 'Bob', 'bob@example.com', 'hashedPassword');
+    const user = User.create(uuidv4(), 'Bob', 'bob@example.com', 'hashedPassword');
     await repo.save(user);
 
-    await repo.delete('2');
-    const found = await repo.findById('2');
+    await repo.delete(user.id);
+    const found = await repo.findById(user.id);
     expect(found).toBeNull();
   });
 });

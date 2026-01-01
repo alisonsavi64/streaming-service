@@ -3,34 +3,39 @@ import request from 'supertest';
 const BASE_URL = 'http://localhost:3001';
 
 describe('ContentController (e2e) via running API', () => {
-  let jwtToken: string;
-  let createdContentId: number;
+let jwtCookie: string;
+let createdContentId: string;
 
-  beforeAll(async () => {
-    await request(BASE_URL)
-      .post('/user')
-      .send({ name: 'Test', email: 'test@example.com', password: '123456' });
+beforeAll(async () => {
+  await request(BASE_URL)
+    .post('/user')
+    .send({ name: 'Test', email: 'test@example.com', password: '123456' });
 
-    const loginRes = await request(BASE_URL)
-      .post('/auth/login')
-      .send({ email: 'test@example.com', password: '123456' });
+  const loginRes = await request(BASE_URL)
+    .post('/auth/login')
+    .send({ email: 'test@example.com', password: '123456' });
 
-    jwtToken = loginRes.body.access_token;
+  const setCookieHeader = loginRes.headers['set-cookie'] as unknown as string[];
+  if (!setCookieHeader) throw new Error('No set-cookie header in login response');
 
-    const createRes = await request(BASE_URL)
-      .post('/contents')
-      .set('Authorization', `Bearer ${jwtToken}`)
-      .field('title', 'Initial Title')
-      .field('description', 'Initial Description')
-      .attach('file', Buffer.from('hello world'), 'test.txt');
+  jwtCookie = setCookieHeader.find(c => c.startsWith('access_token'))!;
+  if (!jwtCookie) throw new Error('access_token cookie not found');
 
-    createdContentId = createRes.body.id;
-  });
+  const createRes = await request(BASE_URL)
+    .post('/contents')
+    .set('Cookie', jwtCookie)
+    .field('title', 'Initial Title')
+    .field('description', 'Initial Description')
+    .attach('upload', Buffer.from('hello world'), 'test.txt')
+    .attach('thumbnail', Buffer.from('thumbnail'), 'thumb.jpg');
+
+  createdContentId = createRes.body.id;
+});
 
   it('/contents (GET)', async () => {
     const res = await request(BASE_URL)
       .get('/contents')
-      .set('Authorization', `Bearer ${jwtToken}`)
+      .set('Cookie', jwtCookie)
       .expect(200);
 
     expect(Array.isArray(res.body)).toBe(true);
@@ -39,7 +44,7 @@ describe('ContentController (e2e) via running API', () => {
   it('/contents/:id (GET)', async () => {
     const res = await request(BASE_URL)
       .get(`/contents/${createdContentId}`)
-      .set('Authorization', `Bearer ${jwtToken}`)
+      .set('Cookie', jwtCookie)
       .expect(200);
 
     expect(res.body.title).toBe('Initial Title');
@@ -48,17 +53,18 @@ describe('ContentController (e2e) via running API', () => {
   it('/contents/:id (PATCH)', async () => {
     const res = await request(BASE_URL)
       .patch(`/contents/${createdContentId}`)
-      .set('Authorization', `Bearer ${jwtToken}`)
-      .send({ title: 'Updated Title' })
+      .set('Cookie', jwtCookie)
+      .field('title', 'Updated Title')
       .expect(200);
 
     expect(res.body.message).toBe('Content updated successfully');
+    expect(res.body.content.title).toBe('Updated Title');
   });
 
   it('/contents/:id (DELETE)', async () => {
     const res = await request(BASE_URL)
       .delete(`/contents/${createdContentId}`)
-      .set('Authorization', `Bearer ${jwtToken}`)
+      .set('Cookie', jwtCookie)
       .expect(200);
 
     expect(res.body.message).toBe('Content deleted successfully');

@@ -5,7 +5,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
     ports:
       - "2181:2181"
-
+    restart: on-failure
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     depends_on:
@@ -21,7 +21,7 @@ services:
 
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+    restart: on-failure
   video-processor:
     build:
       context: ./video-processor
@@ -46,7 +46,7 @@ services:
       - "3003:3003"
     volumes:
       - storage:/storage
-  
+    restart: on-failure 
   postgres:
     image: postgres:15
     container_name: streaming-postgres
@@ -58,7 +58,7 @@ services:
       POSTGRES_PASSWORD: streaming
     volumes:
       - postgres_data:/var/lib/postgresql/data
-  
+    restart: on-failure  
   backend:
       build:
         context: ./backend
@@ -94,6 +94,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev
+    restart: on-failure
 
   jaeger:
     image: jaegertracing/all-in-one:1.41
@@ -103,7 +104,7 @@ services:
       - "4318:4318" 
       - "14268:14268"    
       - "6831:6831/udp"  
-      
+    restart: on-failure      
   k6:
     build:
       context: ./k6
@@ -122,7 +123,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - backend
-
+    restart: on-failure
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -130,7 +131,7 @@ services:
       - "3002:3000"
     depends_on:
       - prometheus
-
+    restart: on-failure
   nginx:
     image: nginx:alpine
     container_name: streaming-nginx
@@ -141,7 +142,7 @@ services:
     volumes:
       - storage:/storage:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
-
+    restart: on-failure
 volumes:
   postgres_data:
   storage:
