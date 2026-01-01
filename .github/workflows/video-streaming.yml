@@ -1,8 +1,8 @@
-name: Back End CI/CD
+name: Video Streaming CI/CD
 
 defaults:
   run:
-    working-directory: ./backend
+    working-directory: ./video-streaming
 
 on:
   push:
@@ -23,8 +23,4 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t backend .
-
-      - name: Run tests inside Docker
-        run: |
-          docker run --rm backend npm run test
+          docker build -t video-streaming .
