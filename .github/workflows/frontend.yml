@@ -27,4 +27,4 @@ jobs:
 
       - name: Build production image
         run: |
-          docker build --target prod -t frontend:latest -f Dockerfile.prod .
+          docker build --target prod -t frontend -f Dockerfile.prod .
