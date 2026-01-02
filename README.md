@@ -95,4 +95,6 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 - O serviço de **video-streaming** passa a ser responsável por gerar **URLs assinadas e autenticadas** para acesso aos vídeos
 - Os serviços backend, video-processor e video-streaming são executados em containers gerenciados (ex: ECS + Fargate)
 
-![Arquitetura em Produção](https://github.com/user-attachments/assets/367590e2-e9ca-4eda-8a68-af8d88ab3955)
+<img width="844" height="671" alt="lastLastDiagram drawio" src="https://github.com/user-attachments/assets/d36b01dc-bcde-4be4-9c5b-a28a896b9e33" />
+
+
