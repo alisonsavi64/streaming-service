@@ -34,7 +34,13 @@
         "thumbnailFile": "Thumbnail",
         "submit": "Upload",
         "selectVideo": "Please select a video",
-        "selectThumbnail": "Please select a thumbnail"
+        "selectThumbnail": "Please select a thumbnail",
+        "fileTooLargeTitle": "File too large",
+        "fileTooLargeText": "The video file must be smaller than 100MB",
+        "uploadingTitle": "Uploading...",
+        "uploadingText": "Please wait while your video is being uploaded",
+        "uploadSuccess": "Upload completed successfully",
+        "uploadError": "Something went wrong while uploading the video"
     },
     "profilePage": {
         "title": "Edit Profile",
@@ -90,5 +96,9 @@
         "removedText": "The user has been successfully deleted.",
         "removalFailedTitle": "Deletion Failed",
         "removalFailedText": "Something went wrong while deleting the user."
+    },
+    "common": {
+        "error": "Error",
+        "success": "Success"
     }
 }
