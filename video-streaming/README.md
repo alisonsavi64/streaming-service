@@ -2,6 +2,11 @@
 
 O **Video Streaming Service** é um microserviço simples desenvolvido com **Fastify**, responsável por fornecer **links de acesso aos vídeos em formato HLS** (HTTP Live Streaming).
 
+Para executa-la separadamente, basta rodar o seguinte comando:
+
+```bash
+docker compose up --build video-streaming
+```
 ---
 
 ## ⚙️ Função Principal
@@ -47,13 +52,3 @@ Em produção, o serviço deverá:
 - **TypeScript** — Tipagem estática e segurança no desenvolvimento  
 - **Nginx** — Servidor HTTP usado para servir os arquivos de vídeo localmente  
 - **Amazon S3 / CDN** — (Planejado) origem dos vídeos em ambiente de produção  
-
----
-
-## 🚀 Próximos Passos
-
-- [ ] Implementar assinatura temporária de URLs (presigned URLs)  
-- [ ] Adicionar autenticação e validação JWT (quando necessário)  
-- [ ] Criar métricas e logs básicos para monitoramento  
-
----

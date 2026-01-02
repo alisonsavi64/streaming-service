@@ -2,6 +2,11 @@
 
 O **Video Processor Service** é um microserviço desenvolvido em **Fastify** e integrado com **Kafka**, responsável por **processar vídeos originais (ex: MP4)** e convertê-los para o formato **HLS (HTTP Live Streaming)**.
 
+Para executa-la separadamente, basta rodar o seguinte comando:
+
+```bash
+docker compose up --build video-processor
+```
 ---
 
 ## ⚙️ Função Principal
@@ -37,14 +42,3 @@ Fluxo resumido:
 | Processar vídeos originais para HLS | ✅ Implementado |
 | Enviar eventos Kafka de vídeos processados | ✅ Implementado |
 | Assinatura e autenticação de mensagens | 🔜 Planejado |
-
----
-
-## 🚀 Próximos Passos
-
-- [ ] Implementar logs detalhados do processo de conversão  
-- [ ] Adicionar métricas de processamento e tempo médio por vídeo  
-- [ ] Integrar com sistema de monitoramento (Prometheus / Grafana)  
-- [ ] Adicionar autenticação nas mensagens Kafka (segurança)  
-
----

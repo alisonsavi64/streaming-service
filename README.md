@@ -6,8 +6,6 @@ O sistema permite **upload**, **processamento assíncrono** e **streaming adapta
 
 ---
 
-## Execução do Projeto
-
 ## Requisitos
 
 - Docker Compose >= v2.0 (Desenvolvido com v2.40.3)
@@ -18,23 +16,22 @@ docker-compose up --build
 ```
 ## Visão Geral da Arquitetura
 
-A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma **síncrona** e **assíncrona**, seguindo princípios de desacoplamento e responsabilidade única.
+A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma **síncrona** e **assíncrona**.
 
-### Principais Componentes
+### Serviços
 
 - **Frontend (Nuxt + Vue.js)**  
   Interface do usuário com Server-Side Rendering (SSR), utilizando Nitro como BFF para comunicação segura com o backend via cookies HTTP-only.  
   ➜ Veja detalhes em [`frontend/README.md`](frontend/README.md)
 
-- **Backend Principal – Core da Aplicação (NestJS + Fastify)**  
-  API responsável por autenticação, regras de negócio, orquestração dos fluxos e publicação/consumo de eventos.  
-  ➜ Veja detalhes em [`backend/README.md`](backend/README.md)
+- **Backend Principal – Core da Aplicação (NestJS + Fastify + Postgres)**  
+  API responsável por autenticação, regras de negócio e upload de vídeos.  
+  ➜ Veja detalhes em [`backend/README.md`](backend/README.md) (ERD do banco)
 
 - **Video Processor**  
   Microserviço responsável pelo processamento assíncrono de vídeos, convertendo arquivos originais para o formato HLS a partir de eventos recebidos via Kafka.  
   ➜ Veja detalhes em [`video-processor/README.md`](video-processor/README.md)
   
-
 - **Video Streaming**  
   Serviço responsável por fornecer, de forma controlada, os caminhos dos arquivos HLS utilizados pelo player no frontend.  
   ➜ Veja detalhes em [`video-streaming/README.md`](video-streaming/README.md)
@@ -97,5 +94,18 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 
 <img width="943" height="671" alt="withMetricsProd drawio" src="https://github.com/user-attachments/assets/bd25faa2-f0a5-4468-b045-9d8afe8604ed" />
 
+---
 
+## Caso houvesse mais tempo para desenvolvimento, seria feito:
 
+- Adicionar **i18n** nos retornos de erro da API
+- Finalizar o sistema de **assinatura de links** no *video-streaming service* (No momento ele retorna o link sem nenhum tipo de autenticação)
+- Adicionar validações de **autenticidade** no *video-processor*
+- Melhorar a **usabilidade do frontend**
+- Adicionar mais **features**, como comentários, likes, etc.
+- Colocar o projeto em **produção de fato**  
+  (o deploy foi comentado nos *workflows* e arquivos *Terraform*, ficando apenas como exemplos)
+- Adicionar conexão websocket no frontend para atualização em tempo real de status de vídeos
+- Adicionar métricas nos outros microserviços
+
+---
