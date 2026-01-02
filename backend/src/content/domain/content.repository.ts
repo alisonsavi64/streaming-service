@@ -1,4 +1,5 @@
 import { Content } from './content.entity';
+import { ContentStatus } from './content.status';
 
 export interface ContentRepository {
   findAll(): Promise<Content[]>;
@@ -9,4 +10,5 @@ export interface ContentRepository {
   delete(id: string): Promise<void>;
   deleteByUserId(userId: string): Promise<void>;
   update(id: string, fields: Partial<{ title: string; description: string }>): Promise<void>;
+  findStuckVideos(statuses: ContentStatus[]): Promise<Content[]>
 }

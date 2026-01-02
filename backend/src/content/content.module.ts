@@ -22,6 +22,9 @@ import { EventBus } from 'src/shared/application/messaging/event-bus.port';
 import { ListUserContentsUseCase } from './application/list-user-contents.use-case';
 import { MarkContentProcessingUseCase } from './application/mark-content-processing.use-case';
 import { MarkContentFailedUseCase } from './application/mark-content-failed.use-case';
+import { RetryStuckVideosUseCase } from './application/retry-stuck-videos.use-case';
+import { RetryStuckVideosCronService } from './application/retry-stuck-videos-cron.service';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -29,7 +32,7 @@ import { MarkContentFailedUseCase } from './application/mark-content-failed.use-
     CacheModule.register({
       ttl: 30,
       max: 100,
-    }),
+    })
   ],
   controllers: [ContentController],
   providers: [
@@ -87,7 +90,14 @@ import { MarkContentFailedUseCase } from './application/mark-content-failed.use-
     },
     MarkContentProcessedUseCase,
     MarkContentProcessingUseCase,
-    MarkContentFailedUseCase
+    MarkContentFailedUseCase,
+    {
+      provide: RetryStuckVideosUseCase,
+      useFactory: (repo: ContentRepository, eventBus: EventBus) =>
+        new RetryStuckVideosUseCase(repo, eventBus),
+      inject: [CONTENT_REPOSITORY, 'EventBus'],
+    },
+    RetryStuckVideosCronService
   ],
   exports: [MarkContentProcessedUseCase, MarkContentProcessingUseCase, MarkContentFailedUseCase, CONTENT_REPOSITORY, STORAGE_PORT],
 })
