@@ -20,6 +20,8 @@ import { StoragePort } from './domain/storage.port';
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
 import { EventBus } from 'src/shared/application/messaging/event-bus.port';
 import { ListUserContentsUseCase } from './application/list-user-contents.use-case';
+import { MarkContentProcessingUseCase } from './application/mark-content-processing.use-case';
+import { MarkContentFailedUseCase } from './application/mark-content-failed.use-case';
 
 @Module({
   imports: [
@@ -84,7 +86,9 @@ import { ListUserContentsUseCase } from './application/list-user-contents.use-ca
       inject: [CONTENT_REPOSITORY],
     },
     MarkContentProcessedUseCase,
+    MarkContentProcessingUseCase,
+    MarkContentFailedUseCase
   ],
-  exports: [MarkContentProcessedUseCase, CONTENT_REPOSITORY, STORAGE_PORT],
+  exports: [MarkContentProcessedUseCase, MarkContentProcessingUseCase, MarkContentFailedUseCase, CONTENT_REPOSITORY, STORAGE_PORT],
 })
 export class ContentModule {}
