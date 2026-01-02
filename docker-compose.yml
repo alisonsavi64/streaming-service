@@ -6,6 +6,7 @@ services:
     ports:
       - "2181:2181"
     restart: on-failure
+
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     depends_on:
@@ -22,6 +23,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     restart: on-failure
+
   video-processor:
     build:
       context: ./video-processor
@@ -36,7 +38,7 @@ services:
     volumes:
       - storage:/storage
     restart: on-failure
-  
+
   video-streaming:
     build:
       context: ./video-streaming
@@ -51,6 +53,7 @@ services:
     volumes:
       - storage:/storage
     restart: on-failure 
+
   postgres:
     image: postgres:15
     container_name: streaming-postgres
@@ -63,6 +66,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: on-failure  
+
   backend:
       build:
         context: ./backend
@@ -92,6 +96,7 @@ services:
       volumes:
         - storage:/storage
       restart: on-failure
+
   frontend:
     build:
       context: ./frontend
@@ -100,7 +105,7 @@ services:
     depends_on:
       - backend
     environment:
-      NUXT_API_BASE_URL: http://localhost:3001
+      NUXT_API_BASE_URL: http://backend:3001
       NUXT_PUBLIC_VIDEO_STREAM_HOST: http://localhost:3003
     ports:
       - "3000:3000"
@@ -119,6 +124,7 @@ services:
       - "14268:14268"    
       - "6831:6831/udp"  
     restart: on-failure      
+
   k6:
     build:
       context: ./k6
@@ -127,6 +133,10 @@ services:
       - backend
     volumes:
       - ./k6/scripts:/scripts
+    environment:
+      BACKEND_URL: "http://backend:3001"
+      K6_VUS: 10
+      K6_DURATION: "30s"
 
   prometheus:
     image: prom/prometheus:latest
@@ -138,6 +148,7 @@ services:
     depends_on:
       - backend
     restart: on-failure
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -146,6 +157,7 @@ services:
     depends_on:
       - prometheus
     restart: on-failure
+
   nginx:
     image: nginx:alpine
     container_name: streaming-nginx
@@ -157,6 +169,7 @@ services:
       - storage:/storage:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
     restart: on-failure
+
 volumes:
   postgres_data:
   storage:
