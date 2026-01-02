@@ -10,5 +10,5 @@ export const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD || 'streaming',
   database: process.env.DATABASE_NAME || 'streaming',
   entities: [UserOrmEntity, ContentOrmEntity],
-  migrations: ['src/migrations/*.ts'],
+  migrations: [__dirname + '/migrations/*.js'],
 });
