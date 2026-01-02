@@ -18,23 +18,22 @@ docker-compose up --build
 ```
 ## Visão Geral da Arquitetura
 
-A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma **síncrona** e **assíncrona**, seguindo princípios de desacoplamento e responsabilidade única.
+A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma **síncrona** e **assíncrona**.
 
-### Principais Componentes
+### Serviços
 
 - **Frontend (Nuxt + Vue.js)**  
   Interface do usuário com Server-Side Rendering (SSR), utilizando Nitro como BFF para comunicação segura com o backend via cookies HTTP-only.  
   ➜ Veja detalhes em [`frontend/README.md`](frontend/README.md)
 
 - **Backend Principal – Core da Aplicação (NestJS + Fastify)**  
-  API responsável por autenticação, regras de negócio, orquestração dos fluxos e publicação/consumo de eventos.  
+  API responsável por autenticação, regras de negócio e upload de vídeos.  
   ➜ Veja detalhes em [`backend/README.md`](backend/README.md)
 
 - **Video Processor**  
   Microserviço responsável pelo processamento assíncrono de vídeos, convertendo arquivos originais para o formato HLS a partir de eventos recebidos via Kafka.  
   ➜ Veja detalhes em [`video-processor/README.md`](video-processor/README.md)
   
-
 - **Video Streaming**  
   Serviço responsável por fornecer, de forma controlada, os caminhos dos arquivos HLS utilizados pelo player no frontend.  
   ➜ Veja detalhes em [`video-streaming/README.md`](video-streaming/README.md)
