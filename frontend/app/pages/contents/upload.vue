@@ -53,7 +53,7 @@ const submit = async () => {
       <BaseFileInput
         v-model="videoFile"
         :label="t('uploadPage.videoFile')"
-        accept="video/*"
+        accept=",.mov,.mkv,video/*"
         :placeholder="t('uploadPage.selectVideo')"
       />
       <BaseFileInput

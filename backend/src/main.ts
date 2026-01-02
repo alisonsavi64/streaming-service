@@ -41,8 +41,8 @@ async function bootstrap() {
     credentials: true,
   });
   const config = new DocumentBuilder()
-    .setTitle('Content API')
-    .setDescription('API for managing video contents')
+    .setTitle('WatchTube API')
+    .setDescription('API para gerenciamento de vídeos, usuários e conteúdos, permitindo upload, atualização, listagem e controle de acesso dos conteúdos.')
     .setVersion('1.0')
     .addBearerAuth() 
     .build();

@@ -29,6 +29,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { ListUserContentsUseCase } from '../application/list-user-contents.use-case';
+import { CreateContentDto, UpdateContentDto, ContentResponseDto } from './content.dto';
 
 @ApiTags('contents')
 @Controller('contents')
@@ -48,9 +49,12 @@ export class ContentController {
   @CacheKey('contents_list')
   @CacheTTL(30)
   @Get()
-  @ApiOperation({ summary: 'List all contents' })
-  @ApiResponse({ status: 200, description: 'Contents retrieved successfully.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiOperation({
+    summary: 'Listar todos os conteúdos',
+    description: 'Retorna uma lista de todos os conteúdos processados disponíveis no sistema.'
+  })
+  @ApiResponse({ status: 200, description: 'Conteúdos recuperados com sucesso.', type: [ContentResponseDto] })
+  @ApiResponse({ status: 500, description: 'Erro interno do servidor.' })
   async list(@Req() req: any) {
     try {
       const contents = await this.listContentsUseCase.execute();
@@ -65,9 +69,12 @@ export class ContentController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(CacheInterceptor)
   @Get('mine')
-  @ApiOperation({ summary: 'List all the current user contents' })
-  @ApiResponse({ status: 200, description: 'Contents retrieved successfully.' })
-  @ApiResponse({ status: 500, description: 'Internal server error.' })
+  @ApiOperation({
+    summary: 'Listar conteúdos do usuário',
+    description: 'Retorna todos os conteúdos criados pelo usuário atualmente autenticado.'
+  })
+  @ApiResponse({ status: 200, description: 'Conteúdos recuperados com sucesso.', type: [ContentResponseDto] })
+  @ApiResponse({ status: 500, description: 'Erro interno do servidor.' })
   async mine(@Req() req: any) {
     const userId = req.user.id;
     try {
@@ -81,9 +88,12 @@ export class ContentController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get content by ID' })
-  @ApiResponse({ status: 200, description: 'Content retrieved successfully.' })
-  @ApiResponse({ status: 404, description: 'Content not found.' })
+  @ApiOperation({
+    summary: 'Obter conteúdo por ID',
+    description: 'Retorna um conteúdo específico pelo seu ID. Retorna 404 caso o conteúdo não exista.'
+  })
+  @ApiResponse({ status: 200, description: 'Conteúdo recuperado com sucesso.', type: ContentResponseDto })
+  @ApiResponse({ status: 404, description: 'Conteúdo não encontrado.' })
   async getById(@Param('id') id: string, @Req() req: any) {
     try {
       const content = await this.getContentByIdUseCase.execute({ id });
@@ -101,22 +111,14 @@ export class ContentController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Upload new content' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        description: { type: 'string' },
-        upload: { type: 'string', format: 'binary' },
-        thumbnail: { type: 'string', format: 'binary' },
-      },
-      required: ['title', 'description', 'upload', 'thumbnail'],
-    },
+  @ApiOperation({
+    summary: 'Enviar novo conteúdo',
+    description: 'Faz upload de um novo conteúdo com título, descrição, arquivo de vídeo e miniatura. Acesso apenas para usuários autenticados.'
   })
-  @ApiResponse({ status: 201, description: 'Content uploaded successfully.' })
-  @ApiResponse({ status: 400, description: 'Bad request.' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: CreateContentDto })
+  @ApiResponse({ status: 201, description: 'Conteúdo enviado com sucesso.', type: ContentResponseDto })
+  @ApiResponse({ status: 400, description: 'Requisição inválida.' })
   async create(@Req() req: any) {
     const userId = req.user.id;
     this.logger.log({ userId }, 'Upload content requested');
@@ -153,9 +155,9 @@ export class ContentController {
       }
     }
 
-    if (!videoBuffer) throw new Error('Video file is required');
-    if (!thumbnailBuffer) throw new Error('Thumbnail is required');
-    if (!title || !description) throw new Error('Title and description are required');
+    if (!videoBuffer) throw new Error('Arquivo de vídeo é obrigatório');
+    if (!thumbnailBuffer) throw new Error('Miniatura é obrigatória');
+    if (!title || !description) throw new Error('Título e descrição são obrigatórios');
 
     try {
       const content = await this.uploadContentUseCase.execute({
@@ -176,21 +178,15 @@ export class ContentController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Update content by ID' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        title: { type: 'string' },
-        description: { type: 'string' },
-        thumbnail: { type: 'string', format: 'binary' },
-      },
-    },
+  @ApiOperation({
+    summary: 'Atualizar conteúdo por ID',
+    description: 'Atualiza título, descrição ou miniatura de um conteúdo pelo ID. Acesso apenas pelo dono do conteúdo.'
   })
-  @ApiResponse({ status: 200, description: 'Content updated successfully.' })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
-  @ApiResponse({ status: 404, description: 'Content not found.' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UpdateContentDto })
+  @ApiResponse({ status: 200, description: 'Conteúdo atualizado com sucesso.', type: ContentResponseDto })
+  @ApiResponse({ status: 403, description: 'Proibido.' })
+  @ApiResponse({ status: 404, description: 'Conteúdo não encontrado.' })
   async update(@Param('id') id: string, @Req() req: any) {
     const userId = req.user.id;
     this.logger.log({ userId, contentId: id }, 'Update content requested');
@@ -238,10 +234,13 @@ export class ContentController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Delete content by ID' })
-  @ApiResponse({ status: 200, description: 'Content deleted successfully.' })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
-  @ApiResponse({ status: 404, description: 'Content not found.' })
+  @ApiOperation({
+    summary: 'Excluir conteúdo por ID',
+    description: 'Exclui um conteúdo pelo ID. Acesso apenas pelo dono do conteúdo. Retorna uma mensagem de sucesso após a exclusão.'
+  })
+  @ApiResponse({ status: 200, description: 'Conteúdo excluído com sucesso.' })
+  @ApiResponse({ status: 403, description: 'Proibido.' })
+  @ApiResponse({ status: 404, description: 'Conteúdo não encontrado.' })
   async delete(@Param('id') id: string, @Req() req: any) {
     const userId = req.user.id;
     this.logger.warn({ userId, contentId: id }, 'Content deletion requested');
