@@ -5,7 +5,7 @@ A API (core da aplicação) foi construída utilizando **NestJS** com **Fastify*
 Ela é responsável por:
 - Autenticação do frontend
 - Regras de negócio
-- Orquestração dos fluxos principais da aplicação
+- Upload e vídeos
 
 ---
 
@@ -43,7 +43,7 @@ Essas responsabilidades ficam a cargo dos serviços:
 ---
 ## 📘 Documentação da API (Swagger)
 
-A API possui documentação das rotas gerada automaticamente com **Swagger**.  
+A API possui documentação das rotas gerada com **Swagger**.  
 Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api):
 Essa documentação permite visualizar os endpoints disponíveis, parâmetros e exemplos de requisição/resposta.
 
@@ -67,7 +67,7 @@ A abstração permite, por exemplo, a substituição futura do TypeORM por outra
 
 ## 🗄️ Modelo de Dados
 
-A estrutura do banco de dados segue o seguinte **ERD**:
+A estrutura do banco de dados (Banco de dados único acessado apenas pelo Backend) segue o seguinte **ERD**:
 <img width="1152" height="576" alt="Untitled Diagram" src="https://github.com/user-attachments/assets/5b8fd11a-c266-44fb-b04e-e88ad92f0ec5" />
 
 ---
@@ -105,6 +105,11 @@ Foram desenvolvidos testes automatizados utilizando **Jest**, incluindo:
 - Testes de repositórios
 - Testes de integração via requests HTTP para a API
 
+Para executar a suíte de testes, basta rodar o seguinte comando:
+
+```bash
+docker compose exec backend npm run test
+```
 ---
 
 ## ⚡ Testes de Stress
