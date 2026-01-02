@@ -24,7 +24,9 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t backend .
-
+      - name: Run tests inside Docker
+        run: |
+          docker run --rm backend npm run test:unit
       # =========================================================
       # As linhas abaixo estão comentadas porque não iremos subir
       # a aplicação nem rodar Terraform neste teste.
