@@ -96,5 +96,16 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 
 <img width="943" height="671" alt="withMetricsProd drawio" src="https://github.com/user-attachments/assets/bd25faa2-f0a5-4468-b045-9d8afe8604ed" />
 
+---
 
+## Caso houvesse mais tempo para desenvolvimento, seria feito:
 
+- Adicionar **i18n** nos retornos de erro da API
+- Finalizar o sistema de **assinatura de links** no *video-streaming service*
+- Adicionar validações de **autenticidade** no *video-processor*
+- Melhorar a **usabilidade do frontend**
+- Adicionar mais **features**, como comentários, likes, etc.
+- Colocar o projeto em **produção de fato**  
+  (o deploy foi comentado nos *workflows* e arquivos *Terraform*, ficando apenas como exemplos)
+
+---
