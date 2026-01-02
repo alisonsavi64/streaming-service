@@ -24,9 +24,9 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
   Interface do usuário com Server-Side Rendering (SSR), utilizando Nitro como BFF para comunicação segura com o backend via cookies HTTP-only.  
   ➜ Veja detalhes em [`frontend/README.md`](frontend/README.md)
 
-- **Backend Principal – Core da Aplicação (NestJS + Fastify)**  
+- **Backend Principal – Core da Aplicação (NestJS + Fastify + Postgres)**  
   API responsável por autenticação, regras de negócio e upload de vídeos.  
-  ➜ Veja detalhes em [`backend/README.md`](backend/README.md)
+  ➜ Veja detalhes em [`backend/README.md`](backend/README.md) (ERD do banco)
 
 - **Video Processor**  
   Microserviço responsável pelo processamento assíncrono de vídeos, convertendo arquivos originais para o formato HLS a partir de eventos recebidos via Kafka.  
