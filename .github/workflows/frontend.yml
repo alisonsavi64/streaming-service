@@ -20,31 +20,22 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-
-      # ---------------------------------------------------------
-      # CI – Build DEV image (develop / PRs)
-      # ---------------------------------------------------------
       - name: Build DEV image
         run: |
           docker build \
             -f Dockerfile.dev \
             -t frontend:dev .
-
+      # Executado apenas testes que não dependem de banco de dados para demonstração
       - name: Run unit tests
         run: |
           docker run --rm frontend:dev npm run test:unit
-
-      # ---------------------------------------------------------
-      # CI – Build PROD image (main)
-      # ---------------------------------------------------------
       - name: Build PROD image
         run: |
           docker build \
             -f Dockerfile.prod \
             -t frontend:prod .
-
       # =========================================================
-      # CD – Produção (executado apenas na branch main)
+      # CD - Exemplo – Produção (executado apenas na branch main)
       # =========================================================
 
       # - name: Log in to Docker Hub
