@@ -7,6 +7,11 @@ Ela é responsável por:
 - Regras de negócio
 - Upload e vídeos
 
+Para executa-la separadamente, basta rodar o seguinte comando:
+
+```bash
+docker compose up --build backend
+```
 ---
 
 ## 🔐 Autenticação
@@ -49,13 +54,16 @@ Essa documentação permite visualizar os endpoints disponíveis, parâmetros e 
 
 ---
 
-## 💾 Storage e Banco de Dados
+## 💾 Storage, Cache e Banco de Dados
 
 Seguindo os princípios de **Clean Architecture**, tanto o **storage** quanto o **banco de dados** são acessados através de **interfaces e adapters**, permitindo fácil substituição de implementações.
 
 ### Storage
 - Implementação atual: storage local (ambiente de desenvolvimento)
 - Possível troca para: **Amazon S3**, sem impacto na lógica de negócio
+
+### Cache
+- Para cache, foi utilizada a lib **nestjs/cache-manager**, aplicada na rota principal de busca de vídeos.
 
 ### Banco de Dados
 - Banco relacional: **PostgreSQL**
