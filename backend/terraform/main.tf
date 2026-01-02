@@ -24,31 +24,91 @@ resource "aws_ecs_task_definition" "backend_task" {
   cpu                      = "256"
   memory                   = "512"
 
-  # Em um ambiente real, roles IAM seriam necessárias:
-  # execution_role_arn = aws_iam_role.ecs_execution_role.arn
-  # task_role_arn      = aws_iam_role.ecs_task_role.arn
-
   container_definitions = jsonencode([
     {
       name      = "backend-app"
       image     = "meuusuario/backend:latest"
+      essential = true
       cpu       = 256
       memory    = 512
-      essential = true
 
-      # Exemplo de variáveis de ambiente necessárias pela aplicação
-      # environment = [
-      #   { name = "DATABASE_URL", value = "postgres://user:pass@rds:5432/db" },
-      #   { name = "JWT_SECRET", value = "example-secret" },
-      #   { name = "NODE_ENV", value = "production" }
-      # ]
+      environment = [
+        # -------------------------------------------------------
+        # App
+        # -------------------------------------------------------
+        { name = "NODE_ENV", value = "production" },
+        { name = "PORT", value = "3001" },
+
+        # -------------------------------------------------------
+        # Auth / Security
+        # -------------------------------------------------------
+        { name = "JWT_SECRET", value = "example-jwt-secret" },
+        { name = "COOKIE_SECRET", value = "example-cookie-secret" },
+
+        # -------------------------------------------------------
+        # Database (RDS)
+        # -------------------------------------------------------
+        {
+          name  = "DATABASE_URL"
+          value = "postgres://streaming:streaming@rds-backend.amazonaws.com:5432/streaming"
+        },
+        { name = "DATABASE_HOST", value = "rds-backend.amazonaws.com" },
+        { name = "DATABASE_PORT", value = "5432" },
+        { name = "DATABASE_USER", value = "streaming" },
+        { name = "DATABASE_PASSWORD", value = "streaming" },
+        { name = "DATABASE_NAME", value = "streaming" },
+
+        # -------------------------------------------------------
+        # Kafka (MSK)
+        # -------------------------------------------------------
+        {
+          name  = "KAFKA_BROKER"
+          value = "b-1.msk-cluster.amazonaws.com:9092"
+        },
+
+        # -------------------------------------------------------
+        # Tracing
+        # -------------------------------------------------------
+        {
+          name  = "JAEGER_ENDPOINT"
+          value = "http://jaeger-collector.example:14268/api/traces"
+        },
+
+        # -------------------------------------------------------
+        # Public URLs (NO localhost)
+        # -------------------------------------------------------
+        {
+          name  = "API_BASE_URL"
+          value = "https://api.example.com"
+        },
+        {
+          name  = "THUMBNAIL_BASE_URL"
+          value = "https://cdn.video-streaming.example"
+        },
+
+        # -------------------------------------------------------
+        # CORS
+        # -------------------------------------------------------
+        {
+          name  = "CORS_ORIGINS"
+          value = "https://frontend.example.com"
+        }
+      ]
 
       portMappings = [
         {
           containerPort = 3001
-          hostPort      = 3001
         }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = "/ecs/backend"
+          awslogs-region        = "us-east-1"
+          awslogs-stream-prefix = "ecs"
+        }
+      }
     }
   ])
 }
