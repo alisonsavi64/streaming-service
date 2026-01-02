@@ -10,7 +10,8 @@ app.get('/health', async () => {
 const start = async () => {
   try {
     await startKafkaConsumer(app)
-    await app.listen({ port: 4001, host: '0.0.0.0' })
+    const port = process.env.PORT ? parseInt(process.env.PORT) : 4001
+    await app.listen({ port, host: '0.0.0.0' })
   } catch (err) {
     app.log.error(err)
     process.exit(1)

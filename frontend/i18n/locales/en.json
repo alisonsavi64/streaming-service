@@ -58,6 +58,37 @@
         "email": "Email",
         "password": "Password",
         "alreadyHaveAccount": "Already have an account?",
-        "noAccount": "Don't have an account?"
+        "noAccount": "Don't have an account?",
+        "loginFailed": "Login failed",
+        "somethingWentWrong": "Something went wrong"
+    },
+    "content": {
+        "uploadedTitle": "Uploaded!",
+        "uploadedText": "Content uploaded successfully.",
+        "uploadFailedTitle": "Upload failed",
+        "somethingWentWrong": "Something went wrong.",
+        "listFailedTitle": "Failed to fetch content",
+        "listMineFailedTitle": "Failed to fetch your content",
+        "showFailedTitle": "Failed to fetch content",
+        "updatedTitle": "Updated!",
+        "updatedText": "Content updated successfully.",
+        "updateFailedTitle": "Update failed",
+        "deletedTitle": "Deleted!",
+        "deletedText": "Content removed successfully.",
+        "deleteFailedTitle": "Delete failed"
+    },
+    "user": {
+        "createdTitle": "User Created!",
+        "createdText": "The user has been successfully created.",
+        "creationFailedTitle": "Creation Failed",
+        "creationFailedText": "Something went wrong while creating the user.",
+        "updatedTitle": "User Updated!",
+        "updatedText": "The user has been successfully updated.",
+        "updateFailedTitle": "Update Failed",
+        "updateFailedText": "Something went wrong while updating the user.",
+        "removedTitle": "User Removed!",
+        "removedText": "The user has been successfully deleted.",
+        "removalFailedTitle": "Deletion Failed",
+        "removalFailedText": "Something went wrong while deleting the user."
     }
 }

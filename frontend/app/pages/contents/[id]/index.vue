@@ -192,11 +192,10 @@ onMounted(async () => {
 
   try {
     videoMeta.value = await useContentService().show(id)
-
+    const { videoStreamHost } = useRuntimeConfig().public
     const { manifestUrl } = await fetch(
-      `http://localhost:3003/stream/${id}`
+      `${videoStreamHost}/stream/${id}`
     ).then(r => r.json())
-
     if (Hls.isSupported()) {
       hls = new Hls()
       hls.loadSource(manifestUrl)

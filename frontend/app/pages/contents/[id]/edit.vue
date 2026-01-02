@@ -48,11 +48,9 @@ const updateVideo = async () => {
     if (thumbnailFile.value) formData.append('thumbnail', thumbnailFile.value)
 
     await contentService.update(video.value.id, formData)
-    alert('Video updated successfully')
     router.push(`/contents/${video.value.id}`)
   } catch (err) {
     console.error('Failed to update video:', err)
-    alert('Failed to update video')
   } finally {
     loading.value = false
   }

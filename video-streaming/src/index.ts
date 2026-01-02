@@ -25,12 +25,12 @@ async function bootstrap() {
 
     return {
       contentId: id,
-      manifestUrl: `http://localhost:8080/videos/${id}/master.m3u8`,
+      manifestUrl: `${process.env.STORAGE_HOST}/videos/${id}/master.m3u8`,
       type: 'HLS',
     };
   });
-
-  await app.listen({ port: 3003, host: '0.0.0.0' });
+   const port = process.env.PORT ? parseInt(process.env.PORT) : 3003
+  await app.listen({ port, host: '0.0.0.0' });
 }
 
 bootstrap().catch(err => {

@@ -4,7 +4,7 @@ import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
 
 const sdk = new NodeSDK({
   traceExporter: new JaegerExporter({
-    endpoint: 'http://localhost:14268/api/traces',
+    endpoint: process.env.JAEGER_ENDPOINT || 'http://localhost:14268/api/traces',
   }),
   instrumentations: [getNodeAutoInstrumentations()],
 });

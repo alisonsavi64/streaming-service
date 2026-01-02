@@ -13,7 +13,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.NUXT_API_BASE_URL || 'http://backend:3001',
+      apiUrl: process.env.NUXT_API_BASE_URL || 'http://localhost:3001',
+      videoStreamHost: process.env.NUXT_PUBLIC_VIDEO_STREAM_HOST || 'http://localhost:3003'
     },
   },
 
