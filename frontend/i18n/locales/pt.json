@@ -34,7 +34,13 @@
         "thumbnailFile": "Miniatura",
         "submit": "Enviar",
         "selectVideo": "Selecione um vídeo",
-        "selectThumbnail": "Selecione uma miniatura"
+        "selectThumbnail": "Selecione uma miniatura",
+        "fileTooLargeTitle": "Arquivo muito grande",
+        "fileTooLargeText": "O vídeo deve ter no máximo 100MB",
+        "uploadingTitle": "Enviando...",
+        "uploadingText": "Aguarde enquanto seu vídeo está sendo enviado",
+        "uploadSuccess": "Upload realizado com sucesso",
+        "uploadError": "Ocorreu um erro ao enviar o vídeo"
     },
     "profilePage": {
         "title": "Editar Perfil",
@@ -76,6 +82,7 @@
         "deletedTitle": "Deletado!",
         "deletedText": "Conteúdo removido com sucesso.",
         "deleteFailedTitle": "Falha ao deletar"
+
     },
     "user": {
         "createdTitle": "Usuário Criado!",
@@ -90,5 +97,9 @@
         "removedText": "O usuário foi removido com sucesso.",
         "removalFailedTitle": "Falha na remoção",
         "removalFailedText": "Algo deu errado ao remover o usuário."
+    },
+    "common": {
+        "error": "Erro",
+        "success": "Sucesso"
     }
 }

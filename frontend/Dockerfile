@@ -1,7 +1,7 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --production
+RUN npm install 
 COPY . .
 RUN npx nuxi build
 FROM node:20-alpine
