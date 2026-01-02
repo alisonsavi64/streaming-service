@@ -8,9 +8,9 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test:unit": "vitest run --config vitest.config.ts --project test/unit",
-    "test:e2e": "vitest run --config vitest.config.ts --project test/e2e",
-    "test:nuxt": "vitest run --config vitest.config.ts --project test/nuxt",
+    "test:unit": "vitest run --config vitest.config.ts --project unit",
+    "test:e2e": "vitest run --config vitest.config.ts --project e2e",
+    "test:nuxt": "vitest run --config vitest.config.ts --project nuxt",
     "test": "vitest"
   },
   "dependencies": {
