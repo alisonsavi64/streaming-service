@@ -6,8 +6,6 @@ O sistema permite **upload**, **processamento assíncrono** e **streaming adapta
 
 ---
 
-## Execução do Projeto
-
 ## Requisitos
 
 - Docker Compose >= v2.0 (Desenvolvido com v2.40.3)
@@ -101,11 +99,13 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 ## Caso houvesse mais tempo para desenvolvimento, seria feito:
 
 - Adicionar **i18n** nos retornos de erro da API
-- Finalizar o sistema de **assinatura de links** no *video-streaming service*
+- Finalizar o sistema de **assinatura de links** no *video-streaming service* (No momento ele retorna o link sem nenhum tipo de autenticação)
 - Adicionar validações de **autenticidade** no *video-processor*
 - Melhorar a **usabilidade do frontend**
 - Adicionar mais **features**, como comentários, likes, etc.
 - Colocar o projeto em **produção de fato**  
   (o deploy foi comentado nos *workflows* e arquivos *Terraform*, ficando apenas como exemplos)
+- Adicionar conexão websocket no frontend para atualização em tempo real de status de vídeos
+- Adicionar métricas nos outros microserviços
 
 ---
