@@ -37,14 +37,3 @@ Fluxo resumido:
 | Processar vídeos originais para HLS | ✅ Implementado |
 | Enviar eventos Kafka de vídeos processados | ✅ Implementado |
 | Assinatura e autenticação de mensagens | 🔜 Planejado |
-
----
-
-## 🚀 Próximos Passos
-
-- [ ] Implementar logs detalhados do processo de conversão  
-- [ ] Adicionar métricas de processamento e tempo médio por vídeo  
-- [ ] Integrar com sistema de monitoramento (Prometheus / Grafana)  
-- [ ] Adicionar autenticação nas mensagens Kafka (segurança)  
-
----
