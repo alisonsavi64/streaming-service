@@ -58,7 +58,8 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 4. O **video-processor** consome o evento e processa o vídeo para o formato HLS.
 5. Após o processamento, um evento de retorno atualiza o status do vídeo para `processed`.
 6. O vídeo passa a ser exibido no frontend.
-<img width="921" height="321" alt="Diagrama sem nome drawio (2)" src="https://github.com/user-attachments/assets/a6ee28b2-9016-4b83-af27-df16391ba055" />
+
+<img width="838" height="541" alt="fulltest2 drawio" src="https://github.com/user-attachments/assets/772d5b74-762f-4372-9a30-803ee3133f2a" />
 
 ---
 
