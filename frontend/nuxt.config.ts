@@ -6,7 +6,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/i18n',
     '@nuxtjs/tailwindcss',
-    '@nuxt/test-utils/module'
+    ...(process.env.NODE_ENV !== 'production' ? ['@nuxt/test-utils/module'] : [])
   ],
 
   ssr: true,
