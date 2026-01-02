@@ -10,12 +10,24 @@ export const startKafkaConsumer = async (app: FastifyInstance) => {
     fromBeginning: false,
   })
   app.log.info('Kafka consumer connected')
-  await consumer.run({
-    eachMessage: async ({ message }) => {
-      if (!message.value) return
+
+ await consumer.run({
+  autoCommit: false, 
+  eachBatch: async ({ batch, resolveOffset, heartbeat, commitOffsetsIfNecessary, isRunning, isStale }) => {
+    for (const message of batch.messages) {
+      if (!isRunning() || isStale()) break
+      if (!message.value) continue
       const event = JSON.parse(message.value.toString())
-      app.log.info({ event }, 'Processing video')
-      await processVideo(event, app)
-    },
-  })
+      try {
+        await processVideo(event, app, heartbeat)
+        resolveOffset(message.offset)
+        await commitOffsetsIfNecessary()
+      } catch (err) {
+        app.log.error(err)
+        break 
+      }
+    }
+  }
+})
+
 }

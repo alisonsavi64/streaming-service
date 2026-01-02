@@ -6,6 +6,7 @@ import { ContentModule } from './content/content.module';
 import { MessagingModule } from './shared/infra/messaging/messaging.module';
 import { UserModule } from './user/user.module';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
     AuthModule,
     ContentModule,
     MessagingModule,
-    UserModule
+    UserModule,
+    ScheduleModule.forRoot()
   ],
 })
 export class AppModule {}

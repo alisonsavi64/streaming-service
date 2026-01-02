@@ -24,12 +24,13 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t backend .
+      # Executado apenas testes que não dependem de banco de dados para demonstração
       - name: Run tests inside Docker
         run: |
           docker run --rm backend npm run test:unit
       # =========================================================
       # As linhas abaixo estão comentadas porque não iremos subir
-      # a aplicação nem rodar Terraform neste teste.
+      # Exemplo
       #
       # - name: Log in to Docker Hub
       #   uses: docker/login-action@v2
