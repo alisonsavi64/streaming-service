@@ -21,7 +21,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
       database: process.env.DATABASE_NAME || 'streaming',
       autoLoadEntities: true,
       migrations: ['dist/migrations/*.js'], 
-      synchronize: true
+      synchronize: false
     }),
     PrometheusModule.register({
       path: '/metrics',
