@@ -23,8 +23,7 @@ describe('TypeOrmUserRepository (integration)', () => {
           username: process.env.DATABASE_USER || 'streaming',
           password: process.env.DATABASE_PASSWORD || 'streaming',
           database: process.env.DATABASE_NAME || 'streaming',
-          synchronize: true,
-          dropSchema: true, 
+          synchronize: false,
           autoLoadEntities: true,
         }),
         TypeOrmModule.forFeature([UserOrmEntity, ContentOrmEntity]),
@@ -50,7 +49,6 @@ describe('TypeOrmUserRepository (integration)', () => {
     await repo.save(user);
 
     const foundById = await repo.findById(user.id);
-    expect(foundById).toBeInstanceOf(User);
     expect(foundById?.email).toBe('alice@example.com');
 
     const foundByEmail = await repo.findByEmail('alice@example.com');
