@@ -27,7 +27,8 @@ onMounted(async () => {
     video.value = data
     title.value = data.title
     description.value = data.description
-  } catch (err) {
+  } catch (err: any) {
+    if(err?.statusCode == 401) navigateTo("/auth/login");
     console.error('Failed to load video:', err)
   }
 })

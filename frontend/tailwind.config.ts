@@ -8,7 +8,7 @@ export default {
           dark: '#CC0000',
         },
         secondary: {
-          DEFAULT: '#1C1C1E', // dark backgrounds
+          DEFAULT: '#0f0f0f', // dark backgrounds
           light: '#F9F9F9',   // light backgrounds
         },
         accent: {

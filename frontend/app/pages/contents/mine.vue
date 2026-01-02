@@ -42,8 +42,7 @@ onMounted(fetchContents)
 </script>
 
 <template>
-  <section class="max-w-7xl mx-auto transition-colors">
-    <!-- Loading -->
+  <section class="min-w-7xl mx-auto transition-colors">
     <div
       v-if="loading"
       class="flex justify-center items-center h-64
@@ -52,8 +51,6 @@ onMounted(fetchContents)
     >
       {{ t('loading.videos') }}
     </div>
-
-    <!-- Empty -->
     <div
       v-else-if="filteredContents.length === 0"
       class="flex flex-col items-center text-center mt-32
@@ -66,7 +63,7 @@ onMounted(fetchContents)
     </div>
 
     <!-- Grid -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <ContentCard
         v-for="v in filteredContents"
         :key="v.id"

@@ -1,16 +1,10 @@
 <template>
   <div class="min-h-screen flex flex-col bg-grayCustom-50 dark:bg-secondary text-gray-900 dark:text-gray-50">
 
-    <!-- Top Navbar -->
     <header class="sticky top-0 z-50 flex items-center justify-between px-6 py-3 backdrop-blur-md bg-white/90 dark:bg-secondary/90 border-b border-transparent">
 
 <div>
-  <button @click="collapsed = !collapsed"
-    class="mr-4 p-2 rounded-full hover:bg-grayCustom-100 dark:hover:bg-grayCustom-800 transition">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-    </svg>
-  </button>
+
   <NuxtLink 
     to="/" 
     :class="['text-2xl font-bold', isDark ? 'text-white' : 'text-primary']"
@@ -46,7 +40,6 @@
           </svg>
         </button>
 
-        <!-- Upload -->
         <NuxtLink
           to="/contents/upload"
           title="Upload"
@@ -96,68 +89,10 @@
       </div>
     </header>
 
-    <!-- Main Layout -->
-    <div class="flex flex-1">
-      <!-- Sidebar -->
-      <aside :class="['transition-all duration-300 bg-white dark:bg-secondary border-r border-transparent dark:border-transparent', collapsed ? 'w-20' : 'w-64']">
-        <div class="flex flex-col h-full">
-
-          <!-- Nav Links -->
-          <nav class="flex-1 mt-4 flex flex-col">
-<NuxtLink
-  to="/"
-  class="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-grayCustom-100 dark:hover:bg-grayCustom-800 transition"
-  :class="{ 'bg-grayCustom-200 dark:bg-grayCustom-800 font-semibold': $route.path === '/' }"
->
-  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-    <path d="M10 2L2 10h3v8h4v-5h2v5h4v-8h3L10 2z" />
-  </svg>
-  <span v-if="!collapsed">{{ t('home') }}</span>
-</NuxtLink>
-
-
-         <NuxtLink
-  v-if="auth.user"
-  to="/contents/mine"
-  class="flex items-center gap-3 px-4 py-2 mt-2 rounded-lg hover:bg-grayCustom-100 dark:hover:bg-grayCustom-800 transition"
-  :class="{ 'bg-grayCustom-200 dark:bg-grayCustom-800 font-semibold': $route.path.includes('/contents/mine') }"
->
-  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M17 10.5V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-4.5l4 4v-11l-4 4z"/>
-  </svg>
-  <span v-if="!collapsed">{{ t('myvideos') }}</span>
-</NuxtLink>
-
-            <NuxtLink
-              to="/user/profile"
-              class="flex items-center gap-3 px-4 py-2 mt-2 rounded-lg hover:bg-grayCustom-100 dark:hover:bg-grayCustom-800 transition"
-              :class="{ 'bg-grayCustom-200 dark:bg-grayCustom-800 font-semibold': $route.path.includes('/user/profile') }"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M5.121 17.804A6 6 0 0112 15a6 6 0 016.879 2.804M12 12a5 5 0 100-10 5 5 0 000 10z"/>
-              </svg>
-              <span v-if="!collapsed">{{ t('profile') }}</span>
-            </NuxtLink>
-
-            <NuxtLink
-              to="/contents/upload"
-              class="flex items-center gap-3 px-4 py-2 mt-2 rounded-lg bg-primary hover:bg-primary-dark text-white transition shadow-md"
-            >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-              </svg>
-              <span v-if="!collapsed">{{ t('upload') }}</span>
-            </NuxtLink>
-          </nav>
-        </div>
-      </aside>
-
-      <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto px-6 py-4">
+      <main class="max-w-7xl mx-auto px-6 py-8">
         <slot />
       </main>
-    </div>
+
   </div>
 </template>
 
@@ -173,7 +108,6 @@ const router = useRouter()
 const auth = useAuthStore()
 const { isDark, toggleTheme } = useTheme()
 
-// Force dark mode by default
 if (!isDark.value) toggleTheme()
 
 const search = ref('')

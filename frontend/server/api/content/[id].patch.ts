@@ -1,4 +1,4 @@
-import { defineEventHandler, createError, readMultipartFormData } from 'h3'
+import { defineEventHandler, createError, readMultipartFormData, setCookie } from 'h3'
 import { serverApi } from '../utils/serverApi'
 import FormDataNode from 'form-data'
 
@@ -24,6 +24,15 @@ export default defineEventHandler(async (event) => {
     return  {message: 'success' }
   } catch (err: any) {
   if (err.response) {
+    if (err.response.status === 401) {
+      setCookie(event, 'access_token', '', {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 0,
+      })
+    }
     throw createError({
       statusCode: err.response.status,
       statusMessage: err.response.data?.message || err.message

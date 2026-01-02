@@ -100,5 +100,6 @@
     "common": {
         "error": "Error",
         "success": "Success"
-    }
+    },
+    "welcomeDescription": "Watch, share, and upload your videos"
 }

@@ -1,4 +1,4 @@
-import { defineEventHandler, createError, readMultipartFormData } from 'h3'
+import { defineEventHandler, createError, readMultipartFormData, setCookie } from 'h3'
 import { serverApi } from '../utils/serverApi'
 import FormDataNode from 'form-data'
 
@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
     const formItems = await readMultipartFormData(event) || []
     const body = new FormDataNode()
     for (const item of formItems) {
-      console.log(item)
       if (!item.name) continue
       if (item.name === 'upload' || item.name === 'thumbnail') {
         console.log('Appending file:', item.name, item.filename, item.type);
@@ -22,6 +21,15 @@ export default defineEventHandler(async (event) => {
     return res.data 
   } catch (err: any) {
   if (err.response) {
+    if (err.response.status === 401) {
+      setCookie(event, 'access_token', '', {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 0,
+      })
+    }
     throw createError({
       statusCode: err.response.status,
       statusMessage: err.response.data?.message || err.message

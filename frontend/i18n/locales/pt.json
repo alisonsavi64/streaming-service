@@ -101,5 +101,6 @@
     "common": {
         "error": "Erro",
         "success": "Sucesso"
-    }
+    },
+    "welcomeDescription": "Assista, compartilhe e envie seus vídeos"
 }

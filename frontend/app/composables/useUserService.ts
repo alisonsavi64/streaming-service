@@ -38,12 +38,14 @@ export const useUserService = () => {
         title: t('user.updatedTitle'),
         text: t('user.updatedText')
       })
+      navigateTo("/auth/login");
     } catch (err: any) {
       Swal.fire({
         icon: 'error',
         title: t('user.updateFailedTitle'),
         text: err?.statusMessage || t('user.updateFailedText')
       })
+      if(err?.statusCode == 401) navigateTo("/auth/login");
       return Promise.reject(err)
     }
   }
@@ -65,6 +67,7 @@ export const useUserService = () => {
         title: t('user.removalFailedTitle'),
         text: err?.statusMessage || t('user.removalFailedText')
       })
+      if(err?.statusCode == 401) navigateTo("/auth/login");
       return Promise.reject(err)
     }
   }

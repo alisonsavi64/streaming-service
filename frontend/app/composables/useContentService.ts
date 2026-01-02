@@ -22,6 +22,7 @@ export const useContentService = () => {
         title: t('content.uploadFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err?.statusCode == 401) navigateTo("/auth/login");
       return Promise.reject(err)
     }
   }
@@ -54,6 +55,7 @@ export const useContentService = () => {
         title: t('content.listMineFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err?.statusCode == 401) navigateTo("/auth/login");
       return Promise.reject(err)
     }
   }
@@ -92,6 +94,7 @@ export const useContentService = () => {
         title: t('content.updateFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err?.statusCode == 401) navigateTo("/auth/login");
       return Promise.reject(err)
     }
   }
@@ -112,6 +115,7 @@ export const useContentService = () => {
         title: t('content.deleteFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err?.statusCode == 401) navigateTo("/auth/login");
       return Promise.reject(err)
     }
   }

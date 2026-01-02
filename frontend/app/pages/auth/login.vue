@@ -4,7 +4,7 @@ import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
 import { useTheme } from '~/composables/useTheme'
 
-definePageMeta({ layout: 'auth', middleware: 'no-auth' })
+definePageMeta({ layout: 'default-no-aside', middleware: 'no-auth' })
 
 const { t } = useI18n()
 const { isDark } = useTheme()
