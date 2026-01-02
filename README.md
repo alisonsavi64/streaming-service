@@ -81,7 +81,7 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 
 No ambiente local, os serviços compartilham um **storage físico** montado entre os containers Docker, facilitando o desenvolvimento e testes.
 
-![Arquitetura Local](https://github.com/user-attachments/assets/03d5e3a8-2d8e-43ce-9ccf-abce2a06e4b3)
+<img width="963" height="671" alt="withMetricsStroke drawio" src="https://github.com/user-attachments/assets/3c7a78c2-088e-4f79-852d-0a6c60ebb657" />
 
 ---
 
@@ -95,4 +95,7 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 - O serviço de **video-streaming** passa a ser responsável por gerar **URLs assinadas e autenticadas** para acesso aos vídeos
 - Os serviços backend, video-processor e video-streaming são executados em containers gerenciados (ex: ECS + Fargate)
 
-![Arquitetura em Produção](https://github.com/user-attachments/assets/367590e2-e9ca-4eda-8a68-af8d88ab3955)
+<img width="943" height="671" alt="withMetricsProd drawio" src="https://github.com/user-attachments/assets/bd25faa2-f0a5-4468-b045-9d8afe8604ed" />
+
+
+
