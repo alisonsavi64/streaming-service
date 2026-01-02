@@ -91,6 +91,7 @@ services:
         API_BASE_URL: http://localhost:3001
         THUMBNAIL_BASE_URL: http://localhost:8080
         CORS_ORIGINS: "http://localhost:3000,http://frontend:3000"
+        NODE_ENV: production
       ports:
         - "3001:3001"
       volumes:
@@ -107,6 +108,7 @@ services:
     environment:
       NUXT_API_BASE_URL: http://backend:3001
       NUXT_PUBLIC_VIDEO_STREAM_HOST: http://localhost:3003
+      NODE_ENV: production
     ports:
       - "3000:3000"
     volumes:
