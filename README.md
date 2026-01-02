@@ -8,6 +8,10 @@ O sistema permite **upload**, **processamento assíncrono** e **streaming adapta
 
 ## Execução do Projeto
 
+## Requisitos
+
+- Docker Compose >= v2.0 (Desenvolvido com v2.40.3)
+
 Todo o ambiente pode ser executado localmente via **Docker Compose** utilizando o comando abaixo e aguardando de 1 a 2 minutos até que todos os serviços estejam disponíveis, após isso acesse http://localhost:3000
 ```bash
 docker-compose up --build

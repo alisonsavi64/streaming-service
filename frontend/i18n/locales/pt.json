@@ -58,6 +58,37 @@
         "registerTitle": "Registrar",
         "name": "Nome",
         "alreadyHaveAccount": "Já possui uma conta?",
-        "noAccount": "Não tem uma conta?"
+        "noAccount": "Não tem uma conta?",
+        "loginFailed": "Falha no login",
+        "somethingWentWrong": "Algo deu errado"
+    },
+    "content": {
+        "uploadedTitle": "Enviado!",
+        "uploadedText": "Conteúdo enviado com sucesso.",
+        "uploadFailedTitle": "Falha no envio",
+        "somethingWentWrong": "Algo deu errado.",
+        "listFailedTitle": "Falha ao buscar conteúdos",
+        "listMineFailedTitle": "Falha ao buscar seus conteúdos",
+        "showFailedTitle": "Falha ao buscar conteúdo",
+        "updatedTitle": "Atualizado!",
+        "updatedText": "Conteúdo atualizado com sucesso.",
+        "updateFailedTitle": "Falha na atualização",
+        "deletedTitle": "Deletado!",
+        "deletedText": "Conteúdo removido com sucesso.",
+        "deleteFailedTitle": "Falha ao deletar"
+    },
+    "user": {
+        "createdTitle": "Usuário Criado!",
+        "createdText": "O usuário foi criado com sucesso.",
+        "creationFailedTitle": "Falha na criação",
+        "creationFailedText": "Algo deu errado ao criar o usuário.",
+        "updatedTitle": "Usuário Atualizado!",
+        "updatedText": "O usuário foi atualizado com sucesso.",
+        "updateFailedTitle": "Falha na atualização",
+        "updateFailedText": "Algo deu errado ao atualizar o usuário.",
+        "removedTitle": "Usuário Removido!",
+        "removedText": "O usuário foi removido com sucesso.",
+        "removalFailedTitle": "Falha na remoção",
+        "removalFailedText": "Algo deu errado ao remover o usuário."
     }
 }

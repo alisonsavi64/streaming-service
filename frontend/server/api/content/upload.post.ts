@@ -21,7 +21,17 @@ export default defineEventHandler(async (event) => {
     const res = await api.post('/contents', body, { headers }) 
     return res.data 
   } catch (err: any) {
-    console.error(err)
-    throw createError({ statusCode: 500, statusMessage: 'Failed to upload content.' })
+  if (err.response) {
+    throw createError({
+      statusCode: err.response.status,
+      statusMessage: err.response.data?.message || err.message
+    })
+  } else if (err.request) {
+    console.log(err.request)
+    throw createError({ statusCode: 503, statusMessage: 'No response from server' })
+  } else {
+    console.log(err.message)
+    throw createError({ statusCode: 500, statusMessage: err.message })
   }
+}
 })

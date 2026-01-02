@@ -1,54 +1,77 @@
- 
- 
- export const useUserService = () => {
- 
-    async function create(name: string, email: string, password: string) : Promise<void> {
-            try {
-                await $fetch('/api/user/create', {
-                    body: {
-                        name,
-                        email,
-                        password
-                    },
-                    method: 'POST'
-                })
+import Swal from 'sweetalert2'
+import { useI18n } from 'vue-i18n' 
 
-            } catch(err) {
-                return Promise.reject(err)
-            }
-        }
-        async function update(name: string, email: string, password: string) : Promise<void> {
-            try {
-                await $fetch('/api/user/update', {
-                    body: {
-                        name,
-                        email,
-                        password
-                    },
-                    method: 'PUT' as any
-                })
+export const useUserService = () => {
+  const { t } = useI18n()
 
-            } catch(err) {
-                return Promise.reject(err)
-            }
-        }
+  async function create(name: string, email: string, password: string): Promise<void> {
+    try {
+      await $fetch('/api/user/create', {
+        body: { name, email, password },
+        method: 'POST'
+      })
 
-    async function remove() : Promise<void> {
-        try {
-            await $fetch('/api/user/remove', {
-                method: 'DELETE'
-            })
-        } catch(err) {
-            return Promise.reject(err)
-        }
+      Swal.fire({
+        icon: 'success',
+        title: t('user.createdTitle'),
+        text: t('user.createdText')
+      })
+    } catch (err: any) {
+      Swal.fire({
+        icon: 'error',
+        title: t('user.creationFailedTitle'),
+        text: err?.statusMessage || t('user.creationFailedText')
+      })
+      return Promise.reject(err)
     }
- 
-     return {
-        create,
-        update,
-        remove
-     }
- 
- }
- 
- 
+  }
+
+  async function update(name: string, email: string, password: string): Promise<void> {
+    try {
+      await $fetch('/api/user/update', {
+        body: { name, email, password },
+        method: 'PUT' as any
+      })
+
+      Swal.fire({
+        icon: 'success',
+        title: t('user.updatedTitle'),
+        text: t('user.updatedText')
+      })
+    } catch (err: any) {
+      Swal.fire({
+        icon: 'error',
+        title: t('user.updateFailedTitle'),
+        text: err?.statusMessage || t('user.updateFailedText')
+      })
+      return Promise.reject(err)
+    }
+  }
+
+  async function remove(): Promise<void> {
+    try {
+      await $fetch('/api/user/remove', {
+        method: 'DELETE'
+      })
+
+      Swal.fire({
+        icon: 'success',
+        title: t('user.removedTitle'),
+        text: t('user.removedText')
+      })
+    } catch (err: any) {
+      Swal.fire({
+        icon: 'error',
+        title: t('user.removalFailedTitle'),
+        text: err?.statusMessage || t('user.removalFailedText')
+      })
+      return Promise.reject(err)
+    }
+  }
+
+  return {
+    create,
+    update,
+    remove
+  }
+}

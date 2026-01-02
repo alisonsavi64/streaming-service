@@ -1,47 +1,47 @@
-
+import Swal from 'sweetalert2'
+import { useI18n } from 'vue-i18n'
 
 export const useAuthService = () => {
-    async function login(email: string, password: string) : Promise<void> {
-        try {
-            await $fetch('/api/auth/login', {
-                body: {
-                    email,
-                    password
-                },
-                method: 'POST'
-            })
+  const { t } = useI18n()
 
-        } catch(err) {
-            return Promise.reject(err)
-        }
+  async function login(email: string, password: string): Promise<void> {
+    try {
+      await $fetch('/api/auth/login', {
+        body: { email, password },
+        method: 'POST',
+      })
+    } catch (err: any) {
+      Swal.fire({
+        icon: 'error',
+        title: t('auth.loginFailed'),     
+        text: err?.statusMessage || t('auth.somethingWentWrong'),
+      })
+      return Promise.reject(err)
     }
+  }
 
-    async function logout() : Promise<void> {
-        try {
-            await $fetch('/api/auth/logout', {
-                method: 'POST'
-            })
-
-        } catch(err) {
-            return Promise.reject(err)
-        }
+  async function logout(): Promise<void> {
+    try {
+      await $fetch('/api/auth/logout', { method: 'POST' })
+    } catch (err: any) {
+      return Promise.reject(err)
     }
+  }
 
-    async function me() : Promise<any> {
-        try {
-            const user = await $fetch('/api/auth/me', {
-                headers: useRequestHeaders(['cookies'])
-            });
-            return user
-        } catch(err) {
-            return Promise.reject(err)
-        }
+  async function me(): Promise<any> {
+    try {
+      const user = await $fetch('/api/auth/me', {
+        headers: useRequestHeaders(['cookies']),
+      })
+      return user
+    } catch (err: any) {
+      return Promise.reject(err)
     }
+  }
 
-    return {
-        login,
-        me,
-        logout
-    }
-
+  return {
+    login,
+    me,
+    logout,
+  }
 }
