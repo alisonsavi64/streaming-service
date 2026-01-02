@@ -99,23 +99,21 @@ services:
       restart: on-failure
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    container_name: frontend
-    depends_on:
-      - backend
-    environment:
-      NUXT_API_BASE_URL: http://backend:3001
-      NUXT_PUBLIC_VIDEO_STREAM_HOST: http://localhost:3003
-      NODE_ENV: production
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run dev
-    restart: on-failure
+      container_name: frontend
+      build:
+        context: ./frontend
+        dockerfile: Dockerfile.dev
+      environment:
+        NUXT_API_BASE_URL: http://backend:3001
+        NUXT_PUBLIC_VIDEO_STREAM_HOST: http://localhost:3003
+        NODE_ENV: development
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./frontend:/app
+        - /app/node_modules
+      command: npm run dev
+      restart: on-failure
 
   jaeger:
     image: jaegertracing/all-in-one:1.41
