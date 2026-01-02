@@ -2,6 +2,14 @@
 
 O **Frontend** é a interface principal da aplicação, responsável por **autenticar usuários**, **permitir o upload de vídeos** e **exibir os vídeos processados**.
 
+Para executa-lo separadamente, basta rodar o seguinte comando:
+```bash
+docker compose up --build frontend
+```
+
+Para acessar a aplicação localmente:
+http://localhost:3000
+
 ---
 
 ## ⚙️ Função Principal
@@ -66,16 +74,11 @@ O frontend se comunica com os seguintes serviços:
 - ✅ Testes unitários com **ViteTest**  
 - ✅ Testes de integração com APIs simuladas  
 - 🔜 Testes end-to-end (E2E) com Cypress (planejado)
-
+Para executar a suíte de testes, basta rodar o seguinte comando:
+```
+docker compose exec frontend npm run test
+```
 ---
-
-## 🖥️ Acesso e Execução
-
-Para acessar a aplicação localmente:  
-👉 **[https://localhost:3000](https://localhost:3000)**  
-
----
-
 ## 🧭 Telas Disponíveis
 
 O frontend contém as seguintes páginas:
@@ -88,12 +91,3 @@ O frontend contém as seguintes páginas:
 - ⬆️ **Envio de Vídeos**  
 - ✏️ **Edição de Vídeo**
 
----
-
-## 🚀 Próximos Passos
-
-- [ ] Melhorar feedback visual de upload e processamento  
-- [ ] Melhorar UI e erros retornados da api
-- [ ] Finalizar testes 
-
----
