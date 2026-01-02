@@ -6,6 +6,12 @@ O sistema permite **upload**, **processamento assíncrono** e **streaming adapta
 
 ---
 
+## Execução do Projeto
+
+Todo o ambiente pode ser executado localmente via **Docker Compose** utilizando o comando abaixo e aguardando de 1 a 2 minutos até que todos os serviços estejam disponíveis, após isso acesse http://localhost:3000
+```bash
+docker-compose up --build
+```
 ## Visão Geral da Arquitetura
 
 A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma **síncrona** e **assíncrona**, seguindo princípios de desacoplamento e responsabilidade única.
@@ -86,11 +92,3 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 - Os serviços backend, video-processor e video-streaming são executados em containers gerenciados (ex: ECS + Fargate)
 
 ![Arquitetura em Produção](https://github.com/user-attachments/assets/367590e2-e9ca-4eda-8a68-af8d88ab3955)
-
----
-
-## Execução do Projeto
-
-Todo o ambiente pode ser executado localmente via **Docker Compose** utilizando o comando abaixo e aguardando de 1 a 2 minutos até que todos os serviços estejam disponíveis, após isso acesse http://localhost:3000
-```bash
-docker-compose up --build
