@@ -2,11 +2,10 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 export const options = {
-  vus: 10,
-  duration: '30s',
+  vus: Number(__ENV.K6_VUS) || 10,
+  duration: __ENV.K6_DURATION || '30s',
 };
-
-const BASE_URL = 'http://backend:3001';
+const BASE_URL = __ENV.BACKEND_URL || 'http://backend:3001';
 
 export default function () {
   const email = `test${Math.floor(Math.random() * 100000)}@example.com`;
