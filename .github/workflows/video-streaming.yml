@@ -8,7 +8,7 @@ on:
   push:
     branches: [develop, main]
   pull_request:
-    branches: [main]
+    branches: [develop, main]
 
 jobs:
   build-and-test:
@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t video-streaming .
-          
+
       # =========================================================
       # Etapas abaixo seriam usadas em produção
       # =========================================================
