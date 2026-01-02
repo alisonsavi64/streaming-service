@@ -12,6 +12,8 @@ Para executa-la separadamente, basta rodar o seguinte comando:
 ```bash
 docker compose up --build backend
 ```
+Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api):
+
 ---
 
 ## 🔐 Autenticação
