@@ -26,7 +26,7 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 
 - **Video Streaming**  
   Serviço responsável por fornecer, de forma controlada, os caminhos dos arquivos HLS utilizados pelo player no frontend.  
-  ➜ Veja detalhes em `video-streaming/README.md`
+  ➜ Veja detalhes em [`video-streaming/README.md`](video-streaming/README.md)
 
 - **Nginx | CDN**  
   Servidor responsável por servir arquivos HLS e thumbnails de vídeo no ambiente local.  
