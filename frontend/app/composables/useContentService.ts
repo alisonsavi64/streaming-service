@@ -15,7 +15,18 @@ export const useContentService = () => {
 
   async function list(): Promise<any> {
         try {
-        return await $fetch('/api/content/list', {
+        return await $fetch('/api/content', {
+            method: 'GET',
+            headers: useRequestHeaders(['cookies'])
+        })
+        } catch (err) {
+        return Promise.reject(err)
+    }
+  }
+
+    async function listMine(): Promise<any> {
+        try {
+        return await $fetch('/api/content/mine', {
             method: 'GET',
             headers: useRequestHeaders(['cookies'])
         })
@@ -61,7 +72,8 @@ export const useContentService = () => {
         list,
         show,
         update,
-        remove
+        remove,
+        listMine
     }
 
 }

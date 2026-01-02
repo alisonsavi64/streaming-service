@@ -1,98 +1,114 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## Backend / Core API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A API (core da aplicação) foi construída utilizando **NestJS** com **Fastify** como servidor HTTP.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Ela é responsável por:
+- Autenticação do frontend
+- Regras de negócio
+- Orquestração dos fluxos principais da aplicação
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🔐 Autenticação
 
-## Project setup
+A autenticação do sistema é feita utilizando **JWT**, armazenado em **cookies HTTP-only**, garantindo que o token não seja acessível pelo JavaScript no browser.
 
-```bash
-$ npm install
-```
+O frontend se comunica com a API através de um **BFF (Nuxt Nitro)**, permitindo o uso seguro de cookies e evitando exposição direta de credenciais.
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## 👤 Usuários e 🎥 Vídeos
 
-# watch mode
-$ npm run start:dev
+A API é responsável pelo:
 
-# production mode
-$ npm run start:prod
-```
+### Usuários
+- CRUD de usuários
+- Gerenciamento de autenticação e sessão
 
-## Run tests
+### Vídeos
+- CRUD de vídeos (metadados)
+- Upload do vídeo original
+- Atualização de informações como título, descrição, status, etc.
 
-```bash
-# unit tests
-$ npm run test
+A API **não é responsável pelo streaming nem pelo processamento dos vídeos**.
 
-# e2e tests
-$ npm run test:e2e
+Essas responsabilidades ficam a cargo dos serviços:
 
-# test coverage
-$ npm run test:cov
-```
+- **Video Streaming Service**  
+  ➜ Veja detalhes em [`video-streaming/README.md`](../video-streaming/README.md)
 
-## Deployment
+- **Video Processor**  
+  ➜ Veja detalhes em [`video-processor/README.md`](../video-processor/README.md)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
+## 📘 Documentação da API (Swagger)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+A API possui documentação das rotas gerada automaticamente com **Swagger**.  
+Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api):
+Essa documentação permite visualizar os endpoints disponíveis, parâmetros e exemplos de requisição/resposta.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 💾 Storage e Banco de Dados
 
-## Resources
+Seguindo os princípios de **Clean Architecture**, tanto o **storage** quanto o **banco de dados** são acessados através de **interfaces e adapters**, permitindo fácil substituição de implementações.
 
-Check out a few resources that may come in handy when working with NestJS:
+### Storage
+- Implementação atual: storage local (ambiente de desenvolvimento)
+- Possível troca para: **Amazon S3**, sem impacto na lógica de negócio
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Banco de Dados
+- Banco relacional: **PostgreSQL**
+- ORM utilizado: **TypeORM**
 
-## Support
+A abstração permite, por exemplo, a substituição futura do TypeORM por outra ferramenta (como Prisma), mantendo a camada de domínio intacta.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 🗄️ Modelo de Dados
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+A estrutura do banco de dados segue o seguinte **ERD**:
+<img width="1152" height="576" alt="Untitled Diagram" src="https://github.com/user-attachments/assets/5b8fd11a-c266-44fb-b04e-e88ad92f0ec5" />
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📊 Observabilidade
+
+A API possui instrumentação para logs, métricas e tracing distribuído.
+
+### Logs
+- Utiliza o **logger adapter do Fastify**
+- Logs simples e estruturados para acompanhamento da aplicação
+
+### Tracing
+- Integração com **OpenTelemetry**
+- Visualização via **Jaeger**
+- Acesso em:  
+  `http://localhost:16686`
+
+### Métricas
+- Integração com **Prometheus**
+- Endpoint de métricas exposto em:  
+  `http://localhost:3001/metrics`
+
+- Visualização de métricas via **Grafana**
+- Acesso em:  
+  `http://localhost:3002`
+
+---
+
+## 🧪 Testes
+
+Foram desenvolvidos testes automatizados utilizando **Jest**, incluindo:
+
+- Testes de entidades
+- Testes de repositórios
+- Testes de integração via requests HTTP para a API
+
+---
+
+## ⚡ Testes de Stress
+
+A API também possui integração com **K6** para testes de carga e stress, permitindo avaliar o comportamento do sistema sob alta concorrência.
+
+➜ Veja mais detalhes em [`k6/README.md`](../k6/README.md)

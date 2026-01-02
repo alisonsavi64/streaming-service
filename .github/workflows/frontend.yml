@@ -1,0 +1,30 @@
+name: Frontend CI/CD
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and test frontend
+        run: |
+          docker build --target test -t frontend-test -f Dockerfile.prod .
+          docker run --rm frontend-test
+
+      - name: Build production image
+        run: |
+          docker build --target prod -t frontend -f Dockerfile.prod .

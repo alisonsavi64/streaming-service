@@ -1,0 +1,26 @@
+name: Video Streaming CI/CD
+
+defaults:
+  run:
+    working-directory: ./video-streaming
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t video-streaming .
