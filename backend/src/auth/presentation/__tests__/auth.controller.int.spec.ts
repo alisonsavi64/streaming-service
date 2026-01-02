@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { randomUUID } from 'crypto';
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = process.env.API_BASE_URL || 'http://localhost:3001';
 
 describe('AuthController (e2e) via running API', () => {
   const randomEmail = `test-${randomUUID()}@example.com`;

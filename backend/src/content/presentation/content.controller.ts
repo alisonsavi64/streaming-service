@@ -29,7 +29,7 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 import { ListUserContentsUseCase } from '../application/list-user-contents.use-case';
-import { CreateContentDto, UpdateContentDto, ContentResponseDto } from './content.dto';
+import { CreateContentDto, UpdateContentDto, ContentResponseDto, ContentMineResponseDto } from './content.dto';
 
 @ApiTags('contents')
 @Controller('contents')
@@ -73,7 +73,7 @@ export class ContentController {
     summary: 'Listar conteúdos do usuário',
     description: 'Retorna todos os conteúdos criados pelo usuário atualmente autenticado.'
   })
-  @ApiResponse({ status: 200, description: 'Conteúdos recuperados com sucesso.', type: [ContentResponseDto] })
+  @ApiResponse({ status: 200, description: 'Conteúdos recuperados com sucesso.', type: [ContentMineResponseDto] })
   @ApiResponse({ status: 500, description: 'Erro interno do servidor.' })
   async mine(@Req() req: any) {
     const userId = req.user.id;

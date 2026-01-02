@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ContentStatus } from '../domain/content.status';
 
 export class FileDto {
   @ApiProperty({ type: 'string', format: 'binary', description: 'File content' })
@@ -60,4 +61,36 @@ export class ContentResponseDto {
 
   @ApiProperty({ description: 'Updated at timestamp' })
   updatedAt: Date;
+}
+
+export class ContentMineResponseDto {
+  @ApiProperty({ description: 'ID do conteúdo' })
+  id: string;
+
+  @ApiProperty({ description: 'Título do conteúdo' })
+  title: string;
+
+  @ApiProperty({ description: 'Descrição do conteúdo' })
+  description: string;
+
+  @ApiProperty({ description: 'ID do usuário dono do conteúdo' })
+  userId: string;
+
+  @ApiProperty({ description: 'URL ou caminho do vídeo' })
+  videoUrl: string;
+
+  @ApiProperty({ description: 'URL ou caminho da thumbnail' })
+  thumbnailUrl: string;
+
+  @ApiProperty({ description: 'Data de criação do conteúdo' })
+  createdAt: Date;
+
+  @ApiProperty({ description: 'Data da última atualização do conteúdo' })
+  updatedAt: Date;
+
+  @ApiProperty({ 
+    description: 'Status do conteúdo',
+    enum: ContentStatus
+  })
+  status: ContentStatus;
 }

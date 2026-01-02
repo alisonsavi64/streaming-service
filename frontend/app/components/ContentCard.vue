@@ -1,68 +1,61 @@
 <template>
   <article
     class="group rounded-2xl overflow-hidden border
-           bg-white dark:bg-zinc-900
-           border-zinc-200 dark:border-zinc-800
-           transition-all duration-300
-           hover:-translate-y-1 hover:shadow-2xl"
+           bg-white dark:bg-grayCustom-800
+           border-grayCustom-200 dark:border-grayCustom-700
+           shadow-sm hover:shadow-lg
+           transition-all duration-300"
   >
     <!-- Thumbnail -->
     <div @click="goToVideo" class="cursor-pointer relative">
       <img
         :src="video.thumbnailUrl"
-        class="h-44 w-full object-cover"
+        alt="video thumbnail"
+        class="w-full h-52 object-cover rounded-t-2xl"
       />
 
-      <!-- Gradient overlay -->
-      <div
-        class="absolute inset-0
-               bg-gradient-to-t from-black/50 via-black/10 to-transparent
-               opacity-0 group-hover:opacity-100 transition"
-      />
-
-      <!-- Status badge (only if status exists) -->
+      <!-- Duration / Status Badge -->
       <div
         v-if="video.status"
-        class="absolute top-3 left-3 status-badge"
-        :class="[statusClass, status?.pulse && 'animate-pulse']"
+        class="absolute bottom-2 right-2 flex gap-2"
       >
-        <span
-          v-if="video.status === 'PROCESSING'"
-          class="h-2 w-2 rounded-full bg-white"
-        />
-        {{ status ? t(status.label) : '' }}
+        <span v-if="video.status"
+          class="bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-md font-semibold">
+          {{ status ? t(status.label) : '' }}
+        </span>
       </div>
     </div>
 
-    <!-- Body -->
-    <div class="p-4">
-      <h3 class="font-semibold text-sm truncate">
+    <!-- Video Info -->
+    <div class="p-3 flex flex-col gap-1">
+      <h3 class="font-semibold text-sm line-clamp-2 cursor-pointer hover:text-primary"
+          @click="goToVideo">
         {{ video.title }}
       </h3>
 
-      <p
-        class="text-xs mt-1 line-clamp-2
-               text-zinc-600 dark:text-zinc-400"
-      >
-        {{ video.description }}
-      </p>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="text-xs text-grayCustom-500 dark:text-grayCustom-400 truncate">
+          {{ "UserTest"}}
+        </span>
+      </div>
 
-      <!-- Actions -->
-      <div v-if="isOwner" class="flex gap-2 mt-4">
+      <div class="flex items-center gap-2 text-xs text-grayCustom-400 mt-1">
+        <span>{{ 0 }} views</span>
+        <span>•</span>
+        <span>{{ new Date().toLocaleDateString() }}</span>
+      </div>
+      <div v-if="isOwner" class="flex gap-2 mt-3">
         <button
           @click="$emit('edit', video.id)"
           class="flex-1 px-3 py-1 text-xs rounded-md
-                 bg-blue-600 hover:bg-blue-700
-                 text-white transition"
+                 bg-blue-600 hover:bg-blue-700 text-white transition"
         >
           {{ t('actions.edit') }}
         </button>
-
         <button
           @click="$emit('delete', video.id)"
           class="flex-1 px-3 py-1 text-xs rounded-md
-                 bg-red-600 hover:bg-red-700
-                 text-white transition"
+                 bg-red-600 hover:bg-red-700 text-white transition"
         >
           {{ t('actions.delete') }}
         </button>
@@ -92,20 +85,7 @@ const { t } = useI18n()
 const router = useRouter()
 const auth = useAuthStore()
 
-// Only compute status if it exists
 const status = computed(() => props.video.status ? contentStatusConfig[props.video.status] : undefined)
-
-const statusClass = computed(() => {
-  if (!props.video.status) return ''
-  switch (props.video.status) {
-    case 'UPLOADED': return 'bg-zinc-500'
-    case 'PROCESSING': return 'bg-yellow-500'
-    case 'PROCESSED': return 'bg-emerald-600'
-    case 'FAILED': return 'bg-red-600'
-    default: return 'bg-zinc-500'
-  }
-})
-
 const isOwner = computed(() => props.video.userId === auth.user?.id)
 
 const goToVideo = () => router.push(`/contents/${props.video.id}`)
@@ -117,9 +97,5 @@ const goToVideo = () => router.push(`/contents/${props.video.id}`)
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.status-badge {
-  @apply px-3 py-1 rounded-full text-xs font-semibold text-white flex items-center gap-2;
 }
 </style>

@@ -30,6 +30,7 @@ services:
       - kafka
     environment:
       KAFKA_BROKER: kafka:29092
+      PORT: 4001
     ports:
       - "4001:4001"
     volumes:
@@ -42,6 +43,9 @@ services:
     container_name: video-streaming
     depends_on:
       - backend
+    environment:
+      PORT: 3003
+      STORAGE_HOST: http://localhost:8080
     ports:
       - "3003:3003"
     volumes:
@@ -71,9 +75,18 @@ services:
       environment:
         KAFKA_BROKER: kafka:29092
         DATABASE_URL: postgres://streaming:streaming@postgres:5432/streaming
-          - OTEL_SERVICE_NAME=backend-api
-          - OTEL_TRACES_EXPORTER=jaeger
-          - OTEL_EXPORTER_JAEGER_ENDPOINT=http://jaeger:14268/api/traces
+        JAEGER_ENDPOINT: "http://jaeger:14268/api/traces"
+        PORT: 3001
+        COOKIE_SECRET: "supersecret"
+        DATABASE_HOST: postgres
+        DATABASE_PORT: 5432
+        DATABASE_USER: streaming
+        DATABASE_PASSWORD: streaming
+        DATABASE_NAME: streaming
+        JWT_SECRET: HyywqAF76ltr+u91zWBWp4+KkEaI4gw0Pvw9pPDIP4w=
+        API_BASE_URL: http://localhost:3001
+        THUMBNAIL_BASE_URL: http://localhost:8080
+        CORS_ORIGINS: "http://localhost:3000,http://frontend:3000"
       ports:
         - "3001:3001"
       volumes:
@@ -87,7 +100,8 @@ services:
     depends_on:
       - backend
     environment:
-      API_BASE_URL: http://backend:3001
+      NUXT_API_BASE_URL: http://localhost:3001
+      NUXT_PUBLIC_VIDEO_STREAM_HOST: http://localhost:3003
     ports:
       - "3000:3000"
     volumes:

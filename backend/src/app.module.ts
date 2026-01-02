@@ -13,12 +13,12 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'postgres',
-      port: 5432,
-      username: 'streaming',
-      password: 'streaming',
-      database: 'streaming',
+      type: (process.env.DATABASE_TYPE as any) || 'postgres',
+      host: process.env.DATABASE_HOST || 'localhost',
+      port: parseInt(process.env.DATABASE_PORT || '5432'),
+      username: process.env.DATABASE_USER || 'streaming',
+      password: process.env.DATABASE_PASSWORD || 'streaming',
+      database: process.env.DATABASE_NAME || 'streaming',
       autoLoadEntities: true,
       migrations: ['dist/migrations/*.js'], 
       synchronize: true

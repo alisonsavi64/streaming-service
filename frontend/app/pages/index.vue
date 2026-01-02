@@ -46,33 +46,20 @@ onMounted(fetchContents)
 
 <template>
   <section class="max-w-7xl mx-auto px-4 py-8 transition-colors">
-    
+
     <!-- Loading -->
-    <div
-      v-if="loading"
-      class="flex justify-center items-center h-64
-             text-zinc-500 dark:text-zinc-400 text-lg animate-pulse"
-    >
+    <div v-if="loading" class="flex justify-center items-center h-64 text-grayCustom-500 dark:text-grayCustom-400 text-lg animate-pulse">
       {{ t('loading.videos') }}
     </div>
 
     <!-- Empty state -->
-    <div
-      v-else-if="filteredContents.length === 0"
-      class="flex flex-col items-center text-center mt-32
-             text-zinc-500 dark:text-zinc-400"
-    >
-      <span class="text-6xl mb-4">🎬</span>
-      <p class="text-lg max-w-md">
-        {{ t('empty.allVideos') }}
-      </p>
+    <div v-else-if="filteredContents.length === 0" class="flex flex-col items-center text-center mt-20 text-grayCustom-500 dark:text-grayCustom-400">
+      <span class="text-8xl mb-4">🎬</span>
+      <p class="text-xl max-w-md">{{ t('empty.allVideos') }}</p>
     </div>
 
     <!-- Grid of videos -->
-    <div
-      v-else
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-    >
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <ContentCard
         v-for="video in filteredContents"
         :key="video.id"
@@ -83,4 +70,3 @@ onMounted(fetchContents)
     </div>
   </section>
 </template>
-

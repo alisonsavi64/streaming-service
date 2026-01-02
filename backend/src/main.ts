@@ -35,9 +35,12 @@ async function bootstrap() {
   await app.register(fastifyCookie, {
     secret: process.env.COOKIE_SECRET,
   });
+  const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',')
+  : ['http://localhost:3000'];
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://frontend:3000'],
+    origin: allowedOrigins,
     credentials: true,
   });
   const config = new DocumentBuilder()
@@ -48,9 +51,10 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-  await app.listen(3001, '0.0.0.0');
+  const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
+  await app.listen(port, '0.0.0.0');
   if (isDev) {
-    console.log('Swagger available at http://localhost:3001/api');
+    console.log(`Swagger available at ${process.env.API_BASE_URL}/api`);
   }
 }
 

@@ -30,7 +30,7 @@ const submit = async () => {
 <template>
   <div
     class="flex items-center justify-center px-4 py-12
-           bg-zinc-100 dark:bg-zinc-950 transition-colors"
+            transition-colors"
   >
     <form
       @submit.prevent="submit"
