@@ -14,15 +14,16 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 
 - **Frontend (Nuxt + Vue.js)**  
   Interface do usuário com Server-Side Rendering (SSR), utilizando Nitro como BFF para comunicação segura com o backend via cookies HTTP-only.  
-  ➜ Veja detalhes em `frontend/README.md`
+  ➜ Veja detalhes em [`frontend/README.md`](frontend/README.md)
 
 - **Backend Principal – Core da Aplicação (NestJS + Fastify)**  
   API responsável por autenticação, regras de negócio, orquestração dos fluxos e publicação/consumo de eventos.  
-  ➜ Veja detalhes em `backend/README.md`
+  ➜ Veja detalhes em [`backend/README.md`](backend/README.md)
 
 - **Video Processor**  
   Microserviço responsável pelo processamento assíncrono de vídeos, convertendo arquivos originais para o formato HLS a partir de eventos recebidos via Kafka.  
-  ➜ Veja detalhes em `video-processor/README.md`
+  ➜ Veja detalhes em [`video-processor/README.md`](video-processor/README.md)
+  
 
 - **Video Streaming**  
   Serviço responsável por fornecer, de forma controlada, os caminhos dos arquivos HLS utilizados pelo player no frontend.  
@@ -30,18 +31,17 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 
 - **Nginx | CDN**  
   Servidor responsável por servir arquivos HLS e thumbnails de vídeo no ambiente local.  
-  ➜ Veja detalhes em `nginx/README.md`
 
 - **Kafka**  
   Sistema de mensageria utilizado para comunicação assíncrona e desacoplamento entre os serviços.
 
 - **Observabilidade**  
   Instrumentação com Prometheus, Grafana e Jaeger para métricas, logs e tracing distribuído.  
-  ➜ Veja detalhes em `backend/README.md`
+  ➜ Veja detalhes em [`backend/README.md`](backend/README.md)
 
 - **Testes de Carga (K6)**  
   Ferramenta utilizada para testes de stress e performance da API.  
-  ➜ Veja detalhes em `k6/README.md`
+  ➜ Veja detalhes em  [`k6/README.md`](k6/README.md)
 
 ---
 
