@@ -19,9 +19,11 @@ Para executar o projeto localmente, é necessário:
 > 
 ## ▶️ Execução
 
-Todo o ambiente pode ser executado localmente utilizando **Docker Compose**.
+Todo o ambiente pode ser executado localmente utilizando **Docker Compose** segundo os seguintes comandos:
 
 ```bash
+git clone https://github.com/alisonsavi64/streaming-service.git
+cd streaming-service
 docker compose up --build
 ```
 
@@ -154,6 +156,8 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 
 <img width="1351" height="831" alt="usecase2" src="https://github.com/user-attachments/assets/c4c72142-0cc2-4615-a921-59eede6fd0eb" />
 
+Observação: Caso o serviço Kafka esteja indisponível ou o processamento seja interrompido, a API verificará posteriormente o status do vídeo por meio de um serviço vinculado ao Contrab e reenviará o evento de processamento, se necessário.
+
 ---
 
 ## 🏗️ Arquiteturas
@@ -192,7 +196,7 @@ Em um ambiente de produção, o fluxo principal da aplicação permanece o mesmo
   - Backend
   - Video Processor (Podendo criar várias instâncias para o processamento dos vídeos)
   - Video Streaming  
-  passam a ser executados em containers gerenciados (ex: **ECS + Fargate**).
+Passam a ser executados em containers gerenciados (ex: **ECS + Fargate**).
 - A infraestrutura é definida como código utilizando **Terraform**.
 
 ![Arquitetura Produção](https://github.com/user-attachments/assets/bd25faa2-f0a5-4468-b045-9d8afe8604ed)
