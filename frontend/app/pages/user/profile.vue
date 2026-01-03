@@ -5,7 +5,8 @@ import { useI18n } from 'vue-i18n'
 import { useTheme } from '~/composables/useTheme'
 
 definePageMeta({
-  middleware: 'only-auth'
+  middleware: 'only-auth',
+  layout: "default-no-aside"
 })
 
 const { t } = useI18n()
@@ -21,6 +22,7 @@ const password = ref('')
 
 const updateUser = async () => {
   await userService.update(name.value, email.value, password.value)
+  await authService.logout()
 }
 
 const deleteUser = async () => {

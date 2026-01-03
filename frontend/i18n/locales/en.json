@@ -66,7 +66,11 @@
         "alreadyHaveAccount": "Already have an account?",
         "noAccount": "Don't have an account?",
         "loginFailed": "Login failed",
-        "somethingWentWrong": "Something went wrong"
+        "somethingWentWrong": "Something went wrong",
+        "fillAllFields": "Please fill all fields",
+        "passwordMismatch": "Passwords do not match",
+        "confirmPassword": "Confirm Password",
+        "invalidCredentials": "Invalid email or password"
     },
     "content": {
         "uploadedTitle": "Uploaded!",
@@ -100,5 +104,32 @@
     "common": {
         "error": "Error",
         "success": "Success"
-    }
+    },
+    "welcomeDescription": "Watch, share, and upload your videos",
+    "categories": {
+        "all": "All",
+        "music": "Music",
+        "lifestyle": "Lifestyle & Wellness",
+        "gaming": "Gaming",
+        "movies": "Movies & Series",
+        "education": "Education",
+        "tech": "Tech",
+        "science": "Science & Technology",
+        "sports": "Sports",
+        "news": "News",
+        "health": "Health & Fitness",
+        "travel": "Travel",
+        "food": "Food",
+        "arts": "Arts & Culture",
+        "comedy": "Comedy & Entertainment",
+        "beauty": "Beauty & Fashion",
+        "cars": "Cars & Vehicles",
+        "pets": "Pets & Animals",
+        "photography": "Photography",
+        "books": "Books & Literature",
+        "motivation": "Motivation & Self-Help",
+        "finance": "Finance & Business",
+        "programming": "Programming & Tech Tutorials"
+    },
+    "uploadFirstVideo": "Upload First Video"
 }

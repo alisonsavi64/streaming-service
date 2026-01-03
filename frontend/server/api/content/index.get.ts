@@ -1,4 +1,4 @@
-import { defineEventHandler, createError, readMultipartFormData } from 'h3'
+import { defineEventHandler, createError, readMultipartFormData, setCookie } from 'h3'
 import { serverApi } from '../utils/serverApi'
 
 export default defineEventHandler(async (event) => {
