@@ -38,7 +38,7 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
   - Autenticação via **cookies HTTP-only**
 - Responsável pelo player HLS e interações do usuário
 
-📄 Detalhes em: [`frontend/README.md`](frontend/README.md)
+📄 Detalhes e preview das telas em: [`frontend/README.md`](frontend/README.md)
 
 ---
 
