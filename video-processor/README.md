@@ -16,7 +16,7 @@ Este serviço é o responsável por toda a **etapa de processamento de vídeos**
 Fluxo resumido:
 
 1. O **backend principal** recebe o upload do vídeo original (ex: MP4);  
-2. O backend salva o arquivo no **storage** e publica uma mensagem no **Kafka** informando que um novo vídeo foi salvo;  
+2. O backend salva o arquivo no **storage** e publica uma mensagem no **Kafka** informando que um novo vídeo foi salvo (Caso o serviço esteja indisponível o backend reenviará o evento posteriormente);  
 3. O **Video Processor Service** consome essa mensagem, obtém o **ID do vídeo** e o busca no storage;  
 4. O vídeo é **processado e convertido** para o formato HLS;  
 5. Após o processamento, o serviço **envia uma nova mensagem para o Kafka** informando que o vídeo foi processado;  
