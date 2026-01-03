@@ -131,6 +131,7 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
    - O serviço de *video-streaming* valida o acesso e retorna o caminho do stream.
    - O player no frontend consome o stream via **Nginx/CDN**.
    - O HLS permite **streaming adaptativo**, selecionando automaticamente a melhor resolução disponível (ex: 1080p, 720p).
+<img width="1162" height="642" alt="useCase1" src="https://github.com/user-attachments/assets/ebc6229f-b25c-43f4-b785-f416ffd29589" />
 
 ---
 
@@ -150,6 +151,9 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
    - Um evento de retorno é publicado no Kafka.
    - O backend atualiza o status do vídeo para `PROCESSED`.
 6. O vídeo passa a ficar disponível para visualização no frontend.
+
+<img width="1351" height="831" alt="usecase2" src="https://github.com/user-attachments/assets/c4c72142-0cc2-4615-a921-59eede6fd0eb" />
+
 ---
 
 ## 🏗️ Arquiteturas
