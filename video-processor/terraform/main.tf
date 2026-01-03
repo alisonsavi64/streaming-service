@@ -1,6 +1,6 @@
 # ============================================================================
-# Infraestrutura do Video Processor usando ECS + Fargate
-# Serviço responsável por processamento assíncrono de vídeos
+# Arquivo de esboço/exemplo de como a aplicação pode ser implantada
+# na AWS utilizando ECS Fargate.
 # ============================================================================
 
 provider "aws" {
