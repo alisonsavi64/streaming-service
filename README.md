@@ -206,7 +206,7 @@ Caso houvesse mais tempo para desenvolvimento, seriam realizadas as seguintes me
   - Likes
 - Realizar o **deploy em produção de forma completa**.  
   > Os *workflows* de CI/CD e arquivos **Terraform** já estão presentes no projeto como exemplos.
-- Implementar **WebSocket** no frontend para atualização em tempo real do status dos vídeos.
+- Implementar **WebSocket** no frontend para atualização em tempo real do status dos vídeos (No momento é necessário atualizar a página para carregar o status atual dos vídeos).
 - Adicionar **métricas** e instrumentação de observabilidade nos demais microserviços.
 - Melhorar a **padronização e clareza das respostas de erro da API**.
 - Finalizar a **cobertura total de testes automatizados**, pois alguns módulos ainda não foram contemplados.
