@@ -107,6 +107,9 @@ O frontend contém as seguintes páginas:
 - Mostra todo os vídeos do usuário e seus respectivos status
 <img width="1908" height="778" alt="meusvideos" src="https://github.com/user-attachments/assets/0721ed06-224a-4264-9748-69c9127b870e" />
 
+- 🎥 **Player de vídeo**
+<img width="1916" height="995" alt="player" src="https://github.com/user-attachments/assets/58fe3270-df47-47ff-8c14-8710a3af55eb" />
+
 - 👤 **Perfil**
 <img width="1928" height="786" alt="perfil" src="https://github.com/user-attachments/assets/73cb1ea5-fa2a-43b6-9333-0f6e16c3795d" />
 
