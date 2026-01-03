@@ -28,6 +28,7 @@ const deleteUser = async () => {
   if (!confirm(t('profilePage.confirmDelete'))) return
   await userService.remove()
   authService.logout()
+  navigateTo('/contents/mine')
 }
 </script>
 

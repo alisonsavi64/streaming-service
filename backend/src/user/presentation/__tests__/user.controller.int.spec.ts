@@ -61,6 +61,6 @@ describe('UserController (e2e) via running API', () => {
       .set('Cookie', jwtCookie)
       .expect(200);
 
-    expect(res.body.message).toBe('Usuário e todos os conteúdos deletados');
+    expect(res.body.message).toBe('User and all related content deleted successfully');
   });
 });

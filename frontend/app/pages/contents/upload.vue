@@ -38,6 +38,22 @@ const submit = async () => {
     })
   }
 
+  if (!title.value || !title.value.trim()) {
+    return Swal.fire({
+      title: t('common.error'),
+      text: t('uploadPage.enterTitle'),
+      icon: 'error'
+    })
+  }
+
+  if (!description.value || !description.value.trim()) {
+    return Swal.fire({
+      title: t('common.error'),
+      text: t('uploadPage.enterDescription'),
+      icon: 'error'
+    })
+  }
+
   if (videoFile.value.size >= MAX_FILE_SIZE) {
     return Swal.fire({
       title: t('uploadPage.fileTooLargeTitle'),
