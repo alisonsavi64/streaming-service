@@ -83,11 +83,25 @@ docker compose exec frontend npm run test
 
 O frontend contém as seguintes páginas:
 
-- 🔐 **Login**  
-- 🆕 **Registro**  
-- 🏠 **Home**  
-- 🎥 **Meus Vídeos**  
-- 👤 **Perfil**  
-- ⬆️ **Envio de Vídeos**  
+- 🔐 **Login**
+<img width="1925" height="789" alt="login" src="https://github.com/user-attachments/assets/a1eb5d82-f200-4e79-bd89-1f8ab9b49079" />
+
+- 🆕 **Registro**
+<img width="1918" height="795" alt="registro" src="https://github.com/user-attachments/assets/b062f923-8579-405d-8048-1888eaa79647" />
+
+- 🏠 **Home**
+<img width="1906" height="758" alt="home" src="https://github.com/user-attachments/assets/e15364b4-10ad-4dcf-ba61-ee270cad0f24" />
+
+- 🎥 **Meus Vídeos**
+<img width="1908" height="778" alt="meusvideos" src="https://github.com/user-attachments/assets/0721ed06-224a-4264-9748-69c9127b870e" />
+
+- 👤 **Perfil**
+<img width="1928" height="786" alt="perfil" src="https://github.com/user-attachments/assets/73cb1ea5-fa2a-43b6-9333-0f6e16c3795d" />
+
+- ⬆️ **Envio de Vídeos**
+<img width="1923" height="745" alt="Envio" src="https://github.com/user-attachments/assets/b9ec9e81-dd18-41de-909f-e1230b1b1dec" />
+
 - ✏️ **Edição de Vídeo**
+<img width="1921" height="800" alt="image" src="https://github.com/user-attachments/assets/68ed66e3-9c69-40c9-aebb-6ce29a333e89" />
+
 
