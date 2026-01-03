@@ -42,7 +42,9 @@
         "uploadSuccess": "Upload realizado com sucesso",
         "uploadError": "Ocorreu um erro ao enviar o vídeo",
         "editVideo": "Editar Vídeo",
-        "updateSuccess": "Vídeo atualizado com sucesso"
+        "updateSuccess": "Vídeo atualizado com sucesso",
+        "enterTitle": "Por favor, insira um título para seu vídeo.",
+        "enterDescription": "Por favor, insira uma descrição para seu vídeo."
 
     },
     "profilePage": {
