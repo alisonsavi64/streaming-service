@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import Swal from 'sweetalert2'
+import { useTheme } from '~/composables/useTheme'
 import { useContentService } from '../../../composables/useContentService'
+
 definePageMeta({
-    middleware: 'only-auth'
+  middleware: 'only-auth',
+  layout: 'default-no-aside'
 })
+
+const { t } = useI18n()
+const { isDark } = useTheme()
 const route = useRoute()
 const router = useRouter()
 const contentService = useContentService()
@@ -27,7 +35,8 @@ onMounted(async () => {
     video.value = data
     title.value = data.title
     description.value = data.description
-  } catch (err) {
+  } catch (err: any) {
+    if(err?.statusCode == 401) router.push("/auth/login")
     console.error('Failed to load video:', err)
   }
 })
@@ -41,16 +50,37 @@ const updateVideo = async () => {
   if (!video.value) return
   loading.value = true
 
+  const formData = new FormData()
+  formData.append('title', title.value)
+  formData.append('description', description.value)
+  if (thumbnailFile.value) formData.append('thumbnail', thumbnailFile.value)
+
   try {
-    const formData = new FormData()
-    formData.append('title', title.value)
-    formData.append('description', description.value)
-    if (thumbnailFile.value) formData.append('thumbnail', thumbnailFile.value)
+    Swal.fire({
+      title: t('uploadPage.uploadingTitle'),
+      text: t('uploadPage.uploadingText'),
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => Swal.showLoading(),
+      background: isDark.value ? '#18181b' : '#fff',
+      color: isDark.value ? '#fff' : '#000'
+    })
 
     await contentService.update(video.value.id, formData)
-    router.push(`/contents/${video.value.id}`)
+
+    await Swal.fire({
+      title: t('common.success'),
+      text: t('uploadPage.updateSuccess') || t('uploadPage.uploadSuccess'),
+      icon: 'success'
+    })
+
+    router.push(`/contents/${video.value.id}/edit`)
   } catch (err) {
-    console.error('Failed to update video:', err)
+    Swal.fire({
+      title: t('common.error'),
+      text: t('uploadPage.uploadError'),
+      icon: 'error'
+    })
   } finally {
     loading.value = false
   }
@@ -58,50 +88,48 @@ const updateVideo = async () => {
 </script>
 
 <template>
-  <div class="max-w-xl mx-auto mt-12 p-6 bg-zinc-900 rounded-xl shadow-lg text-white">
-    <h1 class="text-2xl font-bold mb-6">Edit Video</h1>
+  <div class="flex items-center justify-center px-4 py-12 transition-colors">
+    <form
+      @submit.prevent="updateVideo"
+      class="w-full max-w-lg p-8 rounded-2xl
+             bg-white dark:bg-zinc-900
+             shadow-lg dark:shadow-black/40
+             space-y-6 transition-colors"
+    >
+      <h1 class="text-3xl font-bold text-center text-zinc-900 dark:text-white">
+        {{ t('uploadPage.editVideo') || 'Edit Video' }}
+      </h1>
 
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">Title</label>
-      <input
+      <BaseInput
         v-model="title"
-        type="text"
-        class="w-full p-2 rounded bg-zinc-800 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        :label="t('uploadPage.videoTitle') || 'Title'"
       />
-    </div>
-
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1">Description</label>
-      <textarea
+      <BaseInput
         v-model="description"
-        rows="4"
-        class="w-full p-2 rounded bg-zinc-800 border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      ></textarea>
-    </div>
-
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-1">Thumbnail</label>
-      <input
-        type="file"
-        accept="image/*"
-        @change="handleThumbnailChange"
-        class="w-full text-sm text-white file:bg-blue-600 file:text-white file:rounded file:px-3 file:py-1 file:mr-4 file:border-none hover:file:bg-blue-700 transition"
+        :label="t('uploadPage.videoDescription') || 'Description'"
+        textarea
       />
-      <div v-if="video?.thumbnailUrl" class="mt-2">
+
+      <BaseFileInput
+        v-model="thumbnailFile"
+        :label="t('uploadPage.thumbnailFile') || 'Thumbnail'"
+        accept="image/*"
+        :placeholder="t('uploadPage.selectThumbnail') || 'Select thumbnail...'"
+      />
+
+      <div v-if="video?.thumbnailUrl" class="mt-2 flex justify-center">
         <img
           :src="video.thumbnailUrl"
           alt="Current thumbnail"
-          class="w-32 h-32 object-cover rounded border border-zinc-700"
+          class="w-32 h-32 object-cover rounded border border-zinc-300 dark:border-zinc-700"
         />
       </div>
-    </div>
 
-    <button
-      @click="updateVideo"
-      :disabled="loading"
-      class="w-full bg-blue-600 hover:bg-blue-700 transition py-2 rounded font-semibold disabled:opacity-50"
-    >
-      {{ loading ? 'Updating...' : 'Update Video' }}
-    </button>
+      <BaseButton
+        :label="loading ? t('uploadPage.updating') || 'Updating...' : t('uploadPage.submit') || 'Update Video'"
+        type="submit"
+        :disabled="loading"
+      />
+    </form>
   </div>
 </template>

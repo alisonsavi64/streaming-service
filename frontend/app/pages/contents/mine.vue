@@ -15,6 +15,8 @@ const loading = ref(true)
 const fetchContents = async () => {
   try {
     contents.value = await contentService.listMine()
+  } catch (err: any){
+    
   } finally {
     loading.value = false
   }
@@ -42,8 +44,7 @@ onMounted(fetchContents)
 </script>
 
 <template>
-  <section class="max-w-7xl mx-auto transition-colors">
-    <!-- Loading -->
+  <section class="min-w-7xl mx-auto transition-colors">
     <div
       v-if="loading"
       class="flex justify-center items-center h-64
@@ -52,8 +53,6 @@ onMounted(fetchContents)
     >
       {{ t('loading.videos') }}
     </div>
-
-    <!-- Empty -->
     <div
       v-else-if="filteredContents.length === 0"
       class="flex flex-col items-center text-center mt-32
@@ -64,9 +63,34 @@ onMounted(fetchContents)
         {{ t('empty.mineVideos') }}
       </p>
     </div>
+    
+    <div v-else > <CategoriesCarousel :categories="[
+        'categories.all',
+        'categories.music',
+        'categories.lifestyle',
+        'categories.gaming',
+        'categories.movies',
+        'categories.education',
+        'categories.tech',
+        'categories.science',
+        'categories.sports',
+        'categories.news',
+        'categories.health',
+        'categories.travel',
+        'categories.food',
+        'categories.arts',
+        'categories.comedy',
+        'categories.beauty',
+        'categories.cars',
+        'categories.pets',
+        'categories.photography',
+        'categories.books',
+        'categories.motivation',
+        'categories.finance',
+        'categories.programming'
+      ]" />
 
-    <!-- Grid -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <ContentCard
         v-for="v in filteredContents"
         :key="v.id"
@@ -74,6 +98,6 @@ onMounted(fetchContents)
         @edit="editVideo"
         @delete="deleteVideo"
       />
-    </div>
+    </div></div>
   </section>
 </template>

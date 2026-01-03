@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n' 
+import { useAuthStore } from '~/store/auth'
 
 export const useUserService = () => {
   const { t } = useI18n()
@@ -38,12 +39,15 @@ export const useUserService = () => {
         title: t('user.updatedTitle'),
         text: t('user.updatedText')
       })
+      useAuthStore().setUser(null); 
+      navigateTo("/auth/login");
     } catch (err: any) {
       Swal.fire({
         icon: 'error',
         title: t('user.updateFailedTitle'),
         text: err?.statusMessage || t('user.updateFailedText')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null); 
       return Promise.reject(err)
     }
   }
@@ -65,6 +69,7 @@ export const useUserService = () => {
         title: t('user.removalFailedTitle'),
         text: err?.statusMessage || t('user.removalFailedText')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }

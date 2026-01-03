@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'  
+import { useAuthStore } from '~/store/auth'
 
 export const useContentService = () => {
   const { t } = useI18n()
@@ -22,6 +23,7 @@ export const useContentService = () => {
         title: t('content.uploadFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }
@@ -49,11 +51,12 @@ export const useContentService = () => {
         headers: useRequestHeaders(['cookies'])
       })
     } catch (err: any) {
-      Swal.fire({
+      if(err.statusCode != 401) Swal.fire({
         icon: 'error',
         title: t('content.listMineFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }
@@ -65,11 +68,12 @@ export const useContentService = () => {
         headers: useRequestHeaders(['cookies'])
       })
     } catch (err: any) {
-      Swal.fire({
+       if(err.statusCode != 401)  Swal.fire({
         icon: 'error',
         title: t('content.showFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }
@@ -92,6 +96,7 @@ export const useContentService = () => {
         title: t('content.updateFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }
@@ -112,6 +117,7 @@ export const useContentService = () => {
         title: t('content.deleteFailedTitle'),
         text: err?.statusMessage || t('content.somethingWentWrong')
       })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }

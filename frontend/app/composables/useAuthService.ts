@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/store/auth'
 
 export const useAuthService = () => {
   const { t } = useI18n()
@@ -14,7 +15,9 @@ export const useAuthService = () => {
       Swal.fire({
         icon: 'error',
         title: t('auth.loginFailed'),     
-        text: err?.statusMessage || t('auth.somethingWentWrong'),
+        text: err?.statusMessage === "Invalid credentials"
+          ? t('auth.invalidCredentials')
+          : t('auth.somethingWentWrong')
       })
       return Promise.reject(err)
     }
@@ -35,6 +38,7 @@ export const useAuthService = () => {
       })
       return user
     } catch (err: any) {
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }

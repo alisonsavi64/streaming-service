@@ -1,4 +1,4 @@
-import { appendHeader, createError, defineEventHandler, readBody } from 'h3'
+import { appendHeader, createError, defineEventHandler, readBody, setCookie } from 'h3'
 import { serverApi } from '../utils/serverApi'
 
 export default defineEventHandler(async event => {

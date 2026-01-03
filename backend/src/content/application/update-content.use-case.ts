@@ -20,17 +20,17 @@ async execute(
   if (data.title) content.title = data.title;
   if (data.description) content.description = data.description;
   if (thumbnail) {
+    console.log(thumbnail)
     const thumbnailUrl = await this.storage.uploadThumbnail({
       contentId: id,
       file: thumbnail.buffer,
       filename: thumbnail.filename,
       mimeType: thumbnail.mimeType,
     });
+    console.log(thumbnailUrl)
     content.setThumbnail(thumbnailUrl);
   }
-
   await this.contentRepository.save(content);
-
   return { message: 'Content updated successfully', content };
 }
 

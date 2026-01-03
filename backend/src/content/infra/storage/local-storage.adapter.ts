@@ -38,12 +38,15 @@ export class LocalStorageAdapter implements StoragePort {
     const dir = `/storage/thumbnails/${contentId}`;
     await fs.mkdir(dir, { recursive: true });
     const filePath = path.join(dir, 'thumbnail.jpg');
-    try {
-      await fs.unlink(filePath);
-    } catch (err: any) {
-      if (err.code !== 'ENOENT') throw err;
-    }
-    await fs.writeFile(filePath, file);
+    console.log(filePath)
+      try {
+        await fs.rm(filePath, { force: true });
+        console.log(`Deleted file at: ${filePath} (if it existed)`);
+        await fs.writeFile(filePath, file);
+        console.log(`File written successfully at: ${filePath}`);
+      } catch (err) {
+        console.error(`Error handling file at ${filePath}:`, err);
+      }
     return `/thumbnails/${contentId}/thumbnail.jpg`;
   }
 

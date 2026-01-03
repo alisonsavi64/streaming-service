@@ -1,4 +1,4 @@
-import { appendHeader, createError, defineEventHandler, H3Event, readBody } from 'h3'
+import { appendHeader, createError, defineEventHandler, H3Event, readBody, setCookie } from 'h3'
 import { serverApi } from '../utils/serverApi'
 
 export default defineEventHandler(async event => {
@@ -10,9 +10,25 @@ export default defineEventHandler(async event => {
         password,
         email
     })
+    setCookie(event, 'access_token', '', {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: 0, 
+    })
     return { message: 'success' }
   } catch (err: any) {
   if (err.response) {
+    if (err.response.status === 401) {
+      setCookie(event, 'access_token', '', {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 0,
+      })
+    }
     throw createError({
       statusCode: err.response.status,
       statusMessage: err.response.data?.message || err.message
