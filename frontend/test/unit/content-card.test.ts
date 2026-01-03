@@ -1,8 +1,5 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import BaseButton from '../../app/components/BaseButton.vue'
-import BaseInput from '../../app/components/BaseInput.vue'
-import BaseFileInput from '../../app/components/BaseFileInput.vue'
 import ContentCard from '../../app/components/ContentCard.vue'
 import type { ContentStatus } from '../../app/constants/contentStatus'
 
@@ -28,7 +25,7 @@ vi.mock('~/constants/contentStatus', () => ({
 }))
 
 describe('ContentCard', () => {
-  it('ContentCard renders video and status', () => {
+  it('renders video title and status', () => {
     const video = {
       id: '1',
       title: 'My Video',
@@ -37,12 +34,14 @@ describe('ContentCard', () => {
       userId: 'user1',
       status: 'PROCESSING' as ContentStatus,
     }
+
     const wrapper = mount(ContentCard, { props: { video } })
+
     expect(wrapper.text()).toContain('My Video')
     expect(wrapper.text()).toContain('status.processing')
   })
 
-  it('ContentCard hides status if none', () => {
+  it('does not render status badge when status is missing', () => {
     const video = {
       id: '2',
       title: 'No Status',
@@ -50,11 +49,13 @@ describe('ContentCard', () => {
       thumbnailUrl: '',
       userId: 'user1',
     }
+
     const wrapper = mount(ContentCard, { props: { video } })
-    expect(wrapper.find('.status-badge').exists()).toBe(false)
+
+    expect(wrapper.text()).not.toContain('status.')
   })
 
-  it('ContentCard emits edit and delete', async () => {
+  it('emits edit and delete events when owner clicks buttons', async () => {
     const video = {
       id: '3',
       title: 'Video',
@@ -63,10 +64,14 @@ describe('ContentCard', () => {
       userId: 'user1',
       status: 'UPLOADED' as ContentStatus,
     }
+
     const wrapper = mount(ContentCard, { props: { video } })
 
-    await wrapper.find('button.bg-blue-600').trigger('click')
-    await wrapper.find('button.bg-red-600').trigger('click')
+    const buttons = wrapper.findAll('button')
+    expect(buttons).toHaveLength(2)
+
+    await buttons[0].trigger('click')
+    await buttons[1].trigger('click')
 
     expect(wrapper.emitted('edit')?.[0]).toEqual(['3'])
     expect(wrapper.emitted('delete')?.[0]).toEqual(['3'])
