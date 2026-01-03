@@ -8,7 +8,7 @@ export class TypeOrmUserRepository implements UserRepository {
   constructor(
     @InjectRepository(UserOrmEntity)
     private readonly repo: Repository<UserOrmEntity>,
-  ) {}
+  ) { }
 
   async findByEmail(email: string): Promise<User | null> {
     const ormUser = await this.repo.findOne({ where: { email } });

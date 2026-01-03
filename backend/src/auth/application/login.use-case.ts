@@ -7,7 +7,7 @@ export class LoginUseCase {
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
     private readonly passwordCompare: (a: string, b: string) => boolean,
-  ) {}
+  ) { }
 
   async execute(email: string, password: string) {
     const user = await this.userRepository.findByEmail(email);
@@ -28,6 +28,6 @@ export class LoginUseCase {
       name: user.name
     });
 
-    return { access_token: token, user:  {name: user.name, email: user.email, id: user.id}};
+    return { access_token: token, user: { name: user.name, email: user.email, id: user.id } };
   }
 }

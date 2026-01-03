@@ -47,16 +47,16 @@ describe('TypeOrmContentRepository (integration)', () => {
     await repository.query('TRUNCATE TABLE "contents" RESTART IDENTITY CASCADE');
     await userRepository.query('TRUNCATE TABLE "users" RESTART IDENTITY CASCADE');
   });
-    const createTestUser = async () => {
+  const createTestUser = async () => {
     const email = `test-${uuidv4()}@example.com`;
     const user = userRepository.create({
-        name: 'Test User',
-        email,
+      name: 'Test User',
+      email,
     });
     user.passwordHash = 'hashedPassword';
     await userRepository.save(user);
     return user;
-    };
+  };
 
 
   it('should save and retrieve a content', async () => {

@@ -32,8 +32,11 @@ const submit = async () => {
     return
   }
 
-  // Call service to create user
-  await userService.create(name.value, email.value, password.value)
+  try{
+    await userService.create(name.value, email.value, password.value)
+  } catch {
+    return;
+  }
   navigateTo('/auth/login')
 }
 </script>

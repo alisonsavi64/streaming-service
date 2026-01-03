@@ -17,16 +17,16 @@ async function bootstrap() {
     new FastifyAdapter({
       logger: isDev
         ? {
-            level: 'debug',
-            transport: {
-              target: 'pino-pretty',
-              options: { colorize: true, translateTime: 'HH:MM:ss' },
-            },
-          }
-        : {
-            level: 'info',
+          level: 'debug',
+          transport: {
+            target: 'pino-pretty',
+            options: { colorize: true, translateTime: 'HH:MM:ss' },
           },
-      bodyLimit: 104857600, 
+        }
+        : {
+          level: 'info',
+        },
+      bodyLimit: 104857600,
     }),
   );
   await app.register(multipart, {
@@ -36,8 +36,8 @@ async function bootstrap() {
     secret: process.env.COOKIE_SECRET,
   });
   const allowedOrigins = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(',')
-  : ['http://localhost:3000'];
+    ? process.env.CORS_ORIGINS.split(',')
+    : ['http://localhost:3000'];
 
   app.enableCors({
     origin: allowedOrigins,
@@ -47,7 +47,7 @@ async function bootstrap() {
     .setTitle('WatchTube API')
     .setDescription('API para gerenciamento de vídeos, usuários e conteúdos, permitindo upload, atualização, listagem e controle de acesso dos conteúdos.')
     .setVersion('1.0')
-    .addBearerAuth() 
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

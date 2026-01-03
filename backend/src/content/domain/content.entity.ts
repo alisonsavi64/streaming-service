@@ -12,7 +12,7 @@ export class Content {
     public readonly createdAt: Date,
     public processedAt?: Date,
     public thumbnailUrl?: string
-  ) {}
+  ) { }
 
   static create(params: {
     title: string;

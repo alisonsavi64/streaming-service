@@ -21,7 +21,9 @@ export const useUserService = () => {
       Swal.fire({
         icon: 'error',
         title: t('user.creationFailedTitle'),
-        text: err?.statusMessage || t('user.creationFailedText')
+        text:  err?.statusMessage === "User already exists"
+                ? t('user.userAlreadyExists')
+                : t('auth.somethingWentWrong')
       })
       return Promise.reject(err)
     }

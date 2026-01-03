@@ -9,7 +9,7 @@ export class MarkContentFailedUseCase {
   constructor(
     @InjectRepository(ContentOrmEntity)
     private readonly repo: Repository<ContentOrmEntity>,
-  ) {}
+  ) { }
 
   async execute(contentId: string) {
     const result = await this.repo.update(
