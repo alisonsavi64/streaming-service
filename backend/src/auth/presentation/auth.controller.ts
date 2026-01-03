@@ -7,7 +7,8 @@ import {
   Res,
   UnauthorizedException,
   UseGuards,
-  Logger
+  Logger,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { LoginUseCase } from '../application/login.use-case';
@@ -29,21 +30,27 @@ import { AuthResponseDto } from './auth.dto';
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
 
-  constructor(private readonly loginUseCase: LoginUseCase) { }
+  constructor(private readonly loginUseCase: LoginUseCase) {}
 
   @Post('login')
   @ApiOperation({
     summary: 'Login do usuário',
-    description: 'Autentica o usuário utilizando e-mail e senha, define um cookie HTTP-only e retorna informações do usuário junto com o token JWT. Como a autenticação utiliza cookie HTTP-only, caso o login seja bem-sucedido, basta chamar as outras rotas — não é necessário adicionar nenhum header extra nas requisições.'
+    description:
+      'Autentica o usuário utilizando e-mail e senha, define um cookie HTTP-only e retorna informações do usuário junto com o token JWT.',
   })
   @ApiBody({ type: LoginDto })
-  @ApiResponse({ status: 200, description: 'Login realizado com sucesso, retorna informações do usuário e JWT', type: AuthResponseDto })
-  @ApiResponse({ status: 401, description: 'Credenciais inválidas' })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Login successful, returns user info and JWT',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) reply: FastifyReply,
   ) {
-    this.logger.log({ email: dto.email }, 'Tentativa de login');
+    this.logger.log({ email: dto.email }, 'Login attempt');
 
     try {
       const result = await this.loginUseCase.execute(dto.email, dto.password);
@@ -56,11 +63,17 @@ export class AuthController {
         maxAge: 60 * 60 * 24,
       });
 
-      this.logger.log({ userId: result.user.id }, 'Login realizado com sucesso');
+      this.logger.log(
+        { userId: result.user.id },
+        'Login successful',
+      );
       return result;
     } catch (error) {
-      this.logger.error(error, `Falha no login para o email ${dto.email}`);
-      throw error;
+      this.logger.error(error, `Login failed for email ${dto.email}`);
+      if (error instanceof InvalidCredentialsError) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      throw new InternalServerErrorException('Internal server error while logging in');
     }
   }
 
@@ -69,25 +82,31 @@ export class AuthController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Obter usuário logado',
-    description: 'Retorna informações sobre o usuário atualmente autenticado com base nos cookies da requisição.'
+    description:
+      'Retorna informações sobre o usuário atualmente autenticado com base nos cookies da requisição.',
   })
-  @ApiResponse({ status: 200, description: 'Retorna informações do usuário logado', type: UserResponseDto })
-  @ApiResponse({ status: 401, description: 'Não autorizado' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns logged-in user info',
+    type: UserResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   me(@Req() req: any) {
-    this.logger.log({ userId: req.user.id }, 'Obtendo usuário atual');
+    this.logger.log({ userId: req.user.id }, 'Fetching current user');
     return req.user;
   }
 
   @Post('logout')
   @ApiOperation({
     summary: 'Logout do usuário',
-    description: 'Limpa o cookie HTTP-only do JWT para desconectar o usuário do sistema.'
+    description:
+      'Limpa o cookie HTTP-only do JWT para desconectar o usuário do sistema.',
   })
-  @ApiResponse({ status: 200, description: 'Logout realizado com sucesso' })
+  @ApiResponse({ status: 200, description: 'Logout successful' })
   logout(@Res({ passthrough: true }) reply: FastifyReply) {
-    this.logger.log('Logout solicitado');
+    this.logger.log('Logout requested');
     reply.clearCookie('access_token', { path: '/' });
-    this.logger.log('Logout realizado com sucesso');
+    this.logger.log('Logout successful');
     return { success: true };
   }
 }

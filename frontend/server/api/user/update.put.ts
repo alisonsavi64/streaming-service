@@ -19,6 +19,7 @@ export default defineEventHandler(async event => {
     })
     return { message: 'success' }
   } catch (err: any) {
+    console.log(err)
   if (err.response) {
     if (err.response.status === 401) {
       setCookie(event, 'access_token', '', {
