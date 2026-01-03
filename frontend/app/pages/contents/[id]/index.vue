@@ -5,7 +5,7 @@
     @mousemove="showControlsNow"
     @click="showControlsNow"
   >
-    <!-- VIDEO ELEMENT -->
+    VIDEO ELEMENT -->
     <video
       ref="videoEl"
       autoplay
@@ -15,7 +15,7 @@
       @loadedmetadata="onLoadedMetadata"
     />
 
-    <!-- CENTER PLAY/PAUSE BUTTON -->
+    CENTER PLAY/PAUSE BUTTON -->
     <transition name="fade">
       <button
         v-if="showControls"
@@ -27,7 +27,7 @@
       </button>
     </transition>
 
-    <!-- TOP INFO BAR -->
+    TOP INFO BAR -->
     <transition name="fade">
       <div
         v-if="showControls"
@@ -38,13 +38,13 @@
       </div>
     </transition>
 
-    <!-- BOTTOM CONTROLS -->
+    BOTTOM CONTROLS -->
     <transition name="fade">
       <div
         v-if="showControls"
         class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent text-white flex flex-col gap-3 shadow-lg rounded-t-2xl"
       >
-        <!-- PROGRESS BAR -->
+        PROGRESS BAR -->
         <div
           class="h-2 w-full bg-white/20 rounded cursor-pointer relative overflow-hidden"
           @click.stop="seekTo"
@@ -55,16 +55,16 @@
           />
         </div>
 
-        <!-- CONTROL ROW -->
+        CONTROL ROW -->
         <div class="flex items-center gap-4">
-          <!-- SEEK BACKWARD -->
+          SEEK BACKWARD -->
           <button
             @click.stop="seek(-10)"
             class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Rewind 10s"
           >⏪</button>
 
-          <!-- PLAY/PAUSE -->
+          PLAY/PAUSE -->
           <button
             @click.stop="togglePlay"
             class="p-3 bg-primary/20 hover:bg-primary/40 rounded-full transition text-2xl"
@@ -74,21 +74,21 @@
             <span v-else>⏸</span>
           </button>
 
-          <!-- SEEK FORWARD -->
+          SEEK FORWARD -->
           <button
             @click.stop="seek(10)"
             class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Forward 10s"
           >⏩</button>
 
-          <!-- TIMESTAMP -->
+          TIMESTAMP -->
           <span class="text-sm opacity-80 font-mono">
             {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
           </span>
 
           <div class="flex-1"></div>
 
-          <!-- VOLUME CONTROL -->
+          VOLUME CONTROL -->
           <input
             type="range"
             min="0"
@@ -99,7 +99,7 @@
             class="w-24 h-1 bg-white/30 rounded-lg accent-primary"
           />
 
-          <!-- FULLSCREEN TOGGLE -->
+          FULLSCREEN TOGGLE -->
           <button
             @click.stop="toggleFullscreen"
             class="p-2 hover:bg-primary/20 rounded transition"
@@ -109,7 +109,7 @@
             <span v-else>🡾</span>
           </button>
 
-          <!-- QUALITY SELECTOR -->
+          QUALITY SELECTOR -->
           <select
             v-model.number="selectedQuality"
             @change="changeQuality(selectedQuality)"
@@ -124,7 +124,7 @@
     </transition>
   </div>
 
-  <!-- LOADING STATE -->
+  LOADING STATE -->
   <div v-else class="flex items-center justify-center h-screen text-white text-xl animate-pulse">
     Loading video...
   </div>

@@ -60,9 +60,6 @@ export class AuthController {
       return result;
     } catch (error) {
       this.logger.error(error, `Falha no login para o email ${dto.email}`);
-      if (error instanceof InvalidCredentialsError) {
-        throw new UnauthorizedException(error.message);
-      }
       throw error;
     }
   }

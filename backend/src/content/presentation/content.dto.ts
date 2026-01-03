@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ContentStatus } from '../domain/content.status';
 
 export class FileDto {
-  @ApiProperty({ type: 'string', format: 'binary', description: 'File content' })
+  @ApiProperty({ type: 'string', format: 'binary', description: 'Video file (.mov, .mkv or any video/* type)' })
   buffer: Buffer;
 
   @ApiProperty({ description: 'Filename' })
@@ -64,33 +64,33 @@ export class ContentResponseDto {
 }
 
 export class ContentMineResponseDto {
-  @ApiProperty({ description: 'ID do conteúdo' })
+  @ApiProperty({ description: 'Content ID' })
   id: string;
 
-  @ApiProperty({ description: 'Título do conteúdo' })
+  @ApiProperty({ description: 'Content title' })
   title: string;
 
-  @ApiProperty({ description: 'Descrição do conteúdo' })
+  @ApiProperty({ description: 'Content description' })
   description: string;
 
-  @ApiProperty({ description: 'ID do usuário dono do conteúdo' })
+  @ApiProperty({ description: 'ID of the user who owns the content' })
   userId: string;
 
-  @ApiProperty({ description: 'URL ou caminho do vídeo' })
+  @ApiProperty({ description: 'Video URL or path' })
   videoUrl: string;
 
-  @ApiProperty({ description: 'URL ou caminho da thumbnail' })
+  @ApiProperty({ description: 'Thumbnail URL or path' })
   thumbnailUrl: string;
 
-  @ApiProperty({ description: 'Data de criação do conteúdo' })
+  @ApiProperty({ description: 'Content creation date' })
   createdAt: Date;
 
-  @ApiProperty({ description: 'Data da última atualização do conteúdo' })
+  @ApiProperty({ description: 'Content last update date' })
   updatedAt: Date;
 
-  @ApiProperty({ 
-    description: 'Status do conteúdo',
-    enum: ContentStatus
+  @ApiProperty({
+    description: 'Content status',
+    enum: ContentStatus,
   })
   status: ContentStatus;
 }

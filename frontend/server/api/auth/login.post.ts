@@ -4,14 +4,12 @@ import { serverApi } from '../utils/serverApi'
 export default defineEventHandler(async event => {
   const api = serverApi(event)
   const { email, password } = await readBody(event)
-  console.log(password, email);
   try {
     const res = await api.post('/auth/login', {
       password,
       email
     })
     const setCookie = res.headers['set-cookie']
-    console.log(setCookie);
     if (setCookie) {
       const cookies = Array.isArray(setCookie) ? setCookie : [setCookie]
       for (const cookie of cookies) {
@@ -27,10 +25,8 @@ export default defineEventHandler(async event => {
       statusMessage: err.response.data?.message || err.message
     })
   } else if (err.request) {
-    console.log(err.request)
     throw createError({ statusCode: 503, statusMessage: 'No response from server' })
   } else {
-    console.log(err.message)
     throw createError({ statusCode: 500, statusMessage: err.message })
   }
 }

@@ -45,7 +45,6 @@ describe('UserController (e2e) via running API', () => {
       .send({ name: 'Updated Name', email: testUser.email, password: 'newpass' })
       .expect(200);
 
-    console.log(res.body)
     expect(res.status).toBe(200);
   });
 
