@@ -210,5 +210,5 @@ Caso houvesse mais tempo para desenvolvimento, seriam realizadas as seguintes me
 - Adicionar **métricas** e instrumentação de observabilidade nos demais microserviços.
 - Melhorar a **padronização e clareza das respostas de erro da API**.
 - Finalizar a **cobertura total de testes automatizados**, pois alguns módulos ainda não foram contemplados.
-
+- Implementar paginação e filtros de categoria nas páginas de vídeos
 ---
