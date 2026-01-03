@@ -1,5 +1,6 @@
 # ============================================================================
-# Infraestrutura do Frontend usando ECS + Fargate
+# Arquivo de esboço/exemplo de como a aplicação pode ser implantada
+# na AWS utilizando ECS Fargate.
 # ============================================================================
 
 provider "aws" {
