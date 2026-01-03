@@ -36,7 +36,7 @@
         "selectVideo": "Selecione um vídeo",
         "selectThumbnail": "Selecione uma miniatura",
         "fileTooLargeTitle": "Arquivo muito grande",
-        "fileTooLargeText": "O vídeo deve ter no máximo 100MB",
+        "fileTooLargeText": "O vídeo deve ter no máximo 200MB",
         "uploadingTitle": "Enviando...",
         "uploadingText": "Aguarde enquanto seu vídeo está sendo enviado",
         "uploadSuccess": "Upload realizado com sucesso",

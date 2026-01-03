@@ -5,19 +5,13 @@ import FormDataNode from 'form-data'
 export default defineEventHandler(async (event) => {
   try {
     const api = serverApi(event)
-    const formItems = await readMultipartFormData(event) || []
-    const body = new FormDataNode()
-    for (const item of formItems) {
-      if (!item.name) continue
-      if (item.name === 'upload' || item.name === 'thumbnail') {
-        console.log('Appending file:', item.name, item.filename, item.type);
-        body.append(item.name, item.data, { filename: item.filename, contentType: item.type })
-      } else if (item.data !== undefined) {
-        body.append(item.name, item.data.toString())
-      }
-    }
-    const headers = body.getHeaders(); 
-    const res = await api.post('/contents', body, { headers }) 
+      const res = await api.post('/contents', event.node.req, {
+    headers: {
+      ...event.node.req.headers,
+    },
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity,
+  }) 
     return res.data 
   } catch (err: any) {
   if (err.response) {
@@ -35,10 +29,10 @@ export default defineEventHandler(async (event) => {
       statusMessage: err.response.data?.message || err.message
     })
   } else if (err.request) {
-    console.log(err.request)
+
     throw createError({ statusCode: 503, statusMessage: 'No response from server' })
   } else {
-    console.log(err.message)
+
     throw createError({ statusCode: 500, statusMessage: err.message })
   }
 }

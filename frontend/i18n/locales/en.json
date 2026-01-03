@@ -36,7 +36,7 @@
         "selectVideo": "Please select a video",
         "selectThumbnail": "Please select a thumbnail",
         "fileTooLargeTitle": "File too large",
-        "fileTooLargeText": "The video file must be smaller than 100MB",
+        "fileTooLargeText": "The video file must be smaller than 200MB",
         "uploadingTitle": "Uploading...",
         "uploadingText": "Please wait while your video is being uploaded",
         "uploadSuccess": "Upload completed successfully",

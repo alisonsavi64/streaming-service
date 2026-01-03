@@ -52,22 +52,20 @@ const submit = async () => {
         {{ t('auth.registerTitle') }}
       </h1>
 
-      <!-- Name -->
       <BaseInput
         v-model="name"
         :label="t('auth.name')"
         placeholder="e.g. John Doe"
       />
 
-      <!-- Email -->
       <BaseInput
         v-model="email"
         :label="t('auth.email')"
         type="email"
         placeholder="example@mail.com"
+        pattern="^[^@\s]+@[^\s@]+\.[a-zA-Z]{2,}$"
       />
 
-      <!-- Password -->
       <BaseInput
         v-model="password"
         :label="t('auth.password')"
@@ -75,7 +73,6 @@ const submit = async () => {
         placeholder="••••••••"
       />
 
-      <!-- Confirm Password -->
       <BaseInput
         v-model="confirmPassword"
         :label="t('auth.confirmPassword')"
@@ -83,12 +80,10 @@ const submit = async () => {
         placeholder="••••••••"
       />
 
-      <!-- Submit Button -->
       <BaseButton type="submit">
         {{ t('auth.registerTitle') }}
       </BaseButton>
 
-      <!-- Already have account -->
       <p class="text-sm text-center text-zinc-600 dark:text-zinc-400">
         {{ t('auth.alreadyHaveAccount') }}
         <NuxtLink

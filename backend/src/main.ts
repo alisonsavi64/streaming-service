@@ -30,7 +30,7 @@ async function bootstrap() {
     }),
   );
   await app.register(multipart, {
-    limits: { fileSize: 100 * 1024 * 1024 },
+    limits: { fileSize: 300 * 1024 * 1024 },
   });
   await app.register(fastifyCookie, {
     secret: process.env.COOKIE_SECRET,
