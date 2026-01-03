@@ -192,15 +192,21 @@ Em um ambiente de produção, o fluxo principal da aplicação permanece o mesmo
 ![Arquitetura Produção](https://github.com/user-attachments/assets/bd25faa2-f0a5-4468-b045-9d8afe8604ed)
 ---
 
-## Caso houvesse mais tempo para desenvolvimento, seria feito:
+## 🛠️ Melhorias Futuras
 
-- Finalizar o sistema de **assinatura de links** no *video-streaming service* (No momento ele retorna o link sem nenhum tipo de autenticação)
-- Adicionar validações de **autenticidade** no *video-processor*
-- Adicionar mais **features**, como comentários, likes, etc.
-- Colocar o projeto em **produção de fato**  
-  (o deploy foi comentado nos *workflows* e arquivos *Terraform*, ficando apenas como exemplos)
-- Adicionar conexão websocket no frontend para atualização em tempo real de status de vídeos
-- Adicionar métricas nos outros microserviços
-- Melhorar respostas de erros da api
-- Finalizar cobetura total dos testes (Faltaram alguns módulos)
+Caso houvesse mais tempo para desenvolvimento, seriam realizadas as seguintes melhorias:
+
+- Finalizar o sistema de **assinatura de URLs** no *video-streaming service*  
+  (atualmente o serviço retorna o link sem autenticação).
+- Adicionar validações de **autenticidade e segurança** no *video-processor*.
+- Implementar novas **funcionalidades**, como:
+  - Comentários
+  - Likes
+- Realizar o **deploy em produção de forma completa**.  
+  > Os *workflows* de CI/CD e arquivos **Terraform** já estão presentes no projeto como exemplos.
+- Implementar **WebSocket** no frontend para atualização em tempo real do status dos vídeos.
+- Adicionar **métricas** e instrumentação de observabilidade nos demais microserviços.
+- Melhorar a **padronização e clareza das respostas de erro da API**.
+- Finalizar a **cobertura total de testes automatizados**, pois alguns módulos ainda não foram contemplados.
+
 ---
