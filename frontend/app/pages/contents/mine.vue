@@ -15,6 +15,8 @@ const loading = ref(true)
 const fetchContents = async () => {
   try {
     contents.value = await contentService.listMine()
+  } catch (err: any){
+    
   } finally {
     loading.value = false
   }
@@ -61,9 +63,18 @@ onMounted(fetchContents)
         {{ t('empty.mineVideos') }}
       </p>
     </div>
+    
+    <div v-else ><CategoriesCarousel
+  :categories="[
+    'All','Music','Lifestyle & Wellness','Gaming','Movies & Series','Education','Tech',
+    'Science & Technology','Sports','News','Health & Fitness','Travel','Food','Travel & Adventure',
+    'Arts & Culture','DIY & Crafts','History & Documentaries','Comedy & Entertainment',
+    'Beauty & Fashion','Cars & Vehicles','Pets & Animals','Photography','Books & Literature',
+    'Motivation & Self-Help','Finance & Business','Programming & Tech Tutorials'
+  ]"
+/>
 
-    <!-- Grid -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <ContentCard
         v-for="v in filteredContents"
         :key="v.id"
@@ -71,6 +82,6 @@ onMounted(fetchContents)
         @edit="editVideo"
         @delete="deleteVideo"
       />
-    </div>
+    </div></div>
   </section>
 </template>

@@ -8,7 +8,8 @@ export default defineEventHandler(async (event) => {
     return res 
   } catch (err: any) {
   if (err.response) {
-    if (err.response.status === 401) {
+      console.log("Aqui")
+    if (err.response.status == 401) {
       setCookie(event, 'access_token', '', {
         path: '/',
         httpOnly: true,

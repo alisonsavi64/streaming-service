@@ -14,8 +14,6 @@
         class="w-full h-52 object-cover rounded-t-2xl"
       />
     </div>
-
-    <!-- Video Info -->
     <div class="p-3 flex flex-col gap-1">
       <div class="flex items-center justify-between">
         <h3
@@ -24,8 +22,6 @@
         >
           {{ video.title }}
         </h3>
-
-        <!-- Status Badge next to title -->
         <span
           v-if="status"
           :class="[
@@ -108,7 +104,7 @@ const status = computed(() =>
 const isOwner = computed(() => props.video.userId === auth.user?.id)
 
 const goToVideo = () => {
-  if (props.video.status === 'PROCESSED') {
+  if (props.video.status && props.video.status === 'PROCESSED') {
     router.push(`/contents/${props.video.id}`)
   }
 }

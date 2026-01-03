@@ -19,7 +19,7 @@ const thumbnailFile = ref<File | null>(null)
 
 const contentService = useContentService()
 
-const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+const MAX_FILE_SIZE = 100 * 1024 * 1024 
 
 const submit = async () => {
   if (!videoFile.value) {
@@ -38,7 +38,6 @@ const submit = async () => {
     })
   }
 
-  // 🔴 File size validation
   if (videoFile.value.size >= MAX_FILE_SIZE) {
     return Swal.fire({
       title: t('uploadPage.fileTooLargeTitle'),
@@ -54,7 +53,6 @@ const submit = async () => {
   formData.append('thumbnail', thumbnailFile.value)
 
   try {
-    // 🔵 Loading modal
     Swal.fire({
       title: t('uploadPage.uploadingTitle'),
       text: t('uploadPage.uploadingText'),

@@ -1,16 +1,16 @@
 <template>
   <div
     v-if="videoMeta"
-    class="fixed inset-0 bg-black z-50 flex items-center justify-center"
+    class="fixed inset-0 flex items-center justify-center bg-secondary-dark dark:bg-secondary-dark z-50"
     @mousemove="showControlsNow"
     @click="showControlsNow"
   >
-    <!-- VIDEO -->
+    <!-- VIDEO ELEMENT -->
     <video
       ref="videoEl"
       autoplay
       playsinline
-      class="w-full h-full object-contain bg-black"
+      class="w-full h-full object-contain bg-secondary-dark"
       @timeupdate="onTimeUpdate"
       @loadedmetadata="onLoadedMetadata"
     />
@@ -20,7 +20,7 @@
       <button
         v-if="showControls"
         @click.stop="togglePlay"
-        class="absolute inset-0 flex items-center justify-center text-white text-7xl bg-black/30 rounded-full hover:bg-black/50 transition"
+        class="absolute inset-0 flex items-center justify-center text-primary text-7xl bg-black/30 rounded-full hover:bg-black/50 transition"
       >
         <span v-if="videoEl?.paused">▶</span>
         <span v-else>⏸</span>
@@ -42,7 +42,7 @@
     <transition name="fade">
       <div
         v-if="showControls"
-        class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent text-white flex flex-col gap-3 shadow-lg rounded-t-xl"
+        class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent text-white flex flex-col gap-3 shadow-lg rounded-t-2xl"
       >
         <!-- PROGRESS BAR -->
         <div
@@ -50,14 +50,14 @@
           @click.stop="seekTo"
         >
           <div
-            class="h-2 bg-gradient-to-r from-red-500 to-pink-500 rounded transition-all"
+            class="h-2 bg-gradient-to-r from-primary to-accent rounded transition-all"
             :style="{ width: progressPercent + '%' }"
           />
         </div>
 
         <!-- CONTROL ROW -->
         <div class="flex items-center gap-4">
-          <!-- SEEK -->
+          <!-- SEEK BACKWARD -->
           <button
             @click.stop="seek(-10)"
             class="p-2 hover:bg-white/20 rounded-full transition"
@@ -76,7 +76,7 @@
             <span v-else>⏸</span>
           </button>
 
-          <!-- FORWARD -->
+          <!-- SEEK FORWARD -->
           <button
             @click.stop="seek(10)"
             class="p-2 hover:bg-white/20 rounded-full transition"
@@ -91,6 +91,17 @@
           </span>
 
           <div class="flex-1"></div>
+
+          <!-- VOLUME CONTROL -->
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            v-model.number="volume"
+            @input="changeVolume(volume)"
+            class="w-24 h-1 bg-white/30 rounded-lg accent-primary"
+          />
 
           <!-- QUALITY SELECTOR -->
           <select
@@ -114,7 +125,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import Hls from 'hls.js'
 import { useContentService } from '../../../composables/useContentService'
@@ -125,10 +136,10 @@ const videoMeta = ref<any>(null)
 
 const qualities = ref<{ label: string; level: number }[]>([])
 const selectedQuality = ref(-1)
-
 const showControls = ref(true)
 const duration = ref(0)
 const currentTime = ref(0)
+const volume = ref(1)
 
 let hls: Hls | null = null
 let hideTimeout: number | null = null
@@ -159,6 +170,7 @@ const onTimeUpdate = () => {
 const onLoadedMetadata = () => {
   if (!videoEl.value) return
   duration.value = videoEl.value.duration
+  if (videoEl.value) videoEl.value.volume = volume.value
 }
 
 const seekTo = (e: MouseEvent) => {
@@ -173,6 +185,10 @@ const changeQuality = (level: number) => {
   if (!hls) return
   hls.currentLevel = level
   selectedQuality.value = level
+}
+
+const changeVolume = (val: number) => {
+  if (videoEl.value) videoEl.value.volume = val
 }
 
 const formatTime = (time: number) => {
@@ -193,9 +209,8 @@ onMounted(async () => {
   try {
     videoMeta.value = await useContentService().show(id)
     const { videoStreamHost } = useRuntimeConfig().public
-    const { manifestUrl } = await fetch(
-      `${videoStreamHost}/stream/${id}`
-    ).then(r => r.json())
+    const { manifestUrl } = await fetch(`${videoStreamHost}/stream/${id}`).then(r => r.json())
+
     if (Hls.isSupported()) {
       hls = new Hls()
       hls.loadSource(manifestUrl)
@@ -204,10 +219,7 @@ onMounted(async () => {
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         qualities.value = [
           { label: 'Auto', level: -1 },
-          ...hls!.levels.map((l, i) => ({
-            label: `${l.height}p`,
-            level: i
-          }))
+          ...hls!.levels.map((l, i) => ({ label: `${l.height}p`, level: i }))
         ]
       })
     } else if (videoEl.value?.canPlayType('application/vnd.apple.mpegurl')) {

@@ -14,6 +14,7 @@ export class TypeOrmContentRepository implements ContentRepository {
     async findAll(): Promise<Content[]> {
         const rows = await this.repository.find({
             where: { status: ContentStatus.PROCESSED },
+            order: { createdAt: "DESC" }
         });
         return rows.map(row =>
             Content.restore({
@@ -36,13 +37,13 @@ export class TypeOrmContentRepository implements ContentRepository {
             .getMany();
         return rows.map(row =>
             Content.restore({
-            id: row.id,
-            title: row.title,
-            description: row.description,
-            status: row.status,
-            thumbnailUrl: row.thumbnailUrl,
-            createdAt: row.createdAt,
-            userId: row.userId,
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                status: row.status,
+                thumbnailUrl: row.thumbnailUrl,
+                createdAt: row.createdAt,
+                userId: row.userId,
             })
         );
     }
@@ -52,6 +53,7 @@ export class TypeOrmContentRepository implements ContentRepository {
     async findAllByUserId(userId: string): Promise<Content[]> {
         const rows = await this.repository.find({
             where: { userId },
+            order: { createdAt: "DESC" }
         });
         return rows.map(row =>
             Content.restore({
@@ -81,7 +83,10 @@ export class TypeOrmContentRepository implements ContentRepository {
     }
 
     async findByUserId(userId: string): Promise<Content[]> {
-        const rows = await this.repository.find({ where: { userId } });
+        const rows = await this.repository.find({
+            where: { userId },
+            order: { createdAt: "DESC" }
+        });
         return rows.map(row =>
             Content.restore({
                 id: row.id,

@@ -1,5 +1,6 @@
 import Swal from 'sweetalert2'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '~/store/auth'
 
 export const useAuthService = () => {
   const { t } = useI18n()
@@ -35,6 +36,7 @@ export const useAuthService = () => {
       })
       return user
     } catch (err: any) {
+      if(err.statusCode == 401) useAuthStore().setUser(null);
       return Promise.reject(err)
     }
   }

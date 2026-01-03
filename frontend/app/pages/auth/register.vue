@@ -24,6 +24,8 @@ const submit = async () => {
 </script>
 
 <template>
+  <div class="flex items-center justify-center px-4 py-12
+            transition-colors">
   <form
     @submit.prevent="submit"
     class="bg-white dark:bg-zinc-900 p-8 rounded-2xl w-full max-w-md space-y-6
@@ -72,4 +74,5 @@ const submit = async () => {
       </NuxtLink>
     </p>
   </form>
+  </div>
 </template>
