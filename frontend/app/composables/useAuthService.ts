@@ -15,7 +15,9 @@ export const useAuthService = () => {
       Swal.fire({
         icon: 'error',
         title: t('auth.loginFailed'),     
-        text: err?.statusMessage || t('auth.somethingWentWrong'),
+        text: err?.statusMessage === "Invalid credentials"
+          ? t('auth.invalidCredentials')
+          : t('auth.somethingWentWrong')
       })
       return Promise.reject(err)
     }

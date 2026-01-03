@@ -39,6 +39,7 @@ export const useUserService = () => {
         title: t('user.updatedTitle'),
         text: t('user.updatedText')
       })
+      useAuthStore().setUser(null); 
       navigateTo("/auth/login");
     } catch (err: any) {
       Swal.fire({

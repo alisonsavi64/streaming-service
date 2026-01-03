@@ -22,6 +22,7 @@ const password = ref('')
 
 const updateUser = async () => {
   await userService.update(name.value, email.value, password.value)
+  await authService.logout()
 }
 
 const deleteUser = async () => {

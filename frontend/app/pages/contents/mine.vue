@@ -64,15 +64,31 @@ onMounted(fetchContents)
       </p>
     </div>
     
-    <div v-else ><CategoriesCarousel
-  :categories="[
-    'All','Music','Lifestyle & Wellness','Gaming','Movies & Series','Education','Tech',
-    'Science & Technology','Sports','News','Health & Fitness','Travel','Food','Travel & Adventure',
-    'Arts & Culture','DIY & Crafts','History & Documentaries','Comedy & Entertainment',
-    'Beauty & Fashion','Cars & Vehicles','Pets & Animals','Photography','Books & Literature',
-    'Motivation & Self-Help','Finance & Business','Programming & Tech Tutorials'
-  ]"
-/>
+    <div v-else > <CategoriesCarousel :categories="[
+        'categories.all',
+        'categories.music',
+        'categories.lifestyle',
+        'categories.gaming',
+        'categories.movies',
+        'categories.education',
+        'categories.tech',
+        'categories.science',
+        'categories.sports',
+        'categories.news',
+        'categories.health',
+        'categories.travel',
+        'categories.food',
+        'categories.arts',
+        'categories.comedy',
+        'categories.beauty',
+        'categories.cars',
+        'categories.pets',
+        'categories.photography',
+        'categories.books',
+        'categories.motivation',
+        'categories.finance',
+        'categories.programming'
+      ]" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <ContentCard

@@ -66,7 +66,11 @@
         "alreadyHaveAccount": "Já possui uma conta?",
         "noAccount": "Não tem uma conta?",
         "loginFailed": "Falha no login",
-        "somethingWentWrong": "Algo deu errado"
+        "somethingWentWrong": "Algo deu errado",
+        "fillAllFields": "Por favor, preencha todos os campos",
+        "passwordMismatch": "As senhas não coincidem",
+        "confirmPassword": "Confirmar Senha",
+        "invalidCredentials": "Email ou senha inválidos"
     },
     "content": {
         "uploadedTitle": "Enviado!",
@@ -82,7 +86,6 @@
         "deletedTitle": "Deletado!",
         "deletedText": "Conteúdo removido com sucesso.",
         "deleteFailedTitle": "Falha ao deletar"
-
     },
     "user": {
         "createdTitle": "Usuário Criado!",
@@ -102,5 +105,31 @@
         "error": "Erro",
         "success": "Sucesso"
     },
-    "welcomeDescription": "Assista, compartilhe e envie seus vídeos"
+    "welcomeDescription": "Assista, compartilhe e envie seus vídeos",
+    "categories": {
+        "all": "Todos",
+        "music": "Música",
+        "lifestyle": "Estilo de Vida & Bem-Estar",
+        "gaming": "Jogos",
+        "movies": "Filmes & Séries",
+        "education": "Educação",
+        "tech": "Tecnologia",
+        "science": "Ciência & Tecnologia",
+        "sports": "Esportes",
+        "news": "Notícias",
+        "health": "Saúde & Fitness",
+        "travel": "Viagem",
+        "food": "Gastronomia",
+        "arts": "Artes & Cultura",
+        "comedy": "Comédia & Entretenimento",
+        "beauty": "Beleza & Moda",
+        "cars": "Carros & Veículos",
+        "pets": "Animais de Estimação",
+        "photography": "Fotografia",
+        "books": "Livros & Literatura",
+        "motivation": "Motivação & Autoajuda",
+        "finance": "Finanças & Negócios",
+        "programming": "Programação & Tutoriais de Tecnologia"
+    },
+    "uploadFirstVideo": "Enviar primeiro vídeo"
 }

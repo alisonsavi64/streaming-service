@@ -45,52 +45,61 @@ onMounted(fetchContents)
 
 <template>
   <section class="min-w-7xl mx-auto transition-colors">
-    <div v-if="loading" class="flex justify-center items-center h-64 text-grayCustom-500 dark:text-grayCustom-400 text-lg animate-pulse">
+    <div v-if="loading"
+      class="flex justify-center items-center h-64 text-grayCustom-500 dark:text-grayCustom-400 text-lg animate-pulse">
       {{ t('loading.videos') }}
     </div>
-    <div v-else-if="filteredContents.length === 0" class="flex flex-col items-center text-center mt-20 text-grayCustom-500 dark:text-grayCustom-400">
+    <div v-else-if="filteredContents.length === 0"
+      class="flex flex-col items-center text-center mt-20 text-grayCustom-500 dark:text-grayCustom-400">
       <span class="text-8xl mb-4">🎬</span>
       <p class="text-xl max-w-md mb-4">{{ t('empty.allVideos') }}</p>
-      <NuxtLink
-        to="/contents/upload"
-        class="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-full shadow-md transition"
-      >
+      <NuxtLink to="/contents/upload"
+        class="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-full shadow-md transition">
         {{ t('uploadFirstVideo') }}
       </NuxtLink>
     </div>
     <div v-else>
-      <CategoriesCarousel
-  :categories="[
-    'All','Music','Lifestyle & Wellness','Gaming','Movies & Series','Education','Tech',
-    'Science & Technology','Sports','News','Health & Fitness','Travel','Food','Travel & Adventure',
-    'Arts & Culture','DIY & Crafts','History & Documentaries','Comedy & Entertainment',
-    'Beauty & Fashion','Cars & Vehicles','Pets & Animals','Photography','Books & Literature',
-    'Motivation & Self-Help','Finance & Business','Programming & Tech Tutorials'
-  ]"
-/>
-
-
+      <CategoriesCarousel :categories="[
+        'categories.all',
+        'categories.music',
+        'categories.lifestyle',
+        'categories.gaming',
+        'categories.movies',
+        'categories.education',
+        'categories.tech',
+        'categories.science',
+        'categories.sports',
+        'categories.news',
+        'categories.health',
+        'categories.travel',
+        'categories.food',
+        'categories.arts',
+        'categories.comedy',
+        'categories.beauty',
+        'categories.cars',
+        'categories.pets',
+        'categories.photography',
+        'categories.books',
+        'categories.motivation',
+        'categories.finance',
+        'categories.programming'
+      ]" />
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <ContentCard
-          v-for="video in filteredContents"
-          :key="video.id"
-          :video="video"
-          @edit="editVideo"
-          @delete="deleteVideo"
-        />
+        <ContentCard v-for="video in filteredContents" :key="video.id" :video="video" @edit="editVideo"
+          @delete="deleteVideo" />
       </div>
     </div>
-    
+
   </section>
 </template>
 
 <style scoped>
-/* Hide scrollbar for all browsers */
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-none {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>
