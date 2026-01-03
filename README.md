@@ -25,7 +25,7 @@ Todo o ambiente pode ser executado localmente utilizando **Docker Compose**.
 docker compose up --build
 ```
 
-Após executar o comando, aguarde 1 a 2 minutos até que todos os containers sejam iniciados e acesse: http://localhost:3000
+Após executar o comando, aguarde alguns minutos até que todos os containers sejam iniciados e acesse: http://localhost:3000
 ## Visão Geral da Arquitetura
 
 A aplicação é composta por múltiplos serviços independentes, comunicando-se de forma **síncrona** e **assíncrona**.
