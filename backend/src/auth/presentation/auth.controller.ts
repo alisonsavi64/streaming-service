@@ -36,7 +36,7 @@ export class AuthController {
   @ApiOperation({
     summary: 'Login do usuário',
     description:
-      'Autentica o usuário utilizando e-mail e senha, define um cookie HTTP-only e retorna informações do usuário junto com o token JWT.',
+      'Autentica o usuário utilizando e-mail e senha, define um cookie HTTP-only e retorna informações do usuário junto com o token JWT. Como a autenticação ocorre por parte do servidor não é nescessário enviar nenhum header extra, o navegador cuidara disso.',
   })
   @ApiBody({ type: LoginDto })
   @ApiResponse({

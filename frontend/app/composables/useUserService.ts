@@ -47,7 +47,9 @@ export const useUserService = () => {
       Swal.fire({
         icon: 'error',
         title: t('user.updateFailedTitle'),
-        text: err?.statusMessage || t('user.updateFailedText')
+                text:  err?.statusMessage === "A user with this email already exists"
+                ? t('user.userEmailInUse')
+                : t('auth.somethingWentWrong')
       })
       if(err.statusCode == 401) useAuthStore().setUser(null); 
       return Promise.reject(err)
