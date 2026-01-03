@@ -106,5 +106,5 @@ Em um ambiente de produção, o fluxo geral permanece o mesmo, porém com adapta
 - Adicionar conexão websocket no frontend para atualização em tempo real de status de vídeos
 - Adicionar métricas nos outros microserviços
 - Melhorar respostas de erros da api
-
+- Finalizar cobetura total dos testes (Faltaram alguns módulos)
 ---
