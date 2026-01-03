@@ -186,7 +186,7 @@ Em um ambiente de produção, o fluxo principal da aplicação permanece o mesmo
   - Controle de acesso aos arquivos de vídeo
 - Os serviços:
   - Backend
-  - Video Processor
+  - Video Processor (Podendo criar várias instâncias para o processamento dos vídeos)
   - Video Streaming  
   passam a ser executados em containers gerenciados (ex: **ECS + Fargate**).
 - A infraestrutura é definida como código utilizando **Terraform**.
