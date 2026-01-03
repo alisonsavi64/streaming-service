@@ -81,6 +81,9 @@ O frontend se comunica com os seguintes serviços:
 - ✅ Testes unitários com **ViteTest**  
 - ✅ Testes de integração com APIs simuladas  
 - 🔜 Testes end-to-end (E2E) com Cypress (planejado)
+
+Os testes do frontend se encontram na pasta /test na raiz do projeto.
+
 Para executar a suíte de testes, basta rodar o seguinte comando:
 ```
 docker compose exec frontend npm run test
