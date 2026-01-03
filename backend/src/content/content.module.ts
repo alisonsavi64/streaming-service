@@ -101,4 +101,4 @@ import { ScheduleModule } from '@nestjs/schedule';
   ],
   exports: [MarkContentProcessedUseCase, MarkContentProcessingUseCase, MarkContentFailedUseCase, CONTENT_REPOSITORY, STORAGE_PORT],
 })
-export class ContentModule {}
+export class ContentModule { }

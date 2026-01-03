@@ -155,9 +155,9 @@ export class ContentController {
       }
     }
 
-    if (!videoBuffer) throw new Error('Arquivo de vídeo é obrigatório');
-    if (!thumbnailBuffer) throw new Error('Miniatura é obrigatória');
-    if (!title || !description) throw new Error('Título e descrição são obrigatórios');
+    if (!videoBuffer) throw new Error('Video file is required');
+    if (!thumbnailBuffer) throw new Error('Thumbnail is required');
+    if (!title || !description) throw new Error('Title and description are required');
 
     try {
       const content = await this.uploadContentUseCase.execute({

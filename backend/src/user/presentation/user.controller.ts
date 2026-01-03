@@ -1,12 +1,12 @@
-import { 
-  Body, 
-  ConflictException, 
-  Controller, 
-  Delete, 
-  Put, 
-  Req, 
-  UseGuards, 
-  Logger, 
+import {
+  Body,
+  ConflictException,
+  Controller,
+  Delete,
+  Put,
+  Req,
+  UseGuards,
+  Logger,
   Post
 } from '@nestjs/common';
 import { UserAlreadyExistsError } from '../domain/user.errors';
@@ -34,7 +34,7 @@ export class UserController {
     private readonly registerUseCase: RegisterUserUseCase,
     private readonly updateUser: UpdateUserUseCase,
     private readonly deleteUser: DeleteUserUseCase
-  ) {}
+  ) { }
 
   @Post()
   @ApiOperation({

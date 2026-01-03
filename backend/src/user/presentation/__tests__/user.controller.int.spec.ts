@@ -45,7 +45,6 @@ describe('UserController (e2e) via running API', () => {
       .send({ name: 'Updated Name', email: testUser.email, password: 'newpass' })
       .expect(200);
 
-    console.log(res.body)
     expect(res.status).toBe(200);
   });
 
@@ -59,7 +58,7 @@ describe('UserController (e2e) via running API', () => {
   it('DELETE /user - should delete user', async () => {
     const res = await request(BASE_URL)
       .delete('/user')
-      .set('Cookie', jwtCookie) 
+      .set('Cookie', jwtCookie)
       .expect(200);
 
     expect(res.body.message).toBe('Usuário e todos os conteúdos deletados');

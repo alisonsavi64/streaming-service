@@ -1,13 +1,13 @@
-import { 
-  Body, 
-  Controller, 
-  Get, 
-  Post, 
-  Req, 
-  Res, 
-  UnauthorizedException, 
-  UseGuards, 
-  Logger 
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+  UseGuards,
+  Logger
 } from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { LoginUseCase } from '../application/login.use-case';
@@ -29,7 +29,7 @@ import { AuthResponseDto } from './auth.dto';
 export class AuthController {
   private readonly logger = new Logger(AuthController.name);
 
-  constructor(private readonly loginUseCase: LoginUseCase) {}
+  constructor(private readonly loginUseCase: LoginUseCase) { }
 
   @Post('login')
   @ApiOperation({
@@ -53,16 +53,13 @@ export class AuthController {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 60 * 24, 
+        maxAge: 60 * 60 * 24,
       });
 
       this.logger.log({ userId: result.user.id }, 'Login realizado com sucesso');
       return result;
     } catch (error) {
       this.logger.error(error, `Falha no login para o email ${dto.email}`);
-      if (error instanceof InvalidCredentialsError) {
-        throw new UnauthorizedException(error.message);
-      }
       throw error;
     }
   }

@@ -5,7 +5,7 @@ import { RetryStuckVideosUseCase } from './retry-stuck-videos.use-case'
 @Injectable()
 export class RetryStuckVideosCronService {
   private readonly logger = new Logger(RetryStuckVideosCronService.name)
-  constructor(private readonly retryStuckVideos: RetryStuckVideosUseCase) {}
+  constructor(private readonly retryStuckVideos: RetryStuckVideosUseCase) { }
   @Cron('*/5 * * * *')
   async handleCron() {
     this.logger.log('Running RetryStuckVideosCronService...')

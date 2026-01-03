@@ -9,7 +9,7 @@ export class RegisterUserUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashPassword: (password: string) => string,
-  ) {}
+  ) { }
 
   async execute(name: string, email: string, password: string) {
     const existingUser = await this.userRepository.findByEmail(email);

@@ -11,7 +11,7 @@ export class KafkaConsumerRunner implements OnModuleInit {
     private readonly markProcessed: MarkContentProcessedUseCase,
     private readonly markProcessing: MarkContentProcessingUseCase,
     private readonly markFailed: MarkContentFailedUseCase,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     const consumer = this.kafkaService.consumer
@@ -27,7 +27,7 @@ export class KafkaConsumerRunner implements OnModuleInit {
         } else if (topic === 'content.processing') {
           await this.markProcessing.execute(event.contentId)
         } else if (topic === 'content.failed') {
-          await this.markFailed.execute(event.contentId) 
+          await this.markFailed.execute(event.contentId)
         }
       },
     })

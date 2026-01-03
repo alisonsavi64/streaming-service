@@ -14,4 +14,4 @@ import { MessagingConsumersModule } from './kafka/consumers/consumers.module'
   ],
   exports: ['EventBus'],
 })
-export class MessagingModule {}
+export class MessagingModule { }

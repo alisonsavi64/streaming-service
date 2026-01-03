@@ -10,4 +10,4 @@ import { ContentModule } from '../../../../../content/content.module'
   ],
   providers: [KafkaConsumerRunner],
 })
-export class MessagingConsumersModule {}
+export class MessagingConsumersModule { }

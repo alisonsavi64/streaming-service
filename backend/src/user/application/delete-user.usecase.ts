@@ -9,7 +9,7 @@ export class DeleteUserUseCase {
     private readonly userRepo: UserRepository,
     private readonly contentRepo: ContentRepository,
     private readonly storage: StoragePort,
-  ) {}
+  ) { }
 
   async execute(userId: string) {
     const contents = await this.contentRepo.findByUserId(userId);
