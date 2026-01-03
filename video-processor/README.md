@@ -41,4 +41,5 @@ Fluxo resumido:
 | Receber eventos Kafka de vídeos enviados | ✅ Implementado |
 | Processar vídeos originais para HLS | ✅ Implementado |
 | Enviar eventos Kafka de vídeos processados | ✅ Implementado |
+| Reprocessamento de vídeos com erros | ✅ Implementado |
 | Assinatura e autenticação de mensagens | 🔜 Planejado |
