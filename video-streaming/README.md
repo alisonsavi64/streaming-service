@@ -50,5 +50,5 @@ Em produção, o serviço deverá:
 
 - **Fastify** — Framework web rápido e leve para Node.js  
 - **TypeScript** — Tipagem estática e segurança no desenvolvimento  
-- **Nginx** — Servidor HTTP usado para servir os arquivos de vídeo localmente  
+- **Nginx** — Simula um CDN para servir os arquivos de vídeo localmente  
 - **Amazon S3 / CDN** — (Planejado) origem dos vídeos em ambiente de produção  
