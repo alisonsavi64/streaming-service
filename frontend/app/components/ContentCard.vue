@@ -4,7 +4,6 @@
            border-grayCustom-200 dark:border-grayCustom-700
            shadow-card hover:shadow-lg
            transition-all duration-300">
-    Thumbnail -->
     <div @click="goToVideo" class="cursor-pointer relative">
       <img :src="video.thumbnailUrl" alt="video thumbnail" class="w-full h-52 object-cover rounded-t-2xl" />
     </div>
@@ -29,21 +28,18 @@
         </span>
       </div>
 
-      Author -->
       <div class="flex items-center gap-2 mt-1">
         <span class="text-xs text-grayCustom-500 dark:text-grayCustom-400 truncate">
           {{ 'UserTest' }}
         </span>
       </div>
 
-      Views and date -->
       <div class="flex items-center gap-2 text-xs text-grayCustom-400 mt-1">
         <span>{{ 0 }} views</span>
         <span>•</span>
         <span>{{ new Date(Date.now()).toLocaleDateString() }}</span>
       </div>
 
-      Action Buttons -->
       <div v-if="isOwner" class="flex gap-2 mt-3">
         <button @click="$emit('edit', video.id)" class="flex-1 px-3 py-1 text-xs rounded-md
                  bg-grayCustom-300 dark:bg-grayCustom-700 hover:bg-grayCustom-400 dark:hover:bg-grayCustom-600
