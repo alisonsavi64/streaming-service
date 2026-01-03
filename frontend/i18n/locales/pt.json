@@ -103,7 +103,8 @@
         "removedText": "O usuário foi removido com sucesso.",
         "removalFailedTitle": "Falha na remoção",
         "removalFailedText": "Algo deu errado ao remover o usuário.",
-        "userAlreadyExists": "Usuário já existe"
+        "userAlreadyExists": "Usuário já existe",
+        "userEmailInUse": "Já existe um usuário com esse e-mail"
     },
     "common": {
         "error": "Erro",
