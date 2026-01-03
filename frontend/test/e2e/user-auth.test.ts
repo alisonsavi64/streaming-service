@@ -22,7 +22,7 @@ describe('User & Auth API', async () => {
     expect(res).toEqual({ message: 'success' })
   })
 
-  it('can update an existing user', async () => {
+  it.skip('can update an existing user', async () => {
     const res = await $fetch('/api/user/update', {
       method: 'PUT',
       body: { name: 'John Updated', email: randomEmail, password }

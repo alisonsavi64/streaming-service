@@ -55,8 +55,8 @@ describe('TypeOrmContentRepository (integration)', () => {
     });
     user.passwordHash = 'hashedPassword';
     await userRepository.save(user);
-    const createUser = await userRepository.findByEmail(email);
-    return createUser;
+    const createdUser = await userRepository.findOneBy({ email }); 
+    return createdUser;
   };
 
 
