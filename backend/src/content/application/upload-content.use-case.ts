@@ -8,7 +8,7 @@ export class UploadContentUseCase {
     private readonly storage: StoragePort,
     private readonly contentRepository: ContentRepository,
     private readonly eventBus: EventBus
-  ) {}
+  ) { }
 
   async execute(params: {
     title: string;

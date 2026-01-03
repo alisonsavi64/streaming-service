@@ -10,6 +10,6 @@ export interface StoragePort {
     file: Buffer;
     filename: string;
     mimeType: string;
-  }): Promise<string>; 
-  delete(contentId: string): Promise<void>; 
+  }): Promise<string>;
+  delete(contentId: string): Promise<void>;
 }

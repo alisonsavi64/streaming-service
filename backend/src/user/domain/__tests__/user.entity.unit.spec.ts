@@ -4,7 +4,7 @@ describe('User Entity', () => {
   const validId = '123';
   const validName = 'Alice';
   const validEmail = 'alice@example.com';
-  const validHash = '$2b$10$abcdefghijklmnopqrstuv'; 
+  const validHash = '$2b$10$abcdefghijklmnopqrstuv';
 
   it('should create a valid user', () => {
     const user = User.create(validId, validName, validEmail, validHash);

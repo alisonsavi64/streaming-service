@@ -43,4 +43,4 @@ import { UserModule } from 'src/user/user.module';
     JwtStrategy
   ],
 })
-export class AuthModule {}
+export class AuthModule { }

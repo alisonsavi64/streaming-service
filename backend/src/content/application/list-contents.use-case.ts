@@ -3,7 +3,7 @@ import { ContentRepository } from '../domain/content.repository';
 export class ListContentsUseCase {
   constructor(
     private readonly contentRepository: ContentRepository,
-  ) {}
+  ) { }
 
   async execute() {
     const contents = await this.contentRepository.findAll();

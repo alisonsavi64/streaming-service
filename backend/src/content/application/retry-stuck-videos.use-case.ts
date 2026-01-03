@@ -6,9 +6,9 @@ import type { EventBus } from '../../shared/application/messaging/event-bus.port
 @Injectable()
 export class RetryStuckVideosUseCase {
   constructor(
-    private readonly contentRepo: ContentRepository, 
-    private readonly eventBus: EventBus,            
-  ) {}
+    private readonly contentRepo: ContentRepository,
+    private readonly eventBus: EventBus,
+  ) { }
 
   async execute(): Promise<number> {
     const stuckVideos = await this.contentRepo.findStuckVideos([
@@ -18,7 +18,7 @@ export class RetryStuckVideosUseCase {
     for (const video of stuckVideos) {
       await this.eventBus.publish('content.uploaded', {
         contentId: video.id,
-        userId: video.userId,       
+        userId: video.userId,
         thumbnailUrl: video.thumbnailUrl,
       })
     }

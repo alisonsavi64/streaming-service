@@ -4,7 +4,7 @@ import { KafkaService } from './kafka.service'
 
 @Injectable()
 export class KafkaEventBusAdapter implements EventBus {
-  constructor(private readonly kafkaService: KafkaService) {}
+  constructor(private readonly kafkaService: KafkaService) { }
 
   async publish<T>(topic: string, event: T): Promise<void> {
     await this.kafkaService.producer.send({

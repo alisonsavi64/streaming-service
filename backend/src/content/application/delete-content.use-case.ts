@@ -8,7 +8,7 @@ export class DeleteContentUseCase {
     private readonly contentRepository: ContentRepository,
     private readonly storage: StoragePort,
     private readonly eventBus: EventBus
-  ) {}
+  ) { }
 
   async execute(id: string, userId: string) {
     const content = await this.contentRepository.findById(id);

@@ -57,4 +57,4 @@ import { StoragePort } from 'src/content/domain/storage.port';
   ],
   exports: [USER_REPOSITORY],
 })
-export class UserModule {}
+export class UserModule { }

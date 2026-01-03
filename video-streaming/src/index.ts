@@ -29,7 +29,7 @@ async function bootstrap() {
       type: 'HLS',
     };
   });
-   const port = process.env.PORT ? parseInt(process.env.PORT) : 3003
+  const port = process.env.PORT ? parseInt(process.env.PORT) : 3003
   await app.listen({ port, host: '0.0.0.0' });
 }
 

@@ -4,7 +4,7 @@ import { hash } from 'bcrypt';
 
 @Injectable()
 export class UpdateUserUseCase {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) { }
 
   async execute(userId: string, name?: string, email?: string, password?: string) {
     const user = await this.userRepository.findById(userId);
