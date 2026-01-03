@@ -51,8 +51,11 @@ Essas responsabilidades ficam a cargo dos serviços:
 ## 📘 Documentação da API (Swagger)
 
 A API possui documentação das rotas gerada com **Swagger**.  
-Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api):
+
+Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api)
+
 Essa documentação permite visualizar os endpoints disponíveis, parâmetros e exemplos de requisição/resposta.
+<img width="1904" height="885" alt="swagger" src="https://github.com/user-attachments/assets/dc6dda97-c6f4-4263-83ba-8d099b9a5e40" />
 
 ---
 
