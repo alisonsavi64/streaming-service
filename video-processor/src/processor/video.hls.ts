@@ -10,19 +10,17 @@ export const generateHLS = async (
   outputDir: string
 ) => {
   await fs.promises.mkdir(outputDir, { recursive: true })
-
   const masterPlaylist = path.join(outputDir, 'master.m3u8')
-
   await execFileAsync('ffmpeg', [
     '-y',
     '-i', inputPath,
     '-map', '0:v',
-    '-map', '0:a',
+    '-map', '0:a?',
     '-s:v:0', '1920x1080',
     '-c:v:0', 'libx264',
     '-b:v:0', '5000k',
     '-map', '0:v',
-    '-map', '0:a',
+    '-map', '0:a?',
     '-s:v:1', '1280x720',
     '-c:v:1', 'libx264',
     '-b:v:1', '2500k',
@@ -33,9 +31,8 @@ export const generateHLS = async (
     '-hls_segment_filename',
     path.join(outputDir, '%v_%05d.ts'),
     '-master_pl_name', 'master.m3u8',
-    '-var_stream_map', 'v:0,a:0 v:1,a:1',
+    '-var_stream_map', 'v:0 v:1',
     path.join(outputDir, '%v.m3u8'),
   ])
-
   return masterPlaylist
 }

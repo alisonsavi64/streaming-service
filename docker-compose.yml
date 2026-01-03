@@ -34,6 +34,8 @@ services:
     build:
       context: ./video-processor
     container_name: video-processor
+    mem_limit: 2g
+    memswap_limit: 2g
     depends_on:
       kafka:
         condition: service_healthy
