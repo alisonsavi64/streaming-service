@@ -113,7 +113,9 @@ Foram desenvolvidos testes automatizados utilizando **Jest**, incluindo:
 
 - Testes de entidades
 - Testes de repositórios
-- Testes de integração via requests HTTP para a API
+- Testes de integração via requisições HTTP para a API
+
+Os testes da API estão organizados **próximos aos arquivos que validam**, dentro de uma pasta `__tests__` em cada módulo correspondente, facilitando manutenção, leitura e evolução do código.
 
 Para executar a suíte de testes, basta rodar o seguinte comando:
 
