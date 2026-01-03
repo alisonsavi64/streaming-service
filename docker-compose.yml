@@ -116,6 +116,7 @@ services:
 
   frontend:
       container_name: frontend
+      mem_limit: 1536m
       build:
         context: ./frontend
         dockerfile: Dockerfile.dev
@@ -123,6 +124,7 @@ services:
         NUXT_API_BASE_URL: http://backend:3001
         NUXT_PUBLIC_VIDEO_STREAM_HOST: http://localhost:3003
         NODE_ENV: development
+        NODE_OPTIONS: "--max-old-space-size=1024"
       ports:
         - "3000:3000"
       volumes:

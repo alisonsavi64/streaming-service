@@ -19,7 +19,7 @@ const thumbnailFile = ref<File | null>(null)
 
 const contentService = useContentService()
 
-const MAX_FILE_SIZE = 100 * 1024 * 1024 
+const MAX_FILE_SIZE = 200 * 1024 * 1024 
 
 const submit = async () => {
   if (!videoFile.value) {
