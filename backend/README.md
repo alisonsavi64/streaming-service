@@ -1,4 +1,4 @@
-## Backend / Core API
+## ⚙️ Backend / Core API
 
 A API (core da aplicação) foi construída utilizando **NestJS** com **Fastify** como servidor HTTP.
 
@@ -51,8 +51,11 @@ Essas responsabilidades ficam a cargo dos serviços:
 ## 📘 Documentação da API (Swagger)
 
 A API possui documentação das rotas gerada com **Swagger**.  
-Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api):
+
+Você pode acessá-la em 👉 [http://localhost:3001/api](http://localhost:3001/api)
+
 Essa documentação permite visualizar os endpoints disponíveis, parâmetros e exemplos de requisição/resposta.
+<img width="1904" height="885" alt="swagger" src="https://github.com/user-attachments/assets/dc6dda97-c6f4-4263-83ba-8d099b9a5e40" />
 
 ---
 
@@ -113,7 +116,9 @@ Foram desenvolvidos testes automatizados utilizando **Jest**, incluindo:
 
 - Testes de entidades
 - Testes de repositórios
-- Testes de integração via requests HTTP para a API
+- Testes de integração via requisições HTTP para a API
+
+Os testes da API estão organizados **próximos aos arquivos que validam**, dentro de uma pasta `__tests__` em cada módulo correspondente, facilitando manutenção, leitura e evolução do código.
 
 Para executar a suíte de testes, basta rodar o seguinte comando:
 

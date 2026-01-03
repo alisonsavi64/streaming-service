@@ -6,6 +6,7 @@ import { TypeOrmContentRepository } from '../typeorm-content.repository';
 import { ContentOrmEntity } from '../content.orm-entity';
 import { Content } from '../../../domain/content.entity';
 import { UserOrmEntity } from '../../../../user/infra/typeorm/user.orm-entity';
+import { User } from '../../../../user/domain/user.entity';
 
 describe('TypeOrmContentRepository (integration)', () => {
   let repo: TypeOrmContentRepository;
@@ -47,17 +48,13 @@ describe('TypeOrmContentRepository (integration)', () => {
     await repository.query('TRUNCATE TABLE "contents" RESTART IDENTITY CASCADE');
     await userRepository.query('TRUNCATE TABLE "users" RESTART IDENTITY CASCADE');
   });
+
   const createTestUser = async () => {
-    const email = `test-${uuidv4()}@example.com`;
-    const user = userRepository.create({
-      name: 'Test User',
-      email,
-    });
-    user.passwordHash = 'hashedPassword';
-    await userRepository.save(user);
+    const email = `user_${Math.random().toString(36).substring(2, 10)}@example.com`;
+    const user = User.create(uuidv4(), 'Test User', email, 'hashedPassword');
+    await userRepository.save(user); 
     return user;
   };
-
 
   it('should save and retrieve a content', async () => {
     const user = await createTestUser();

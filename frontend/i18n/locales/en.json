@@ -42,7 +42,9 @@
         "uploadSuccess": "Upload completed successfully",
         "uploadError": "Something went wrong while uploading the video",
         "editVideo": "Edit Video",
-        "updateSuccess": "Video updated successfully"
+        "updateSuccess": "Video updated successfully",
+        "enterTitle": "Please enter a title for your video.",
+        "enterDescription": "Please enter a description for your video."
     },
     "profilePage": {
         "title": "Edit Profile",

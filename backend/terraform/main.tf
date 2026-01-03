@@ -1,5 +1,5 @@
 # ============================================================================
-# Arquivo de exemplo de como a aplicação backend pode ser implantada
+# Arquivo de esboço/exemplo de como a aplicação pode ser implantada
 # na AWS utilizando ECS Fargate.
 # ============================================================================
 
