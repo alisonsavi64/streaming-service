@@ -1,4 +1,4 @@
-## Backend / Core API
+## ⚙️ Backend / Core API
 
 A API (core da aplicação) foi construída utilizando **NestJS** com **Fastify** como servidor HTTP.
 
