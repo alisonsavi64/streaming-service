@@ -40,7 +40,8 @@
         "uploadingTitle": "Enviando...",
         "uploadingText": "Aguarde enquanto seu vídeo está sendo enviado",
         "uploadSuccess": "Upload realizado com sucesso",
-        "uploadError": "Ocorreu um erro ao enviar o vídeo"
+        "uploadError": "Ocorreu um erro ao enviar o vídeo",
+        "editVideo": "Editar Vídeo"
     },
     "profilePage": {
         "title": "Editar Perfil",

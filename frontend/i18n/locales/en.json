@@ -40,7 +40,8 @@
         "uploadingTitle": "Uploading...",
         "uploadingText": "Please wait while your video is being uploaded",
         "uploadSuccess": "Upload completed successfully",
-        "uploadError": "Something went wrong while uploading the video"
+        "uploadError": "Something went wrong while uploading the video",
+        "editVideo": "Edit Video"
     },
     "profilePage": {
         "title": "Edit Profile",
