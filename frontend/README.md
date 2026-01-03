@@ -22,7 +22,7 @@ O frontend foi desenvolvido utilizando **Nuxt + Vue**, com **Server-Side Renderi
 Ele é responsável por:
 
 - 🧑‍💻 **Autenticação e criação de usuários**
-- 📤 **Upload de vídeos e thumbnails**
+- 📤 **Upload de vídeos e thumbnails (Obs: para testes e processamento rápido usar vídeos curtos)**
 - 🎬 **Visualização de vídeos processados via streaming HLS**
 - 🛠️ **Gerenciamento de vídeos do usuário** (edição e exclusão)
 - 🌗 **Interface moderna e responsiva**, com suporte a **tema claro e escuro**
