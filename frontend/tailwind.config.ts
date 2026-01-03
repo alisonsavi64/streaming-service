@@ -4,15 +4,15 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#FF0000', // YouTube red
+          DEFAULT: '#FF0000',
           dark: '#CC0000',
         },
         secondary: {
-          DEFAULT: '#0f0f0f', // dark backgrounds
-          light: '#F9F9F9',   // light backgrounds
+          DEFAULT: '#0f0f0f',
+          light: '#F9F9F9',   
         },
         accent: {
-          DEFAULT: '#FF0000', // hover highlights
+          DEFAULT: '#FF0000', 
         },
         grayCustom: {
           50: '#FAFAFA',

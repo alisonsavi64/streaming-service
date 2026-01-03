@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="videoMeta"
-    class="fixed inset-0 flex items-center justify-center bg-secondary-dark dark:bg-secondary-dark z-50"
+    class="fixed inset-0 flex items-center justify-center bg-secondary dark:bg-secondary-dark z-[9999]"
     @mousemove="showControlsNow"
     @click="showControlsNow"
   >
@@ -50,7 +50,7 @@
           @click.stop="seekTo"
         >
           <div
-            class="h-2 bg-gradient-to-r from-primary to-accent rounded transition-all"
+            class="h-2 bg-gradient-to-r from-primary to-primary rounded transition-all"
             :style="{ width: progressPercent + '%' }"
           />
         </div>
@@ -60,16 +60,14 @@
           <!-- SEEK BACKWARD -->
           <button
             @click.stop="seek(-10)"
-            class="p-2 hover:bg-white/20 rounded-full transition"
+            class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Rewind 10s"
-          >
-            ⏪
-          </button>
+          >⏪</button>
 
           <!-- PLAY/PAUSE -->
           <button
             @click.stop="togglePlay"
-            class="p-3 bg-white/20 hover:bg-white/40 rounded-full transition text-2xl"
+            class="p-3 bg-primary/20 hover:bg-primary/40 rounded-full transition text-2xl"
             title="Play/Pause"
           >
             <span v-if="videoEl?.paused">▶</span>
@@ -79,11 +77,9 @@
           <!-- SEEK FORWARD -->
           <button
             @click.stop="seek(10)"
-            class="p-2 hover:bg-white/20 rounded-full transition"
+            class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Forward 10s"
-          >
-            ⏩
-          </button>
+          >⏩</button>
 
           <!-- TIMESTAMP -->
           <span class="text-sm opacity-80 font-mono">
@@ -102,6 +98,16 @@
             @input="changeVolume(volume)"
             class="w-24 h-1 bg-white/30 rounded-lg accent-primary"
           />
+
+          <!-- FULLSCREEN TOGGLE -->
+          <button
+            @click.stop="toggleFullscreen"
+            class="p-2 hover:bg-primary/20 rounded transition"
+            title="Fullscreen"
+          >
+            <span v-if="isFullscreen">🡽</span>
+            <span v-else>🡾</span>
+          </button>
 
           <!-- QUALITY SELECTOR -->
           <select
@@ -125,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Hls from 'hls.js'
 import { useContentService } from '../../../composables/useContentService'
@@ -140,6 +146,7 @@ const showControls = ref(true)
 const duration = ref(0)
 const currentTime = ref(0)
 const volume = ref(1)
+const isFullscreen = ref(false)
 
 let hls: Hls | null = null
 let hideTimeout: number | null = null
@@ -147,9 +154,7 @@ let hideTimeout: number | null = null
 const showControlsNow = () => {
   showControls.value = true
   if (hideTimeout) clearTimeout(hideTimeout)
-  hideTimeout = window.setTimeout(() => {
-    showControls.value = false
-  }, 3000)
+  hideTimeout = window.setTimeout(() => { showControls.value = false }, 3000)
 }
 
 const togglePlay = () => {
@@ -157,50 +162,29 @@ const togglePlay = () => {
   videoEl.value.paused ? videoEl.value.play() : videoEl.value.pause()
 }
 
-const seek = (seconds: number) => {
-  if (!videoEl.value) return
-  videoEl.value.currentTime += seconds
-}
-
-const onTimeUpdate = () => {
-  if (!videoEl.value) return
-  currentTime.value = videoEl.value.currentTime
-}
-
-const onLoadedMetadata = () => {
-  if (!videoEl.value) return
-  duration.value = videoEl.value.duration
-  if (videoEl.value) videoEl.value.volume = volume.value
-}
-
+const seek = (seconds: number) => { if (videoEl.value) videoEl.value.currentTime += seconds }
+const onTimeUpdate = () => { if (videoEl.value) currentTime.value = videoEl.value.currentTime }
+const onLoadedMetadata = () => { if (videoEl.value) { duration.value = videoEl.value.duration; videoEl.value.volume = volume.value } }
 const seekTo = (e: MouseEvent) => {
   if (!videoEl.value || !duration.value) return
   const bar = e.currentTarget as HTMLElement
-  const rect = bar.getBoundingClientRect()
-  const percent = (e.clientX - rect.left) / rect.width
-  videoEl.value.currentTime = percent * duration.value
+  videoEl.value.currentTime = ((e.clientX - bar.getBoundingClientRect().left) / bar.offsetWidth) * duration.value
 }
+const changeQuality = (level: number) => { if (hls) { hls.currentLevel = level; selectedQuality.value = level } }
+const changeVolume = (val: number) => { if (videoEl.value) videoEl.value.volume = val }
+const formatTime = (time: number) => { const m = Math.floor(time/60); const s = Math.floor(time%60); return `${m}:${s.toString().padStart(2,'0')}` }
+const progressPercent = computed(() => duration.value ? (currentTime.value / duration.value) * 100 : 0)
 
-const changeQuality = (level: number) => {
-  if (!hls) return
-  hls.currentLevel = level
-  selectedQuality.value = level
+const toggleFullscreen = () => {
+  if (!videoEl.value) return
+  if (!isFullscreen.value) {
+    videoEl.value.requestFullscreen?.()
+    isFullscreen.value = true
+  } else {
+    document.exitFullscreen?.()
+    isFullscreen.value = false
+  }
 }
-
-const changeVolume = (val: number) => {
-  if (videoEl.value) videoEl.value.volume = val
-}
-
-const formatTime = (time: number) => {
-  if (!time) return '0:00'
-  const m = Math.floor(time / 60)
-  const s = Math.floor(time % 60)
-  return `${m}:${s.toString().padStart(2, '0')}`
-}
-
-const progressPercent = computed(() =>
-  duration.value ? (currentTime.value / duration.value) * 100 : 0
-)
 
 onMounted(async () => {
   const id = route.params.id
@@ -225,31 +209,15 @@ onMounted(async () => {
     } else if (videoEl.value?.canPlayType('application/vnd.apple.mpegurl')) {
       videoEl.value.src = manifestUrl
     }
-  } catch (err) {
-    console.error(err)
-  }
+  } catch (err) { console.error(err) }
 })
 
-onBeforeUnmount(() => {
-  hls?.destroy()
-  if (hideTimeout) clearTimeout(hideTimeout)
-})
+onBeforeUnmount(() => { hls?.destroy(); if (hideTimeout) clearTimeout(hideTimeout) })
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
