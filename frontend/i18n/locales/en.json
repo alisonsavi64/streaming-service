@@ -41,7 +41,8 @@
         "uploadingText": "Please wait while your video is being uploaded",
         "uploadSuccess": "Upload completed successfully",
         "uploadError": "Something went wrong while uploading the video",
-        "editVideo": "Edit Video"
+        "editVideo": "Edit Video",
+        "updateSuccess": "Video updated successfully"
     },
     "profilePage": {
         "title": "Edit Profile",
@@ -100,7 +101,8 @@
         "removedTitle": "User Removed!",
         "removedText": "The user has been successfully deleted.",
         "removalFailedTitle": "Deletion Failed",
-        "removalFailedText": "Something went wrong while deleting the user."
+        "removalFailedText": "Something went wrong while deleting the user.",
+        "userAlreadyExists": "User already exists"
     },
     "common": {
         "error": "Error",

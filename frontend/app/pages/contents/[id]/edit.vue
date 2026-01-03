@@ -74,7 +74,7 @@ const updateVideo = async () => {
       icon: 'success'
     })
 
-    router.push(`/contents/${video.value.id}/edit`)
+    router.push(`/`)
   } catch (err) {
     Swal.fire({
       title: t('common.error'),
