@@ -134,7 +134,7 @@ A aplicação é composta por múltiplos serviços independentes, comunicando-se
 
 ---
 
-### ⬆️ Upload e Processamento de Vídeos (Para testes e processamento rápido utilizar vídeos curtos)
+### ⬆️ Upload e Processamento de Vídeos (Obs: para testes e processamento rápido utilizar vídeos curtos)
 
 1. O usuário realiza autenticação no sistema.
 2. O upload do vídeo e da thumbnail é realizado via **backend principal**.
