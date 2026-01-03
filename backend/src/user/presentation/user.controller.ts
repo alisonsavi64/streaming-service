@@ -7,7 +7,8 @@ import {
   Req,
   UseGuards,
   Logger,
-  Post
+  Post,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { UserAlreadyExistsError } from '../domain/user.errors';
 import { RegisterDto } from './register.dto';
@@ -33,30 +34,47 @@ export class UserController {
   constructor(
     private readonly registerUseCase: RegisterUserUseCase,
     private readonly updateUser: UpdateUserUseCase,
-    private readonly deleteUser: DeleteUserUseCase
-  ) { }
+    private readonly deleteUser: DeleteUserUseCase,
+  ) {}
 
   @Post()
   @ApiOperation({
     summary: 'Registrar novo usuário',
-    description: 'Cria um novo usuário no sistema com nome, email e senha. Retorna as informações do usuário criado.'
+    description:
+      'Cria um novo usuário no sistema com nome, email e senha. Retorna as informações do usuário criado.',
   })
   @ApiBody({ type: RegisterDto })
-  @ApiResponse({ status: 201, description: 'Usuário registrado com sucesso', type: UserResponseDto })
-  @ApiResponse({ status: 409, description: 'Já existe um usuário com este email' })
+  @ApiResponse({
+    status: 201,
+    description: 'User registered successfully',
+    type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'A user with this email already exists',
+  })
   async register(@Body() dto: RegisterDto) {
     this.logger.log({ email: dto.email }, 'Tentativa de registro de usuário');
 
     try {
-      const user = await this.registerUseCase.execute(dto.name, dto.email, dto.password);
-      this.logger.log({ userId: user.id }, 'Usuário registrado com sucesso');
+      const user = await this.registerUseCase.execute(
+        dto.name,
+        dto.email,
+        dto.password,
+      );
+      this.logger.log({ userId: user.id }, 'User registered successfully');
       return user;
     } catch (error) {
-      this.logger.error({ err: error, email: dto.email }, 'Falha no registro de usuário');
+      this.logger.error(
+        { err: error, email: dto.email },
+        'User registration failed',
+      );
       if (error instanceof UserAlreadyExistsError) {
-        throw new ConflictException(error.message);
+        throw new ConflictException('A user with this email already exists');
       }
-      throw error;
+      throw new InternalServerErrorException(
+        'Internal server error while registering user',
+      );
     }
   }
 
@@ -65,21 +83,38 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Atualizar usuário logado',
-    description: 'Atualiza as informações do usuário atualmente autenticado (nome, email ou senha).'
+    description:
+      'Atualiza as informações do usuário atualmente autenticado (nome, email ou senha).',
   })
   @ApiBody({ type: UpdateUserDto })
-  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso', type: UserResponseDto })
-  @ApiResponse({ status: 401, description: 'Não autorizado' })
+  @ApiResponse({
+    status: 200,
+    description: 'User updated successfully',
+    type: UserResponseDto,
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async update(@Req() req: any, @Body() dto: UpdateUserDto) {
     const userId = req.user.id;
+    this.logger.log({ userId }, 'User update request');
 
-    this.logger.log({ userId }, 'Solicitação de atualização de usuário');
-
-    const updated = await this.updateUser.execute(userId, dto.name, dto.email, dto.password);
-
-    this.logger.log({ userId }, 'Usuário atualizado com sucesso');
-
-    return updated;
+    try {
+      const updated = await this.updateUser.execute(
+        userId,
+        dto.name,
+        dto.email,
+        dto.password,
+      );
+      this.logger.log({ userId }, 'User updated successfully');
+      return updated;
+    } catch (error) {
+      this.logger.error({ err: error, userId }, 'User update failed');
+      if (error instanceof UserAlreadyExistsError) {
+        throw new ConflictException('A user with this email already exists');
+      }
+      throw new InternalServerErrorException(
+        'Internal server error while updating user',
+      );
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -87,19 +122,27 @@ export class UserController {
   @ApiBearerAuth()
   @ApiOperation({
     summary: 'Deletar usuário logado',
-    description: 'Deleta o usuário atualmente autenticado e todos os conteúdos relacionados a ele.'
+    description:
+      'Deleta o usuário atualmente autenticado e todos os conteúdos relacionados a ele.',
   })
-  @ApiResponse({ status: 200, description: 'Usuário e conteúdos deletados com sucesso' })
-  @ApiResponse({ status: 401, description: 'Não autorizado' })
+  @ApiResponse({
+    status: 200,
+    description: 'User and all related content deleted successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   async delete(@Req() req: any) {
     const userId = req.user.id;
+    this.logger.warn({ userId }, 'User deletion request');
 
-    this.logger.warn({ userId }, 'Solicitação de exclusão de usuário');
-
-    await this.deleteUser.execute(userId);
-
-    this.logger.warn({ userId }, 'Usuário deletado com sucesso');
-
-    return { message: 'Usuário e todos os conteúdos deletados' };
+    try {
+      await this.deleteUser.execute(userId);
+      this.logger.warn({ userId }, 'User deleted successfully');
+      return { message: 'User and all related content deleted successfully' };
+    } catch (err: any) {
+      this.logger.error({ err, userId }, 'User deletion failed');
+      throw new InternalServerErrorException(
+        'Internal server error while deleting user',
+      );
+    }
   }
 }
