@@ -100,9 +100,11 @@ O frontend contém as seguintes páginas:
 <img width="1918" height="795" alt="registro" src="https://github.com/user-attachments/assets/b062f923-8579-405d-8048-1888eaa79647" />
 
 - 🏠 **Home**
+- Mostra os vídeos processados de todos os usuários
 <img width="1906" height="758" alt="home" src="https://github.com/user-attachments/assets/e15364b4-10ad-4dcf-ba61-ee270cad0f24" />
 
 - 🎥 **Meus Vídeos**
+- Mostra todo os vídeos do usuário e seus respectivos status
 <img width="1908" height="778" alt="meusvideos" src="https://github.com/user-attachments/assets/0721ed06-224a-4264-9748-69c9127b870e" />
 
 - 👤 **Perfil**
