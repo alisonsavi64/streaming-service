@@ -45,18 +45,20 @@ describe('TypeOrmUserRepository (integration)', () => {
   });
 
   it('should save and retrieve a user by ID and email', async () => {
-    const user = User.create(uuidv4(), 'Alice', 'alice@example.com', 'hashedPassword');
+    const randomEmail = `user_${Math.random().toString(36).substring(2, 10)}@example.com`;
+    const user = User.create(uuidv4(), 'Alice', randomEmail, 'hashedPassword');
     await repo.save(user);
 
     const foundById = await repo.findById(user.id);
-    expect(foundById?.email).toBe('alice@example.com');
+    expect(foundById?.email).toBe(randomEmail);
 
-    const foundByEmail = await repo.findByEmail('alice@example.com');
+    const foundByEmail = await repo.findByEmail(randomEmail);
     expect(foundByEmail?.name).toBe('Alice');
   });
 
   it('should delete a user', async () => {
-    const user = User.create(uuidv4(), 'Bob', 'bob@example.com', 'hashedPassword');
+    const randomEmail = `user_${Math.random().toString(36).substring(2, 10)}@example.com`;
+    const user = User.create(uuidv4(), 'Bob', randomEmail, 'hashedPassword');
     await repo.save(user);
 
     await repo.delete(user.id);
