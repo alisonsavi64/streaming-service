@@ -8,6 +8,7 @@ import multipart from '@fastify/multipart';
 import fastifyCookie from '@fastify/cookie';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { FastifyInstance } from 'fastify/types/instance';
 
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -29,6 +30,19 @@ async function bootstrap() {
       bodyLimit: 104857600,
     }),
   );
+  const fastify = app.getHttpAdapter().getInstance() as FastifyInstance;
+
+  fastify.addContentTypeParser(
+    'application/octet-stream',
+    { bodyLimit: 300 * 1024 * 1024 },
+    (req: any, payload: any, done: any) => done(null, payload),
+  );
+
+  fastify.addContentTypeParser(
+    /^video\/.*/,
+    { bodyLimit: 300 * 1024 * 1024 },
+    (req: any, payload: any, done: any) => done(null, payload),
+  );
   await app.register(multipart, {
     limits: { fileSize: 300 * 1024 * 1024 },
   });
@@ -40,8 +54,16 @@ async function bootstrap() {
     : ['http://localhost:3000'];
 
   app.enableCors({
-    origin: allowedOrigins,
-    credentials: true,
+    origin: [
+      'http://localhost:3000',
+      'http://frontend:3000',
+      'http://localhost:5173',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['content-type', 'authorization', 'x-filename', 'x-mime-type'],
+    exposedHeaders: [],
+    credentials: false,
+    optionsSuccessStatus: 204,
   });
   const config = new DocumentBuilder()
     .setTitle('WatchTube API')

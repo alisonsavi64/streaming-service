@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Patch,
   Delete,
   Param,
@@ -13,6 +14,8 @@ import {
   NotFoundException,
   BadRequestException,
   InternalServerErrorException,
+  Body,
+  Inject
 } from '@nestjs/common';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from '../../auth/application/jwt-auth.guard';
@@ -37,6 +40,11 @@ import {
   ApiConsumes,
   ApiBody,
 } from '@nestjs/swagger';
+import { pipeline } from 'node:stream/promises';
+import { createWriteStream } from 'node:fs';
+import { STORAGE_PORT } from '../domain/content.tokens';
+import type { StoragePort } from '../domain/storage.port';
+import { Readable } from 'node:stream';
 
 @ApiTags('contents')
 @Controller('contents')
@@ -44,6 +52,7 @@ export class ContentController {
   private readonly logger = new Logger(ContentController.name);
 
   constructor(
+    @Inject(STORAGE_PORT) private readonly storage: StoragePort,
     private readonly listContentsUseCase: ListContentsUseCase,
     private readonly getContentByIdUseCase: GetContentByIdUseCase,
     private readonly uploadContentUseCase: UploadContentUseCase,
@@ -128,69 +137,52 @@ export class ContentController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiBearerAuth()
-  @ApiOperation({
-    summary: 'Enviar novo conteúdo',
-    description: 'Faz upload de um novo conteúdo com título, descrição, vídeo e miniatura.',
-  })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({ type: CreateContentDto })
-  @ApiResponse({ status: 201, description: 'Content uploaded successfully', type: ContentResponseDto })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  async create(@Req() req: any) {
+  @ApiConsumes('application/json')
+  async createMeta(@Req() req: any, @Body() body: { title: string; description: string }) {
     const userId = req.user.id;
-    this.logger.log({ userId }, 'Content upload requested');
+    const { title, description } = body;
+    if (!title || !description) throw new BadRequestException('Title and description are required');
 
-    const parts = req.parts();
-    let videoBuffer: Buffer | null = null;
-    let videoFilename = '';
-    let videoMimeType = '';
-    let thumbnailBuffer: Buffer | null = null;
-    let thumbnailFilename = '';
-    let thumbnailMimeType = '';
-    let title = '';
-    let description = '';
-
-    try {
-      for await (const part of parts) {
-        if (part.type === 'file') {
-          if (part.fieldname === 'upload') {
-            videoFilename = part.filename;
-            videoMimeType = part.mimetype;
-            videoBuffer = await part.toBuffer();
-          }
-          if (part.fieldname === 'thumbnail') {
-            thumbnailFilename = part.filename;
-            thumbnailMimeType = part.mimetype;
-            thumbnailBuffer = await part.toBuffer();
-          }
-        }
-        if (part.type === 'field') {
-          if (part.fieldname === 'title') title = part.value as string;
-          if (part.fieldname === 'description') description = part.value as string;
-        }
-      }
-
-      if (!videoBuffer) throw new BadRequestException('Video file is required');
-      if (!thumbnailBuffer) throw new BadRequestException('Thumbnail is required');
-      if (!title || !description) throw new BadRequestException('Title and description are required');
-
-      const content = await this.uploadContentUseCase.execute({
-        title,
-        description,
-        video: { buffer: videoBuffer, filename: videoFilename, mimeType: videoMimeType },
-        thumbnail: { buffer: thumbnailBuffer, filename: thumbnailFilename, mimeType: thumbnailMimeType },
-        userId,
-      });
-
-      this.logger.log({ userId, contentId: content.id }, 'Content uploaded successfully');
-      return content;
-
-    } catch (err: any) {
-      this.logger.error(err, 'Failed to upload content');
-      if (err instanceof BadRequestException) throw err;
-      throw new InternalServerErrorException('Internal server error while uploading content');
-    }
+    return await this.uploadContentUseCase.execute({ title, description, userId }); 
   }
+
+
+  @Put(':id/video')
+  @ApiConsumes('application/octet-stream')
+  async uploadVideo(@Req() req: any, @Param('id') id: string) {
+    const filename = req.headers['x-filename'] as string | undefined;
+    const mimeType = (req.headers['content-type'] as string) || 'application/octet-stream';
+    if (!filename) throw new BadRequestException('Missing x-filename');
+    const stream = (req.body ?? req.raw) as Readable;
+    await this.storage.uploadRawStream({
+      contentId: id,
+      stream,     
+      filename,
+      mimeType,
+    });
+
+    return { ok: true };
+  }
+
+
+  @Put(':id/thumbnail')
+  @ApiBearerAuth()
+  @ApiConsumes('application/octet-stream')
+  async uploadThumbnail(@Req() req: any, @Param('id') id: string) {
+    const filename = req.headers['x-filename'] as string | undefined;
+    const mimeType = (req.headers['content-type'] as string) || 'application/octet-stream';
+    if (!filename) throw new BadRequestException('Missing x-filename');
+
+    const url = await this.storage.uploadThumbnailStream({
+      contentId: id,
+      stream: req.raw,
+      filename,
+      mimeType,
+    });
+
+    return { ok: true, thumbnailUrl: url };
+  }
+
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')

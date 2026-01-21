@@ -111,7 +111,7 @@ services:
       ports:
         - "3001:3001"
       volumes:
-        - storage:/storage
+        - ./backend/storage:/storage
       restart: on-failure
 
   frontend:
