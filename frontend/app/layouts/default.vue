@@ -40,7 +40,7 @@
           </svg>
         </button>
 
-        <NuxtLink to="/contents/upload" title="Upload"
+        <NuxtLink to="/contents/create" title="Upload"
           class="p-2 rounded-full bg-primary hover:bg-primary-dark text-white transition shadow-md">
           <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -120,7 +120,7 @@
               <span v-if="!collapsed">{{ t('profile') }}</span>
             </NuxtLink>
 
-            <NuxtLink to="/contents/upload"
+            <NuxtLink to="/contents/create"
               class="flex items-center gap-3 px-4 py-2 mt-2 rounded-lg bg-primary hover:bg-primary-dark text-white transition shadow-md">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

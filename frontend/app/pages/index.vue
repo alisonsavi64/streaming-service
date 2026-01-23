@@ -53,7 +53,7 @@ onMounted(fetchContents)
       class="flex flex-col items-center text-center mt-20 text-grayCustom-500 dark:text-grayCustom-400">
       <span class="text-8xl mb-4">🎬</span>
       <p class="text-xl max-w-md mb-4">{{ t('empty.allVideos') }}</p>
-      <NuxtLink to="/contents/upload"
+      <NuxtLink to="/contents/create"
         class="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-full shadow-md transition">
         {{ t('uploadFirstVideo') }}
       </NuxtLink>

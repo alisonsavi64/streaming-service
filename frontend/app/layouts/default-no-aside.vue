@@ -29,7 +29,7 @@
                 d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" />
             </svg>
           </button>
-          <NuxtLink to="/contents/upload" title="Upload"
+          <NuxtLink to="/contents/create" title="Upload"
             class="p-2 rounded-full bg-primary hover:bg-primary-dark text-white transition shadow-md">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

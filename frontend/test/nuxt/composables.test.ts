@@ -92,7 +92,7 @@ describe('Composables', () => {
     await wrapper.vm.content.upload(fd)
 
     expect($fetchMock).toHaveBeenCalledWith(
-      '/api/content/upload',
+      '/api/content/create',
       expect.objectContaining({ body: fd, method: 'POST' })
     )
   })

@@ -5,11 +5,11 @@ import { useAuthStore } from '~/store/auth'
 export const useContentService = () => {
   const { t } = useI18n()
 
-  async function upload(formData: FormData): Promise<void> {
+  async function create(data: object): Promise<void> {
     try {
-      await $fetch('/api/content/upload', {
+      await $fetch('/api/content/create', {
         method: 'POST',
-        body: formData,
+        body: data,
         headers: useRequestHeaders(['cookies'])
       })
       Swal.fire({
@@ -27,6 +27,34 @@ export const useContentService = () => {
       return Promise.reject(err)
     }
   }
+
+  async function uploadVideo(file: File, id: string): Promise<void> {
+    try {
+      await $fetch(`/api/content/${id}/video`, {
+        method: 'PUT',        
+        body: file,
+        headers: {
+          'Content-Type': file.type || 'application/octet-stream',
+          'x-filename': encodeURIComponent(file.name),
+          ...useRequestHeaders(['cookies'])
+        }      
+      })
+      Swal.fire({
+        icon: 'success',
+        title: t('content.uploadedTitle'),
+        text: t('content.uploadedText')
+      })
+    } catch (err: any) {
+      Swal.fire({
+        icon: 'error',
+        title: t('content.uploadFailedTitle'),
+        text: err?.statusMessage || t('content.somethingWentWrong')
+      })
+      if(err.statusCode == 401) useAuthStore().setUser(null);
+      return Promise.reject(err)
+    }
+  }
+  
 
   async function list(): Promise<any> {
     try {
@@ -123,11 +151,12 @@ export const useContentService = () => {
   }
 
   return {
-    upload,
+    create,
     list,
     show,
     update,
     remove,
-    listMine
+    listMine,
+    uploadVideo
   }
 }

@@ -1,18 +1,15 @@
 import { defineEventHandler, createError, readMultipartFormData, setCookie } from 'h3'
 import { serverApi } from '../utils/serverApi'
-import FormDataNode from 'form-data'
 
 export default defineEventHandler(async (event) => {
   try {
     const api = serverApi(event)
       const res = await api.post('/contents', event.node.req, {
-    headers: {
-      ...event.node.req.headers,
-    },
-    maxBodyLength: Infinity,
-    maxContentLength: Infinity,
+      headers: {
+        ...event.node.req.headers,
+      },
   }) 
-    return res.data 
+    return res.data.id 
   } catch (err: any) {
   if (err.response) {
     if (err.response.status === 401) {
