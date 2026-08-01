@@ -14,6 +14,7 @@ export class Content {
     public processedAt?: Date,
     public thumbnailUrl?: string,
     public genre?: ContentGenre,
+    public viewsCount: number = 0,
   ) {}
 
   static create(params: {
@@ -34,7 +35,12 @@ export class Content {
       undefined,
       undefined,
       params.genre,
+      0,
     );
+  }
+
+  incrementViews() {
+    this.viewsCount += 1;
   }
 
   markProcessing() {
@@ -68,6 +74,7 @@ export class Content {
     processedAt?: Date;
     thumbnailUrl?: string;
     genre?: ContentGenre;
+    viewsCount?: number;
   }): Content {
     return new Content(
       params.id,
@@ -79,6 +86,7 @@ export class Content {
       params.processedAt,
       params.thumbnailUrl,
       params.genre,
+      params.viewsCount ?? 0,
     );
   }
 

@@ -122,12 +122,21 @@ export const useContentService = () => {
     }
   }
 
+  async function registerView(id: string): Promise<void> {
+    try {
+      await $fetch(`/api/content/${id}/view`, {
+        method: 'POST'
+      })
+    } catch {}
+  }
+
   return {
     upload,
     list,
     show,
     update,
     remove,
-    listMine
+    listMine,
+    registerView
   }
 }

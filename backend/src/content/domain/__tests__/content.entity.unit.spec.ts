@@ -83,6 +83,16 @@ describe('Content entity', () => {
     expect(content.genre).toBeUndefined();
   });
 
+  it('should start with zero views and increment them', () => {
+    const content = Content.create(validParams);
+    expect(content.viewsCount).toBe(0);
+
+    content.incrementViews();
+    content.incrementViews();
+
+    expect(content.viewsCount).toBe(2);
+  });
+
   it('should restore a content from parameters', () => {
     const restored = Content.restore({
       id: 'id-123',

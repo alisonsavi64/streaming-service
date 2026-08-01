@@ -15,6 +15,8 @@ export class ListUserContentsUseCase {
       userId: content.userId,
       status: content.status,
       genre: content.genre,
+      viewsCount: content.viewsCount,
+      createdAt: content.createdAt,
     }));
   }
 }

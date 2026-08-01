@@ -149,6 +149,7 @@ import { useContentService } from '../../../composables/useContentService'
 
 const route = useRoute()
 const { t } = useI18n()
+const contentService = useContentService()
 const videoEl = ref<HTMLVideoElement | null>(null)
 const videoMeta = ref<any>(null)
 
@@ -162,6 +163,7 @@ const isFullscreen = ref(false)
 
 let hls: Hls | null = null
 let hideTimeout: number | null = null
+let hasRegisteredView = false
 
 const showControlsNow = () => {
   showControls.value = true
@@ -175,7 +177,15 @@ const togglePlay = () => {
 }
 
 const seek = (seconds: number) => { if (videoEl.value) videoEl.value.currentTime += seconds }
-const onTimeUpdate = () => { if (videoEl.value) currentTime.value = videoEl.value.currentTime }
+const onTimeUpdate = () => {
+  if (!videoEl.value) return
+  currentTime.value = videoEl.value.currentTime
+  if (!hasRegisteredView && currentTime.value >= 3) {
+    hasRegisteredView = true
+    const id = route.params.id
+    if (id && !Array.isArray(id)) contentService.registerView(id)
+  }
+}
 const onLoadedMetadata = () => { if (videoEl.value) { duration.value = videoEl.value.duration; videoEl.value.volume = volume.value } }
 const seekTo = (e: MouseEvent) => {
   if (!videoEl.value || !duration.value) return

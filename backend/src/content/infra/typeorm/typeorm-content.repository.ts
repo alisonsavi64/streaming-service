@@ -27,6 +27,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 createdAt: row.createdAt,
                 userId: row.userId,
                 genre: row.genre,
+                viewsCount: row.viewsCount,
             }),
         );
     }
@@ -55,6 +56,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 createdAt: row.createdAt,
                 userId: row.userId,
                 genre: row.genre,
+                viewsCount: row.viewsCount,
             })
         );
     }
@@ -75,6 +77,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 createdAt: row.createdAt,
                 userId: row.userId,
                 genre: row.genre,
+                viewsCount: row.viewsCount,
             })
         );
     }
@@ -96,6 +99,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 createdAt: row.createdAt,
                 userId: row.userId,
                 genre: row.genre,
+                viewsCount: row.viewsCount,
             }),
         );
     }
@@ -112,6 +116,7 @@ export class TypeOrmContentRepository implements ContentRepository {
             createdAt: row.createdAt,
             userId: row.userId,
             genre: row.genre,
+            viewsCount: row.viewsCount,
         });
     }
 
@@ -130,6 +135,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 createdAt: row.createdAt,
                 userId: row.userId,
                 genre: row.genre,
+                viewsCount: row.viewsCount,
             }),
         );
     }
@@ -147,6 +153,7 @@ export class TypeOrmContentRepository implements ContentRepository {
             thumbnailUrl: content.thumbnailUrl,
             createdAt: content.createdAt,
             genre: content.genre,
+            viewsCount: content.viewsCount,
         });
         await this.repository.save(ormEntity);
     }
@@ -157,5 +164,14 @@ export class TypeOrmContentRepository implements ContentRepository {
 
     async update(id: string, fields: Partial<{ title: string; description: string; genre: ContentGenre }>): Promise<void> {
         await this.repository.update(id, fields);
+    }
+
+    async incrementViews(id: string): Promise<void> {
+        await this.repository
+            .createQueryBuilder()
+            .update(ContentOrmEntity)
+            .set({ viewsCount: () => '"viewsCount" + 1' })
+            .where('id = :id', { id })
+            .execute();
     }
 }

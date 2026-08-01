@@ -20,4 +20,5 @@ export interface ContentRepository {
   ): Promise<void>;
   findStuckVideos(statuses: ContentStatus[]): Promise<Content[]>;
   search(query: string): Promise<Content[]>;
+  incrementViews(id: string): Promise<void>;
 }

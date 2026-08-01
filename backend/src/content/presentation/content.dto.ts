@@ -71,6 +71,9 @@ export class ContentResponseDto {
 
   @ApiProperty({ description: 'Genre of the content', enum: ContentGenre, required: false })
   genre?: ContentGenre;
+
+  @ApiProperty({ description: 'Number of times the content has been viewed' })
+  viewsCount: number;
 }
 
 export class ContentMineResponseDto {
@@ -106,4 +109,7 @@ export class ContentMineResponseDto {
 
   @ApiProperty({ description: 'Genre of the content', enum: ContentGenre, required: false })
   genre?: ContentGenre;
+
+  @ApiProperty({ description: 'Number of times the content has been viewed' })
+  viewsCount: number;
 }

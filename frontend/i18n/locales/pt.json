@@ -82,6 +82,7 @@
         "invalidCredentials": "Email ou senha inválidos"
     },
     "content": {
+        "viewsCount": "{count} visualizações",
         "uploadedTitle": "Enviado!",
         "uploadedText": "Conteúdo enviado com sucesso.",
         "uploadFailedTitle": "Falha no envio",

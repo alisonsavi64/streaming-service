@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Req,
+  HttpCode,
   UseGuards,
   UseInterceptors,
   Logger,
@@ -22,6 +23,7 @@ import { GetContentByIdUseCase } from '../application/get-content-by-id.use-case
 import { UploadContentUseCase } from '../application/upload-content.use-case';
 import { DeleteContentUseCase } from '../application/delete-content.use-case';
 import { UpdateContentUseCase } from '../application/update-content.use-case';
+import { IncrementContentViewsUseCase } from '../application/increment-content-views.use-case';
 import { ContentNotFoundError } from '../domain/content.errors';
 import { ContentGenre } from '../domain/content.genre';
 import { ListUserContentsUseCase } from '../application/list-user-contents.use-case';
@@ -52,6 +54,7 @@ export class ContentController {
     private readonly deleteContentUseCase: DeleteContentUseCase,
     private readonly updateContentUseCase: UpdateContentUseCase,
     private readonly listUserContentsUseCase: ListUserContentsUseCase,
+    private readonly incrementContentViewsUseCase: IncrementContentViewsUseCase,
   ) {}
 
   @UseInterceptors(CacheInterceptor)
@@ -123,6 +126,27 @@ export class ContentController {
         throw new NotFoundException('Content not found');
       }
       throw new InternalServerErrorException('Internal server error while fetching content');
+    }
+  }
+
+  @Post(':id/view')
+  @HttpCode(204)
+  @ApiOperation({
+    summary: 'Registrar uma visualização',
+    description: 'Incrementa o contador de visualizações de um conteúdo. Público, sem autenticação.',
+  })
+  @ApiResponse({ status: 204, description: 'View recorded successfully' })
+  @ApiResponse({ status: 404, description: 'Content not found' })
+  async registerView(@Param('id') id: string) {
+    try {
+      await this.incrementContentViewsUseCase.execute(id);
+      this.logger.log({ contentId: id }, 'Content view recorded');
+    } catch (error) {
+      this.logger.error(error, `Failed to record view for content ${id}`);
+      if (error instanceof ContentNotFoundError) {
+        throw new NotFoundException('Content not found');
+      }
+      throw new InternalServerErrorException('Internal server error while recording view');
     }
   }
 
