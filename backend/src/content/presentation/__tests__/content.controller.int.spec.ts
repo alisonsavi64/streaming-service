@@ -41,6 +41,17 @@ beforeAll(async () => {
     expect(Array.isArray(res.body)).toBe(true);
   });
 
+  it('/contents?search= (GET)', async () => {
+    const res = await request(BASE_URL)
+      .get('/contents')
+      .query({ search: 'nonexistent-search-term-xyz' })
+      .set('Cookie', jwtCookie)
+      .expect(200);
+
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body).toEqual([]);
+  });
+
   it('/contents/:id (GET)', async () => {
     const res = await request(BASE_URL)
       .get(`/contents/${createdContentId}`)

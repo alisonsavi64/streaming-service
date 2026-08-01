@@ -5,8 +5,10 @@ export class ListContentsUseCase {
     private readonly contentRepository: ContentRepository,
   ) { }
 
-  async execute() {
-    const contents = await this.contentRepository.findAll();
+  async execute(search?: string) {
+    const contents = search
+      ? await this.contentRepository.search(search)
+      : await this.contentRepository.findAll();
     return contents.map(content => ({
       id: content.id,
       title: content.title,

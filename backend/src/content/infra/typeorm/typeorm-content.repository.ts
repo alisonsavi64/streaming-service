@@ -29,6 +29,33 @@ export class TypeOrmContentRepository implements ContentRepository {
         );
     }
 
+    async search(query: string): Promise<Content[]> {
+        const rows = await this.repository
+            .createQueryBuilder('content')
+            .where('content.status = :status', { status: ContentStatus.PROCESSED })
+            .andWhere(
+                `to_tsvector('english', coalesce(content.title, '') || ' ' || coalesce(content.description, '')) @@ plainto_tsquery('english', :query)`,
+                { query },
+            )
+            .orderBy(
+                `ts_rank(to_tsvector('english', coalesce(content.title, '') || ' ' || coalesce(content.description, '')), plainto_tsquery('english', :query))`,
+                'DESC',
+            )
+            .setParameter('query', query)
+            .getMany();
+        return rows.map(row =>
+            Content.restore({
+                id: row.id,
+                title: row.title,
+                description: row.description,
+                status: row.status,
+                thumbnailUrl: row.thumbnailUrl,
+                createdAt: row.createdAt,
+                userId: row.userId,
+            })
+        );
+    }
+
     async findStuckVideos(statuses: ContentStatus[]): Promise<Content[]> {
         const rows = await this.repository
             .createQueryBuilder('content')

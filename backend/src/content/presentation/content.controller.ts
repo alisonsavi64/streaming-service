@@ -5,6 +5,7 @@ import {
   Patch,
   Delete,
   Param,
+  Query,
   Req,
   UseGuards,
   UseInterceptors,
@@ -14,7 +15,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from '../../auth/application/jwt-auth.guard';
 import { ListContentsUseCase } from '../application/list-contents.use-case';
 import { GetContentByIdUseCase } from '../application/get-content-by-id.use-case';
@@ -53,13 +54,12 @@ export class ContentController {
   ) {}
 
   @UseInterceptors(CacheInterceptor)
-  @CacheKey('contents_list')
   @CacheTTL(30)
   @Get()
   @ApiOperation({
     summary: 'Listar todos os conteúdos',
     description:
-      'Retorna uma lista de todos os conteúdos processados disponíveis no sistema.',
+      'Retorna uma lista de todos os conteúdos processados disponíveis no sistema. Aceita um parâmetro `search` opcional para busca por relevância em título e descrição.',
   })
   @ApiResponse({
     status: 200,
@@ -67,10 +67,10 @@ export class ContentController {
     type: [ContentResponseDto],
   })
   @ApiResponse({ status: 500, description: 'Internal server error' })
-  async list(@Req() req: any) {
+  async list(@Query('search') search: string | undefined, @Req() req: any) {
     try {
-      const contents = await this.listContentsUseCase.execute();
-      this.logger.log({ count: contents.length }, 'Contents listed successfully');
+      const contents = await this.listContentsUseCase.execute(search);
+      this.logger.log({ count: contents.length, search }, 'Contents listed successfully');
       return contents;
     } catch (err) {
       this.logger.error(err, 'Failed to list contents');

@@ -11,4 +11,5 @@ export interface ContentRepository {
   deleteByUserId(userId: string): Promise<void>;
   update(id: string, fields: Partial<{ title: string; description: string }>): Promise<void>;
   findStuckVideos(statuses: ContentStatus[]): Promise<Content[]>
+  search(query: string): Promise<Content[]>;
 }
