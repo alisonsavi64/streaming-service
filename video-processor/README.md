@@ -42,4 +42,19 @@ Fluxo resumido:
 | Processar vídeos originais para HLS | ✅ Implementado |
 | Enviar eventos Kafka de vídeos processados | ✅ Implementado |
 | Reprocessamento de vídeos com erros | ✅ Implementado |
+| Aceleração de vídeo por GPU (NVIDIA) com fallback para CPU | ✅ Implementado |
 | Assinatura e autenticação de mensagens | 🔜 Planejado |
+
+---
+
+## 🚀 Aceleração por GPU (NVIDIA)
+
+O serviço detecta automaticamente, na inicialização, se há uma GPU NVIDIA disponível (via `nvidia-smi`) e se o `ffmpeg` instalado suporta o encoder `h264_nvenc`. Quando ambos estão disponíveis, o processamento usa o encoder de GPU; caso contrário, usa `libx264` (CPU).
+
+Se o encoder de GPU falhar durante o processamento de um vídeo específico, o serviço automaticamente refaz a tentativa usando o encoder de CPU — não há dependência obrigatória de GPU para o funcionamento do serviço.
+
+Para habilitar o acesso à GPU no container, é necessário ter o [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) instalado no host e subir o serviço combinando o compose principal com o override `docker-compose.gpu.yml` (na raiz do repositório):
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build video-processor
+```
