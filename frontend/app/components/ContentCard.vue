@@ -40,6 +40,13 @@
 
       <div class="flex items-center gap-2 text-xs text-grayCustom-400 mt-1">
         <span>{{ t('content.viewsCount', { count: video.viewsCount ?? 0 }) }}</span>
+        <span>•</span>
+        <span class="inline-flex items-center gap-1">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 10.5a5.5 5.5 0 019.5-3.8A5.5 5.5 0 0121 10.5c0 4.5-6.5 8.5-9.5 10.7C8.5 19 2 15 2 10.5z" />
+          </svg>
+          {{ video.likesCount ?? 0 }}
+        </span>
         <span v-if="video.createdAt">•</span>
         <span v-if="video.createdAt">{{ new Date(video.createdAt).toLocaleDateString() }}</span>
       </div>

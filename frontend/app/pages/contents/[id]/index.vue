@@ -38,6 +38,21 @@
       >
         <h1 class="text-3xl font-bold truncate">{{ videoMeta.title }}</h1>
         <p class="text-sm opacity-70 line-clamp-2">{{ videoMeta.description }}</p>
+        <button
+          v-if="auth.user"
+          @click.stop="toggleLike"
+          :title="liked ? 'Unlike' : 'Like'"
+          :class="[
+            'mt-2 inline-flex items-center gap-2 w-fit px-4 py-1.5 rounded-full text-sm font-semibold transition',
+            liked ? 'bg-primary text-zinc-950' : 'bg-white/10 hover:bg-white/20 text-white'
+          ]"
+        >
+          <svg class="w-4 h-4" :fill="liked ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 20 20">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M2 10.5a5.5 5.5 0 019.5-3.8A5.5 5.5 0 0121 10.5c0 4.5-6.5 8.5-9.5 10.7C8.5 19 2 15 2 10.5z" />
+          </svg>
+          {{ likesCount }}
+        </button>
       </div>
     </transition>
 
@@ -146,12 +161,16 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Hls from 'hls.js'
 import { useContentService } from '../../../composables/useContentService'
+import { useAuthStore } from '~/store/auth'
 
 const route = useRoute()
 const { t } = useI18n()
 const contentService = useContentService()
+const auth = useAuthStore()
 const videoEl = ref<HTMLVideoElement | null>(null)
 const videoMeta = ref<any>(null)
+const liked = ref(false)
+const likesCount = ref(0)
 
 const qualities = ref<{ label: string; level: number }[]>([])
 const selectedQuality = ref(-1)
@@ -197,6 +216,19 @@ const changeVolume = (val: number) => { if (videoEl.value) videoEl.value.volume 
 const formatTime = (time: number) => { const m = Math.floor(time/60); const s = Math.floor(time%60); return `${m}:${s.toString().padStart(2,'0')}` }
 const progressPercent = computed(() => duration.value ? (currentTime.value / duration.value) * 100 : 0)
 
+const toggleLike = async () => {
+  const id = route.params.id
+  if (!id || Array.isArray(id)) return
+
+  try {
+    const result = liked.value ? await contentService.unlike(id) : await contentService.like(id)
+    liked.value = result.liked
+    likesCount.value = result.likesCount
+  } catch (err) {
+    console.error('Failed to toggle like', err)
+  }
+}
+
 const toggleFullscreen = () => {
   if (!videoEl.value) return
   if (!isFullscreen.value) {
@@ -213,7 +245,16 @@ onMounted(async () => {
   if (!id || Array.isArray(id)) return
 
   try {
-    videoMeta.value = await useContentService().show(id)
+    videoMeta.value = await contentService.show(id)
+    likesCount.value = videoMeta.value.likesCount ?? 0
+
+    if (auth.user) {
+      try {
+        const status = await contentService.getLikeStatus(id)
+        liked.value = status.liked
+      } catch {}
+    }
+
     const { videoStreamHost } = useRuntimeConfig().public
     const { manifestUrl } = await fetch(`${videoStreamHost}/stream/${id}`).then(r => r.json())
 

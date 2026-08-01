@@ -24,6 +24,9 @@ import { UploadContentUseCase } from '../application/upload-content.use-case';
 import { DeleteContentUseCase } from '../application/delete-content.use-case';
 import { UpdateContentUseCase } from '../application/update-content.use-case';
 import { IncrementContentViewsUseCase } from '../application/increment-content-views.use-case';
+import { LikeContentUseCase } from '../application/like-content.use-case';
+import { UnlikeContentUseCase } from '../application/unlike-content.use-case';
+import { GetContentLikeStatusUseCase } from '../application/get-content-like-status.use-case';
 import { ContentNotFoundError } from '../domain/content.errors';
 import { ContentGenre } from '../domain/content.genre';
 import { ListUserContentsUseCase } from '../application/list-user-contents.use-case';
@@ -55,6 +58,9 @@ export class ContentController {
     private readonly updateContentUseCase: UpdateContentUseCase,
     private readonly listUserContentsUseCase: ListUserContentsUseCase,
     private readonly incrementContentViewsUseCase: IncrementContentViewsUseCase,
+    private readonly likeContentUseCase: LikeContentUseCase,
+    private readonly unlikeContentUseCase: UnlikeContentUseCase,
+    private readonly getContentLikeStatusUseCase: GetContentLikeStatusUseCase,
   ) {}
 
   @UseInterceptors(CacheInterceptor)
@@ -147,6 +153,68 @@ export class ContentController {
         throw new NotFoundException('Content not found');
       }
       throw new InternalServerErrorException('Internal server error while recording view');
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/like')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Verificar se o conteúdo foi curtido',
+    description: 'Retorna se o usuário autenticado curtiu este conteúdo.',
+  })
+  @ApiResponse({ status: 200, description: 'Like status retrieved successfully' })
+  async getLikeStatus(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user.id;
+    try {
+      return await this.getContentLikeStatusUseCase.execute(id, userId);
+    } catch (error) {
+      this.logger.error(error, `Failed to get like status for content ${id}`);
+      throw new InternalServerErrorException('Internal server error while fetching like status');
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/like')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Curtir um conteúdo',
+    description: 'Curte um conteúdo em nome do usuário autenticado. Idempotente.',
+  })
+  @ApiResponse({ status: 200, description: 'Content liked successfully' })
+  @ApiResponse({ status: 404, description: 'Content not found' })
+  async like(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user.id;
+    try {
+      return await this.likeContentUseCase.execute(id, userId);
+    } catch (error) {
+      this.logger.error(error, `Failed to like content ${id}`);
+      if (error instanceof ContentNotFoundError) {
+        throw new NotFoundException('Content not found');
+      }
+      throw new InternalServerErrorException('Internal server error while liking content');
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/like')
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Remover curtida de um conteúdo',
+    description: 'Remove a curtida do usuário autenticado neste conteúdo. Idempotente.',
+  })
+  @ApiResponse({ status: 200, description: 'Content unliked successfully' })
+  @ApiResponse({ status: 404, description: 'Content not found' })
+  async unlike(@Param('id') id: string, @Req() req: any) {
+    const userId = req.user.id;
+    try {
+      return await this.unlikeContentUseCase.execute(id, userId);
+    } catch (error) {
+      this.logger.error(error, `Failed to unlike content ${id}`);
+      if (error instanceof ContentNotFoundError) {
+        throw new NotFoundException('Content not found');
+      }
+      throw new InternalServerErrorException('Internal server error while unliking content');
     }
   }
 

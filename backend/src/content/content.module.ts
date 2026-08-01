@@ -4,7 +4,9 @@ import { CacheModule } from '@nestjs/cache-manager';
 
 import { ContentController } from './presentation/content.controller';
 import { ContentOrmEntity } from './infra/typeorm/content.orm-entity';
+import { ContentLikeOrmEntity } from './infra/typeorm/content-like.orm-entity';
 import { TypeOrmContentRepository } from './infra/typeorm/typeorm-content.repository';
+import { TypeOrmContentLikeRepository } from './infra/typeorm/typeorm-content-like.repository';
 
 import { ListContentsUseCase } from './application/list-contents.use-case';
 import { GetContentByIdUseCase } from './application/get-content-by-id.use-case';
@@ -13,9 +15,13 @@ import { DeleteContentUseCase } from './application/delete-content.use-case';
 import { UpdateContentUseCase } from './application/update-content.use-case';
 import { MarkContentProcessedUseCase } from './application/mark-content-processed.use-case';
 import { IncrementContentViewsUseCase } from './application/increment-content-views.use-case';
+import { LikeContentUseCase } from './application/like-content.use-case';
+import { UnlikeContentUseCase } from './application/unlike-content.use-case';
+import { GetContentLikeStatusUseCase } from './application/get-content-like-status.use-case';
 
 import { ContentRepository } from './domain/content.repository';
-import { CONTENT_REPOSITORY, STORAGE_PORT } from './domain/content.tokens';
+import { ContentLikeRepository } from './domain/content-like.repository';
+import { CONTENT_REPOSITORY, STORAGE_PORT, CONTENT_LIKE_REPOSITORY } from './domain/content.tokens';
 import { StoragePort } from './domain/storage.port';
 
 import { LocalStorageAdapter } from './infra/storage/local-storage.adapter';
@@ -29,7 +35,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ContentOrmEntity]),
+    TypeOrmModule.forFeature([ContentOrmEntity, ContentLikeOrmEntity]),
     CacheModule.register({
       ttl: 30,
       max: 100,
@@ -46,16 +52,20 @@ import { ScheduleModule } from '@nestjs/schedule';
       useClass: LocalStorageAdapter,
     },
     {
+      provide: CONTENT_LIKE_REPOSITORY,
+      useClass: TypeOrmContentLikeRepository,
+    },
+    {
       provide: ListContentsUseCase,
-      useFactory: (repository: ContentRepository) =>
-        new ListContentsUseCase(repository),
-      inject: [CONTENT_REPOSITORY],
+      useFactory: (repository: ContentRepository, likeRepository: ContentLikeRepository) =>
+        new ListContentsUseCase(repository, likeRepository),
+      inject: [CONTENT_REPOSITORY, CONTENT_LIKE_REPOSITORY],
     },
     {
       provide: GetContentByIdUseCase,
-      useFactory: (repository: ContentRepository) =>
-        new GetContentByIdUseCase(repository),
-      inject: [CONTENT_REPOSITORY],
+      useFactory: (repository: ContentRepository, likeRepository: ContentLikeRepository) =>
+        new GetContentByIdUseCase(repository, likeRepository),
+      inject: [CONTENT_REPOSITORY, CONTENT_LIKE_REPOSITORY],
     },
     {
       provide: UploadContentUseCase,
@@ -85,15 +95,33 @@ import { ScheduleModule } from '@nestjs/schedule';
     },
     {
       provide: ListUserContentsUseCase,
-      useFactory: (repository: ContentRepository) =>
-        new ListUserContentsUseCase(repository),
-      inject: [CONTENT_REPOSITORY],
+      useFactory: (repository: ContentRepository, likeRepository: ContentLikeRepository) =>
+        new ListUserContentsUseCase(repository, likeRepository),
+      inject: [CONTENT_REPOSITORY, CONTENT_LIKE_REPOSITORY],
     },
     {
       provide: IncrementContentViewsUseCase,
       useFactory: (repository: ContentRepository) =>
         new IncrementContentViewsUseCase(repository),
       inject: [CONTENT_REPOSITORY],
+    },
+    {
+      provide: LikeContentUseCase,
+      useFactory: (repository: ContentRepository, likeRepository: ContentLikeRepository) =>
+        new LikeContentUseCase(repository, likeRepository),
+      inject: [CONTENT_REPOSITORY, CONTENT_LIKE_REPOSITORY],
+    },
+    {
+      provide: UnlikeContentUseCase,
+      useFactory: (repository: ContentRepository, likeRepository: ContentLikeRepository) =>
+        new UnlikeContentUseCase(repository, likeRepository),
+      inject: [CONTENT_REPOSITORY, CONTENT_LIKE_REPOSITORY],
+    },
+    {
+      provide: GetContentLikeStatusUseCase,
+      useFactory: (likeRepository: ContentLikeRepository) =>
+        new GetContentLikeStatusUseCase(likeRepository),
+      inject: [CONTENT_LIKE_REPOSITORY],
     },
     MarkContentProcessedUseCase,
     MarkContentProcessingUseCase,

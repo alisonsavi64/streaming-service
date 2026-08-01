@@ -74,6 +74,9 @@ export class ContentResponseDto {
 
   @ApiProperty({ description: 'Number of times the content has been viewed' })
   viewsCount: number;
+
+  @ApiProperty({ description: 'Number of likes the content has received' })
+  likesCount: number;
 }
 
 export class ContentMineResponseDto {
@@ -112,4 +115,7 @@ export class ContentMineResponseDto {
 
   @ApiProperty({ description: 'Number of times the content has been viewed' })
   viewsCount: number;
+
+  @ApiProperty({ description: 'Number of likes the content has received' })
+  likesCount: number;
 }
