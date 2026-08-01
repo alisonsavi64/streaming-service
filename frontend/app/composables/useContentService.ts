@@ -130,6 +130,27 @@ export const useContentService = () => {
     } catch {}
   }
 
+  async function getLikeStatus(id: string): Promise<{ liked: boolean }> {
+    return await $fetch(`/api/content/${id}/like`, {
+      method: 'GET',
+      headers: useRequestHeaders(['cookies'])
+    })
+  }
+
+  async function like(id: string): Promise<{ liked: boolean; likesCount: number }> {
+    return await $fetch(`/api/content/${id}/like`, {
+      method: 'POST',
+      headers: useRequestHeaders(['cookies'])
+    })
+  }
+
+  async function unlike(id: string): Promise<{ liked: boolean; likesCount: number }> {
+    return await $fetch(`/api/content/${id}/like`, {
+      method: 'DELETE',
+      headers: useRequestHeaders(['cookies'])
+    })
+  }
+
   return {
     upload,
     list,
@@ -137,6 +158,9 @@ export const useContentService = () => {
     update,
     remove,
     listMine,
-    registerView
+    registerView,
+    getLikeStatus,
+    like,
+    unlike
   }
 }

@@ -10,5 +10,6 @@ export interface Content {
   thumbnailUrl: string
   genre?: ContentGenre
   viewsCount?: number
+  likesCount?: number
   createdAt?: string
 }
