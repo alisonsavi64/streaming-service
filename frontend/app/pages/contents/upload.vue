@@ -101,17 +101,22 @@ const submit = async () => {
 </script>
 
 <template>
-  <div
-    class="flex items-center justify-center px-4 py-12
-            transition-colors"
-  >
+  <div class="relative flex items-center justify-center px-4 py-12 transition-colors overflow-hidden">
+    <div
+      class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+             w-[36rem] h-[36rem] rounded-full bg-primary/20 blur-[120px]"
+      aria-hidden="true"
+    />
     <form
       @submit.prevent="submit"
-      class="w-full max-w-lg p-8 rounded-2xl
-             bg-white dark:bg-zinc-900
-             shadow-lg dark:shadow-black/40
+      class="relative w-full max-w-lg p-8 rounded-2xl
+             bg-white dark:bg-grayCustom-900
+             border border-grayCustom-200 dark:border-grayCustom-800
+             shadow-lg dark:shadow-none
              space-y-6 transition-colors"
     >
+      <div class="w-10 h-1 rounded-full bg-primary mx-auto" aria-hidden="true" />
+
       <h1 class="text-3xl font-bold text-center text-zinc-900 dark:text-white">
         {{ t('uploadPage.title') }}
       </h1>
