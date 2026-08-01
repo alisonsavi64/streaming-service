@@ -1,13 +1,11 @@
 import { ContentRepository } from '../domain/content.repository';
 
 export class ListUserContentsUseCase {
-  constructor(
-    private readonly contentRepository: ContentRepository,
-  ) { }
+  constructor(private readonly contentRepository: ContentRepository) {}
 
   async execute(id: string) {
     const contents = await this.contentRepository.findAllByUserId(id);
-    return contents.map(content => ({
+    return contents.map((content) => ({
       id: content.id,
       title: content.title,
       description: content.description,
@@ -15,7 +13,8 @@ export class ListUserContentsUseCase {
         ? `${process.env.THUMBNAIL_BASE_URL}${content.thumbnailUrl}`
         : null,
       userId: content.userId,
-      status: content.status
+      status: content.status,
+      genre: content.genre,
     }));
   }
 }

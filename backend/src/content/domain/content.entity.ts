@@ -1,5 +1,6 @@
 import { InvalidContentTitleError } from './content.errors';
 import { ContentStatus } from './content.status';
+import { ContentGenre } from './content.genre';
 import { randomUUID } from 'crypto';
 
 export class Content {
@@ -11,13 +12,15 @@ export class Content {
     public status: ContentStatus,
     public readonly createdAt: Date,
     public processedAt?: Date,
-    public thumbnailUrl?: string
-  ) { }
+    public thumbnailUrl?: string,
+    public genre?: ContentGenre,
+  ) {}
 
   static create(params: {
     title: string;
     description: string;
     userId: string;
+    genre?: ContentGenre;
   }): Content {
     this.validate(params);
 
@@ -29,7 +32,8 @@ export class Content {
       ContentStatus.UPLOADED,
       new Date(),
       undefined,
-      undefined
+      undefined,
+      params.genre,
     );
   }
 
@@ -63,6 +67,7 @@ export class Content {
     createdAt: Date;
     processedAt?: Date;
     thumbnailUrl?: string;
+    genre?: ContentGenre;
   }): Content {
     return new Content(
       params.id,
@@ -72,7 +77,8 @@ export class Content {
       params.status,
       params.createdAt,
       params.processedAt,
-      params.thumbnailUrl
+      params.thumbnailUrl,
+      params.genre,
     );
   }
 

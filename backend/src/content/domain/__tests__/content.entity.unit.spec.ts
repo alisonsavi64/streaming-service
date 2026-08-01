@@ -1,5 +1,6 @@
 import { Content } from '../content.entity';
 import { ContentStatus } from '../content.status';
+import { ContentGenre } from '../content.genre';
 import { InvalidContentTitleError } from '../content.errors';
 
 describe('Content entity', () => {
@@ -23,19 +24,19 @@ describe('Content entity', () => {
   });
 
   it('should throw InvalidContentTitleError if title is invalid', () => {
-    expect(() =>
-      Content.create({ ...validParams, title: '' })
-    ).toThrow(InvalidContentTitleError);
+    expect(() => Content.create({ ...validParams, title: '' })).toThrow(
+      InvalidContentTitleError,
+    );
 
-    expect(() =>
-      Content.create({ ...validParams, title: 'a' })
-    ).toThrow(InvalidContentTitleError);
+    expect(() => Content.create({ ...validParams, title: 'a' })).toThrow(
+      InvalidContentTitleError,
+    );
   });
 
   it('should throw error if userId is missing', () => {
-    expect(() =>
-      Content.create({ ...validParams, userId: '' })
-    ).toThrow('userId is required');
+    expect(() => Content.create({ ...validParams, userId: '' })).toThrow(
+      'userId is required',
+    );
   });
 
   it('should change status to PROCESSING', () => {
@@ -67,6 +68,19 @@ describe('Content entity', () => {
   it('should throw error if thumbnail URL is empty', () => {
     const content = Content.create(validParams);
     expect(() => content.setThumbnail('')).toThrow('thumbnail url is required');
+  });
+
+  it('should create a content with a genre', () => {
+    const content = Content.create({
+      ...validParams,
+      genre: ContentGenre.GAMING,
+    });
+    expect(content.genre).toBe(ContentGenre.GAMING);
+  });
+
+  it('should create a content without a genre', () => {
+    const content = Content.create(validParams);
+    expect(content.genre).toBeUndefined();
   });
 
   it('should restore a content from parameters', () => {

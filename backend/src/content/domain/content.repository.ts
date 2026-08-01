@@ -1,5 +1,6 @@
 import { Content } from './content.entity';
 import { ContentStatus } from './content.status';
+import { ContentGenre } from './content.genre';
 
 export interface ContentRepository {
   findAll(): Promise<Content[]>;
@@ -9,7 +10,14 @@ export interface ContentRepository {
   save(content: Content): Promise<void>;
   delete(id: string): Promise<void>;
   deleteByUserId(userId: string): Promise<void>;
-  update(id: string, fields: Partial<{ title: string; description: string }>): Promise<void>;
-  findStuckVideos(statuses: ContentStatus[]): Promise<Content[]>
+  update(
+    id: string,
+    fields: Partial<{
+      title: string;
+      description: string;
+      genre: ContentGenre;
+    }>,
+  ): Promise<void>;
+  findStuckVideos(statuses: ContentStatus[]): Promise<Content[]>;
   search(query: string): Promise<Content[]>;
 }

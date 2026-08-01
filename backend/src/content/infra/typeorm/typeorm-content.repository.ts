@@ -4,6 +4,7 @@ import { ContentRepository } from '../../domain/content.repository';
 import { Content } from '../../domain/content.entity';
 import { ContentOrmEntity } from './content.orm-entity';
 import { ContentStatus } from '../../../content/domain/content.status';
+import { ContentGenre } from '../../domain/content.genre';
 
 export class TypeOrmContentRepository implements ContentRepository {
     constructor(
@@ -25,6 +26,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 thumbnailUrl: row.thumbnailUrl,
                 createdAt: row.createdAt,
                 userId: row.userId,
+                genre: row.genre,
             }),
         );
     }
@@ -52,6 +54,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 thumbnailUrl: row.thumbnailUrl,
                 createdAt: row.createdAt,
                 userId: row.userId,
+                genre: row.genre,
             })
         );
     }
@@ -71,6 +74,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 thumbnailUrl: row.thumbnailUrl,
                 createdAt: row.createdAt,
                 userId: row.userId,
+                genre: row.genre,
             })
         );
     }
@@ -91,6 +95,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 thumbnailUrl: row.thumbnailUrl,
                 createdAt: row.createdAt,
                 userId: row.userId,
+                genre: row.genre,
             }),
         );
     }
@@ -106,6 +111,7 @@ export class TypeOrmContentRepository implements ContentRepository {
             thumbnailUrl: row.thumbnailUrl,
             createdAt: row.createdAt,
             userId: row.userId,
+            genre: row.genre,
         });
     }
 
@@ -123,6 +129,7 @@ export class TypeOrmContentRepository implements ContentRepository {
                 thumbnailUrl: row.thumbnailUrl,
                 createdAt: row.createdAt,
                 userId: row.userId,
+                genre: row.genre,
             }),
         );
     }
@@ -139,6 +146,7 @@ export class TypeOrmContentRepository implements ContentRepository {
             userId: content.userId,
             thumbnailUrl: content.thumbnailUrl,
             createdAt: content.createdAt,
+            genre: content.genre,
         });
         await this.repository.save(ormEntity);
     }
@@ -147,7 +155,7 @@ export class TypeOrmContentRepository implements ContentRepository {
         await this.repository.delete(id);
     }
 
-    async update(id: string, fields: Partial<{ title: string; description: string }>): Promise<void> {
+    async update(id: string, fields: Partial<{ title: string; description: string; genre: ContentGenre }>): Promise<void> {
         await this.repository.update(id, fields);
     }
 }

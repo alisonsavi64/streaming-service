@@ -1,4 +1,5 @@
 import type { ContentStatus } from '~/constants/contentStatus'
+import type { ContentGenre } from '~/constants/contentGenre'
 
 export interface Content {
   id: string
@@ -7,4 +8,5 @@ export interface Content {
   status?: ContentStatus
   userId: string
   thumbnailUrl: string
+  genre?: ContentGenre
 }

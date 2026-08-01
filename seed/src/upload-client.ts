@@ -1,6 +1,13 @@
 import { readFileSync } from 'fs';
 import { config } from './config';
 
+const SEED_GENRES = [
+  'MUSIC', 'LIFESTYLE', 'GAMING', 'MOVIES', 'EDUCATION', 'TECH',
+  'SCIENCE', 'SPORTS', 'NEWS', 'HEALTH', 'TRAVEL', 'FOOD', 'ARTS',
+  'COMEDY', 'BEAUTY', 'CARS', 'PETS', 'PHOTOGRAPHY', 'BOOKS',
+  'MOTIVATION', 'FINANCE', 'PROGRAMMING',
+];
+
 export async function getSeededContentCount(cookie: string): Promise<number> {
   const response = await fetch(`${config.backendUrl}/contents/mine`, {
     headers: { Cookie: cookie },
@@ -25,6 +32,7 @@ export async function uploadSeedVideo(
   const form = new FormData();
   form.append('title', `Seed Video ${index}`);
   form.append('description', `Auto-generated mock video #${index} for local development seeding.`);
+  form.append('genre', SEED_GENRES[index % SEED_GENRES.length]);
   form.append('upload', new Blob([new Uint8Array(assets.videoBuffer)], { type: 'video/mp4' }), `seed-video-${index}.mp4`);
   form.append('thumbnail', new Blob([new Uint8Array(assets.thumbnailBuffer)], { type: 'image/jpeg' }), 'default-thumbnail.jpg');
 

@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { Content } from '~/types/content'
+import { contentGenres } from '~/constants/contentGenre'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -11,6 +12,8 @@ const contentService = useContentService()
 
 const contents = ref<Content[]>([])
 const loading = ref(true)
+const selectedGenre = ref('ALL')
+const genreOptions = [{ value: 'ALL', label: 'categories.all' }, ...contentGenres]
 
 const fetchContents = async () => {
   try {
@@ -24,10 +27,9 @@ const fetchContents = async () => {
 
 const filteredContents = computed(() => {
   const q = ((route.query.q as string) || '').toLowerCase()
-  if (!q) return contents.value
-  return contents.value.filter(v =>
-    v.title.toLowerCase().includes(q)
-  )
+  return contents.value
+    .filter(v => !q || v.title.toLowerCase().includes(q))
+    .filter(v => selectedGenre.value === 'ALL' || v.genre === selectedGenre.value)
 })
 
 const editVideo = (id: string) => {
@@ -64,31 +66,7 @@ onMounted(fetchContents)
       </p>
     </div>
     
-    <div v-else > <CategoriesCarousel :categories="[
-        'categories.all',
-        'categories.music',
-        'categories.lifestyle',
-        'categories.gaming',
-        'categories.movies',
-        'categories.education',
-        'categories.tech',
-        'categories.science',
-        'categories.sports',
-        'categories.news',
-        'categories.health',
-        'categories.travel',
-        'categories.food',
-        'categories.arts',
-        'categories.comedy',
-        'categories.beauty',
-        'categories.cars',
-        'categories.pets',
-        'categories.photography',
-        'categories.books',
-        'categories.motivation',
-        'categories.finance',
-        'categories.programming'
-      ]" />
+    <div v-else><CategoriesCarousel v-model="selectedGenre" :categories="genreOptions" />
 
     <h2 class="text-xl font-bold mb-4 text-white">{{ t('myvideos') }}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

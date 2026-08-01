@@ -7,9 +7,13 @@
       </svg>
     </button>
     <div ref="categoriesContainer" class="flex gap-3 overflow-x-auto px-8 scrollbar-none">
-      <button v-for="(cat, i) in categories" :key="i"
-        class="flex-shrink-0 px-4 py-2 rounded-full bg-grayCustom-700 text-grayCustom-50 hover:bg-grayCustom-600 hover:text-primary transition whitespace-nowrap">
-        {{ t(cat) }}
+      <button v-for="cat in categories" :key="cat.value" @click="$emit('update:modelValue', cat.value)" :class="[
+        'flex-shrink-0 px-4 py-2 rounded-full transition whitespace-nowrap',
+        cat.value === modelValue
+          ? 'bg-primary text-zinc-950 font-semibold'
+          : 'bg-grayCustom-700 text-grayCustom-50 hover:bg-grayCustom-600 hover:text-primary'
+      ]">
+        {{ t(cat.label) }}
       </button>
     </div>
     <button @click="scrollRight"
@@ -28,8 +32,13 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const props = defineProps<{
-  categories: string[]
+  categories: { value: string; label: string }[]
+  modelValue?: string
   scrollAmount?: number
+}>()
+
+defineEmits<{
+  (e: 'update:modelValue', value: string): void
 }>()
 
 const scrollAmount = props.scrollAmount || 200

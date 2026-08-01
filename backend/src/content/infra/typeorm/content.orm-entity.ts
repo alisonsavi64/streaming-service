@@ -7,6 +7,7 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { ContentStatus } from '../../domain/content.status';
+import { ContentGenre } from '../../domain/content.genre';
 import { UserOrmEntity } from '../../../user/infra/typeorm/user.orm-entity';
 
 @Entity('contents')
@@ -35,6 +36,13 @@ export class ContentOrmEntity {
 
   @Column({ nullable: true })
   thumbnailUrl?: string;
+
+  @Column({
+    type: 'enum',
+    enum: ContentGenre,
+    nullable: true,
+  })
+  genre?: ContentGenre;
 
   @Column()
   userId: string;

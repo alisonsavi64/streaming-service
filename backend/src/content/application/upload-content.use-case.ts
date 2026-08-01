@@ -1,19 +1,21 @@
-import { EventBus } from "src/shared/application/messaging/event-bus.port";
-import { Content } from "../domain/content.entity";
-import { ContentRepository } from "../domain/content.repository";
-import { StoragePort } from "../domain/storage.port";
+import { EventBus } from 'src/shared/application/messaging/event-bus.port';
+import { Content } from '../domain/content.entity';
+import { ContentRepository } from '../domain/content.repository';
+import { StoragePort } from '../domain/storage.port';
+import { ContentGenre } from '../domain/content.genre';
 
 export class UploadContentUseCase {
   constructor(
     private readonly storage: StoragePort,
     private readonly contentRepository: ContentRepository,
-    private readonly eventBus: EventBus
-  ) { }
+    private readonly eventBus: EventBus,
+  ) {}
 
   async execute(params: {
     title: string;
     description: string;
     userId: string;
+    genre?: ContentGenre;
     video: {
       buffer: Buffer;
       filename: string;
@@ -29,6 +31,7 @@ export class UploadContentUseCase {
       title: params.title,
       description: params.description,
       userId: params.userId,
+      genre: params.genre,
     });
 
     await this.storage.uploadRaw({
