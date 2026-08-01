@@ -112,6 +112,13 @@
         "success": "Success"
     },
     "welcomeDescription": "Watch, share, and upload your videos",
+    "featured": {
+        "badge": "Featured",
+        "play": "Play Now"
+    },
+    "browse": {
+        "title": "Trending Now"
+    },
     "categories": {
         "all": "All",
         "music": "Music",

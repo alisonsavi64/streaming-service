@@ -8,7 +8,7 @@
     </button>
     <div ref="categoriesContainer" class="flex gap-3 overflow-x-auto px-8 scrollbar-none">
       <button v-for="(cat, i) in categories" :key="i"
-        class="flex-shrink-0 px-4 py-2 rounded-full bg-grayCustom-100 dark:bg-grayCustom-700 text-grayCustom-900 dark:text-grayCustom-50 hover:bg-grayCustom-200 dark:hover:bg-grayCustom-600 transition whitespace-nowrap">
+        class="flex-shrink-0 px-4 py-2 rounded-full bg-grayCustom-100 dark:bg-grayCustom-700 text-grayCustom-900 dark:text-grayCustom-50 hover:bg-grayCustom-200 dark:hover:bg-grayCustom-600 hover:text-primary transition whitespace-nowrap">
         {{ t(cat) }}
       </button>
     </div>
