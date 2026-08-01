@@ -2,6 +2,7 @@ import { execFile } from 'child_process'
 import { promisify } from 'util'
 import path from 'path'
 import fs from 'fs'
+import { CPU_VIDEO_CODEC, GPU_VIDEO_CODEC, getVideoCodec } from './gpu'
 
 const execFileAsync = promisify(execFile)
 
@@ -37,35 +38,28 @@ const getVideoHeight = async (inputPath: string): Promise<number> => {
   return Number(stdout.trim())
 }
 
-export const generateHLS = async (
+const buildFfmpegArgs = (
   inputPath: string,
-  outputDir: string
-): Promise<string> => {
-  await fs.promises.mkdir(outputDir, { recursive: true })
+  outputDir: string,
+  renditions: typeof RENDITIONS,
+  audioPresent: boolean,
+  codec: string,
+): string[] => {
+  const args: string[] = []
 
-  const [audioPresent, sourceHeight] = await Promise.all([
-    hasAudio(inputPath),
-    getVideoHeight(inputPath),
-  ])
-
-  const renditions = RENDITIONS.filter(r => r.height <= sourceHeight)
-
-  if (renditions.length === 0) {
-    throw new Error('No valid renditions for this video')
+  if (codec === GPU_VIDEO_CODEC) {
+    args.push('-hwaccel', 'cuda')
   }
 
-  const args: string[] = [
-    '-y',
-    '-i', inputPath,
-  ]
+  args.push('-y', '-i', inputPath)
 
   renditions.forEach((r, i) => {
     args.push(
       '-map', '0:v:0',
       ...(audioPresent ? ['-map', '0:a?'] : []),
       `-s:v:${i}`, `${r.width}x${r.height}`,
-      `-c:v:${i}`, 'libx264',
-      '-preset', 'veryfast',
+      `-c:v:${i}`, codec,
+      ...(codec === GPU_VIDEO_CODEC ? ['-preset', 'p4'] : ['-preset', 'veryfast']),
       `-b:v:${i}`, r.bitrate,
     )
   })
@@ -93,7 +87,36 @@ export const generateHLS = async (
     path.join(outputDir, '%v.m3u8'),
   )
 
-  await execFileAsync('ffmpeg', args)
+  return args
+}
+
+export const generateHLS = async (
+  inputPath: string,
+  outputDir: string
+): Promise<string> => {
+  await fs.promises.mkdir(outputDir, { recursive: true })
+
+  const [audioPresent, sourceHeight, preferredCodec] = await Promise.all([
+    hasAudio(inputPath),
+    getVideoHeight(inputPath),
+    getVideoCodec(),
+  ])
+
+  const renditions = RENDITIONS.filter(r => r.height <= sourceHeight)
+
+  if (renditions.length === 0) {
+    throw new Error('No valid renditions for this video')
+  }
+
+  try {
+    const args = buildFfmpegArgs(inputPath, outputDir, renditions, audioPresent, preferredCodec)
+    await execFileAsync('ffmpeg', args)
+  } catch (err) {
+    if (preferredCodec !== GPU_VIDEO_CODEC) throw err
+
+    const fallbackArgs = buildFfmpegArgs(inputPath, outputDir, renditions, audioPresent, CPU_VIDEO_CODEC)
+    await execFileAsync('ffmpeg', fallbackArgs)
+  }
 
   return path.join(outputDir, 'master.m3u8')
 }
