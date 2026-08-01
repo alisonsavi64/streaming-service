@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-secondary text-gray-50">
     <header class="sticky top-0 z-50 backdrop-blur-md bg-secondary/90
              border-b border-grayCustom-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 sm:gap-6">
+      <div class="px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center gap-3 sm:gap-6">
         <NuxtLink to="/" class="text-2xl font-bold text-primary">
           WatchTube
         </NuxtLink>
@@ -62,7 +62,7 @@
       </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-8">
+    <main class="px-4 sm:px-6 lg:px-8 py-8">
       <slot />
     </main>
   </div>

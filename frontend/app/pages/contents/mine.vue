@@ -46,7 +46,7 @@ onMounted(fetchContents)
 </script>
 
 <template>
-  <section class="max-w-7xl mx-auto transition-colors">
+  <section class="transition-colors">
     <div
       v-if="loading"
       class="flex justify-center items-center h-64
