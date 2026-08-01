@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <label class="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">
+    <label class="block text-sm font-medium mb-1 text-zinc-300">
       {{ label }}
     </label>
 
@@ -17,16 +17,16 @@
 
       <div
         class="flex items-center justify-between px-4 py-2 rounded-lg
-               border border-zinc-300 dark:border-zinc-700
-               bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white
-               hover:bg-zinc-200 dark:hover:bg-zinc-700 transition cursor-pointer
+               border border-zinc-700
+               bg-zinc-800 text-white
+               hover:bg-zinc-700 transition cursor-pointer
                select-none"
       >
         <span class="truncate">
           {{ selectedFileName || placeholder }}
         </span>
         <svg
-          class="w-5 h-5 text-zinc-600 dark:text-zinc-300"
+          class="w-5 h-5 text-zinc-300"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <p v-if="helper" class="text-xs mt-1 text-zinc-500 dark:text-zinc-400">
+    <p v-if="helper" class="text-xs mt-1 text-zinc-400">
       {{ helper }}
     </p>
   </div>

@@ -48,7 +48,7 @@ onMounted(fetchContents)
     <div
       v-if="loading"
       class="flex justify-center items-center h-64
-             text-zinc-500 dark:text-zinc-400
+             text-zinc-400
              text-lg animate-pulse"
     >
       {{ t('loading.videos') }}
@@ -56,7 +56,7 @@ onMounted(fetchContents)
     <div
       v-else-if="filteredContents.length === 0"
       class="flex flex-col items-center text-center mt-32
-             text-zinc-500 dark:text-zinc-400"
+             text-zinc-400"
     >
       <span class="text-6xl mb-4">🎬</span>
       <p class="text-lg max-w-md">
@@ -90,7 +90,7 @@ onMounted(fetchContents)
         'categories.programming'
       ]" />
 
-    <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('myvideos') }}</h2>
+    <h2 class="text-xl font-bold mb-4 text-white">{{ t('myvideos') }}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <ContentCard
         v-for="v in filteredContents"

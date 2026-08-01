@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Swal from 'sweetalert2'
-import { useTheme } from '~/composables/useTheme'
 
 definePageMeta({
   middleware: 'only-auth',
@@ -10,7 +9,6 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { isDark } = useTheme()
 
 const title = ref('')
 const description = ref('')
@@ -77,8 +75,8 @@ const submit = async () => {
       didOpen: () => {
         Swal.showLoading()
       },
-      background: isDark.value ? '#18181b' : '#fff',
-      color: isDark.value ? '#fff' : '#000'
+      background: '#18181b',
+      color: '#fff'
     })
 
     await contentService.upload(formData)
@@ -110,14 +108,14 @@ const submit = async () => {
     <form
       @submit.prevent="submit"
       class="relative w-full max-w-lg p-8 rounded-2xl
-             bg-white dark:bg-grayCustom-900
-             border border-grayCustom-200 dark:border-grayCustom-800
-             shadow-lg dark:shadow-none
+             bg-grayCustom-900
+             border border-grayCustom-800
+             shadow-none
              space-y-6 transition-colors"
     >
       <div class="w-10 h-1 rounded-full bg-primary mx-auto" aria-hidden="true" />
 
-      <h1 class="text-3xl font-bold text-center text-zinc-900 dark:text-white">
+      <h1 class="text-3xl font-bold text-center text-white">
         {{ t('uploadPage.title') }}
       </h1>
       <BaseInput

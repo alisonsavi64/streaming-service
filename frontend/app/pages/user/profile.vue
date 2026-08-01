@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
-import { useTheme } from '~/composables/useTheme'
 
 definePageMeta({
   middleware: 'only-auth',
@@ -10,7 +9,6 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { isDark } = useTheme()
 
 const auth = useAuthStore()
 const authService = useAuthService()
@@ -42,14 +40,14 @@ const deleteUser = async () => {
     <form
       @submit.prevent="updateUser"
       class="relative w-full max-w-lg p-8 rounded-2xl
-             bg-white dark:bg-grayCustom-900
-             border border-grayCustom-200 dark:border-grayCustom-800
-             shadow-lg dark:shadow-none
+             bg-grayCustom-900
+             border border-grayCustom-800
+             shadow-none
              space-y-6 transition-colors"
     >
       <div class="w-10 h-1 rounded-full bg-primary mx-auto" aria-hidden="true" />
 
-      <h1 class="text-3xl font-bold text-center text-zinc-900 dark:text-white">
+      <h1 class="text-3xl font-bold text-center text-white">
         {{ t('profilePage.title') }}
       </h1>
 

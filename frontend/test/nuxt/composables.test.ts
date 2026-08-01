@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { nextTick, defineComponent, h } from 'vue'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { defineComponent, h } from 'vue'
 import { mount } from '@vue/test-utils'
 
 vi.mock('#app', () => ({
@@ -13,10 +13,13 @@ vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }))
 
+vi.mock('sweetalert2', () => ({
+  default: { fire: vi.fn(), showLoading: vi.fn() },
+}))
+
 import { useAuthService } from '~/composables/useAuthService'
 import { useContentService } from '~/composables/useContentService'
 import { useUserService } from '~/composables/useUserService'
-import { useTheme } from '~/composables/useTheme'
 
 describe('Composables', () => {
   beforeEach(() => vi.clearAllMocks())
@@ -179,49 +182,4 @@ describe('Composables', () => {
     )
   })
 
-  describe('useTheme', () => {
-    let originalLocalStorage: Storage
-    let toggleSpy: any
-
-    beforeEach(() => {
-      originalLocalStorage = global.localStorage
-      global.localStorage = {
-        getItem: vi.fn((key) => (key === 'theme' ? 'dark' : null)),
-        setItem: vi.fn(),
-        removeItem: vi.fn(),
-        clear: vi.fn(),
-        length: 0,
-        key: vi.fn(),
-      } as unknown as Storage
-
-      toggleSpy = vi.spyOn(document.documentElement.classList, 'toggle')
-    })
-
-    afterEach(() => {
-      global.localStorage = originalLocalStorage
-      toggleSpy.mockRestore()
-    })
-
-    it('should initialize dark mode correctly', async () => {
-      const Dummy = defineComponent({
-        setup() {
-          useTheme()
-          return () => h('div')
-        },
-      })
-      mount(Dummy)
-      await nextTick()
-      expect(toggleSpy).toHaveBeenCalledWith('dark', true)
-    })
-
-    it('toggles dark mode', async () => {
-      ;(global.localStorage.getItem as any).mockReturnValueOnce(null)
-      const theme = useTheme()
-      theme.toggleTheme()
-
-      expect(theme.isDark.value).toBe(false)
-      expect(global.localStorage.setItem).toHaveBeenCalledWith('theme', 'light')
-      expect(toggleSpy).toHaveBeenCalledWith('dark', false)
-    })
-  })
 })

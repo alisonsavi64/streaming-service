@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Swal from 'sweetalert2'
-import { useTheme } from '~/composables/useTheme'
 import { useContentService } from '../../../composables/useContentService'
 
 definePageMeta({
@@ -12,7 +11,6 @@ definePageMeta({
 })
 
 const { t } = useI18n()
-const { isDark } = useTheme()
 const route = useRoute()
 const router = useRouter()
 const contentService = useContentService()
@@ -62,8 +60,8 @@ const updateVideo = async () => {
       allowOutsideClick: false,
       allowEscapeKey: false,
       didOpen: () => Swal.showLoading(),
-      background: isDark.value ? '#18181b' : '#fff',
-      color: isDark.value ? '#fff' : '#000'
+      background: '#18181b',
+      color: '#fff'
     })
 
     await contentService.update(video.value.id, formData)
@@ -97,14 +95,14 @@ const updateVideo = async () => {
     <form
       @submit.prevent="updateVideo"
       class="relative w-full max-w-lg p-8 rounded-2xl
-             bg-white dark:bg-grayCustom-900
-             border border-grayCustom-200 dark:border-grayCustom-800
-             shadow-lg dark:shadow-none
+             bg-grayCustom-900
+             border border-grayCustom-800
+             shadow-none
              space-y-6 transition-colors"
     >
       <div class="w-10 h-1 rounded-full bg-primary mx-auto" aria-hidden="true" />
 
-      <h1 class="text-3xl font-bold text-center text-zinc-900 dark:text-white">
+      <h1 class="text-3xl font-bold text-center text-white">
         {{ t('uploadPage.editVideo') || 'Edit Video' }}
       </h1>
 
@@ -129,7 +127,7 @@ const updateVideo = async () => {
         <img
           :src="video.thumbnailUrl"
           alt="Current thumbnail"
-          class="w-32 h-32 object-cover rounded border border-zinc-300 dark:border-zinc-700"
+          class="w-32 h-32 object-cover rounded border border-zinc-700"
         />
       </div>
 

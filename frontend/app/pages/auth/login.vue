@@ -2,12 +2,10 @@
 import { ref } from 'vue'
 import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
-import { useTheme } from '~/composables/useTheme'
 
 definePageMeta({ layout: 'default-no-aside', middleware: 'no-auth' })
 
 const { t } = useI18n()
-const { isDark } = useTheme()
 
 const email = ref('')
 const password = ref('')
@@ -31,13 +29,13 @@ const submit = async () => {
     />
     <form
       @submit.prevent="submit"
-      class="relative bg-white dark:bg-grayCustom-900 p-8 rounded-2xl w-full max-w-md space-y-6
-           border border-grayCustom-200 dark:border-grayCustom-800
-           shadow-lg dark:shadow-none transition-colors"
+      class="relative bg-grayCustom-900 p-8 rounded-2xl w-full max-w-md space-y-6
+           border border-grayCustom-800
+           shadow-none transition-colors"
     >
       <div class="w-10 h-1 rounded-full bg-primary mx-auto" aria-hidden="true" />
 
-      <h1 class="text-3xl md:text-4xl font-bold text-center text-zinc-900 dark:text-white">
+      <h1 class="text-3xl md:text-4xl font-bold text-center text-white">
         {{ t('auth.loginTitle') }}
       </h1>
 
@@ -57,11 +55,11 @@ const submit = async () => {
 
       <BaseButton type="submit" :label="t('auth.login')" class="w-full py-4 text-lg" />
 
-      <p class="text-center text-sm text-zinc-500 dark:text-zinc-400">
+      <p class="text-center text-sm text-zinc-400">
         {{ t('auth.noAccount') }}
         <NuxtLink
           to="/auth/register"
-          class="text-primary hover:text-primary-dark dark:hover:text-primary-light font-semibold hover:underline ml-1"
+          class="text-primary hover:text-primary-light font-semibold hover:underline ml-1"
         >
           {{ t('auth.createAccount') }}
         </NuxtLink>

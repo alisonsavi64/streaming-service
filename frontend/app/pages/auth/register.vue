@@ -50,13 +50,13 @@ const submit = async () => {
     />
     <form
       @submit.prevent="submit"
-      class="relative bg-white dark:bg-grayCustom-900 p-8 rounded-2xl w-full max-w-md space-y-6
-             border border-grayCustom-200 dark:border-grayCustom-800
-             shadow-lg dark:shadow-none transition-colors"
+      class="relative bg-grayCustom-900 p-8 rounded-2xl w-full max-w-md space-y-6
+             border border-grayCustom-800
+             shadow-none transition-colors"
     >
       <div class="w-10 h-1 rounded-full bg-primary mx-auto" aria-hidden="true" />
 
-      <h1 class="text-2xl font-bold text-center text-zinc-900 dark:text-white">
+      <h1 class="text-2xl font-bold text-center text-white">
         {{ t('auth.registerTitle') }}
       </h1>
 
@@ -92,11 +92,11 @@ const submit = async () => {
         {{ t('auth.registerTitle') }}
       </BaseButton>
 
-      <p class="text-sm text-center text-zinc-600 dark:text-zinc-400">
+      <p class="text-sm text-center text-zinc-400">
         {{ t('auth.alreadyHaveAccount') }}
         <NuxtLink
           to="/auth/login"
-          class="text-primary hover:text-primary-dark dark:hover:text-primary-light font-semibold hover:underline"
+          class="text-primary hover:text-primary-light font-semibold hover:underline"
         >
           {{ t('auth.loginTitle') }}
         </NuxtLink>
