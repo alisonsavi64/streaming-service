@@ -121,4 +121,63 @@ describe('TypeOrmContentRepository (integration)', () => {
     const userContents = await repo.findByUserId(user.id);
     expect(userContents.length).toBe(0);
   });
+
+  describe('search', () => {
+    it('should only return processed content matching the query in title or description', async () => {
+      const user = await createTestUser();
+
+      const dragons = Content.create({ title: 'Dragons documentary', description: 'A film about dragons', userId: user.id });
+      const cooking = Content.create({ title: 'Cooking basics', description: 'Learn to cook pasta', userId: user.id });
+      const unprocessed = Content.create({ title: 'Dragons unreleased', description: 'Not ready yet', userId: user.id });
+      await repo.save(dragons);
+      await repo.save(cooking);
+      await repo.save(unprocessed);
+
+      dragons.markReady();
+      cooking.markReady();
+      await repo.update(dragons.id, dragons);
+      await repo.update(cooking.id, cooking);
+
+      const results = await repo.search('dragons');
+      expect(results.length).toBe(1);
+      expect(results[0].title).toBe('Dragons documentary');
+    });
+
+    it('should rank results with more term matches higher', async () => {
+      const user = await createTestUser();
+
+      const strongMatch = Content.create({
+        title: 'Ocean ocean waves',
+        description: 'Ocean documentary about ocean life',
+        userId: user.id,
+      });
+      const weakMatch = Content.create({
+        title: 'Mountains',
+        description: 'A short mention of ocean at the end',
+        userId: user.id,
+      });
+      await repo.save(strongMatch);
+      await repo.save(weakMatch);
+
+      strongMatch.markReady();
+      weakMatch.markReady();
+      await repo.update(strongMatch.id, strongMatch);
+      await repo.update(weakMatch.id, weakMatch);
+
+      const results = await repo.search('ocean');
+      expect(results.length).toBe(2);
+      expect(results[0].title).toBe('Ocean ocean waves');
+    });
+
+    it('should return an empty array when nothing matches', async () => {
+      const user = await createTestUser();
+      const content = Content.create({ title: 'Space exploration', description: 'A journey to Mars', userId: user.id });
+      await repo.save(content);
+      content.markReady();
+      await repo.update(content.id, content);
+
+      const results = await repo.search('nonexistentterm');
+      expect(results).toEqual([]);
+    });
+  });
 });
