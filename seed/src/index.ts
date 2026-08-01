@@ -1,7 +1,7 @@
 import { config } from './config';
 import { waitForBackend } from './wait-for-backend';
 import { authenticateSeedUser } from './auth';
-import { getSeededContentCount, uploadSeedVideo } from './upload-client';
+import { getSeededContentCount, loadSeedAssets, uploadSeedVideo } from './upload-client';
 
 async function main(): Promise<void> {
   await waitForBackend();
@@ -13,8 +13,9 @@ async function main(): Promise<void> {
     return;
   }
 
+  const assets = loadSeedAssets();
   for (let index = existingCount + 1; index <= config.seedVideoCount; index++) {
-    await uploadSeedVideo(cookie, index);
+    await uploadSeedVideo(cookie, index, assets);
     console.log(`[seed] Uploaded video ${index}/${config.seedVideoCount}`);
   }
 

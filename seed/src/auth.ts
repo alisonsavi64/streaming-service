@@ -24,7 +24,8 @@ async function loginSeedUser(): Promise<string> {
     }),
   });
   if (!response.ok) throw new Error(`Failed to login seed user: ${response.status} ${await response.text()}`);
-  const body = (await response.json()) as { access_token: string };
+  const body = (await response.json()) as { access_token?: string };
+  if (!body.access_token) throw new Error('Login response did not include an access_token');
   return `access_token=${body.access_token}`;
 }
 
