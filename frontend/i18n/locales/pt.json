@@ -113,6 +113,13 @@
         "success": "Sucesso"
     },
     "welcomeDescription": "Assista, compartilhe e envie seus vídeos",
+    "featured": {
+        "badge": "Destaque",
+        "play": "Assistir Agora"
+    },
+    "browse": {
+        "title": "Em Alta"
+    },
     "categories": {
         "all": "Todos",
         "music": "Música",

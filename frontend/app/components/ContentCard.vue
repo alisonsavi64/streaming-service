@@ -2,10 +2,16 @@
   <article class="group rounded-2xl overflow-hidden border
            bg-white dark:bg-grayCustom-800
            border-grayCustom-200 dark:border-grayCustom-700
-           shadow-card hover:shadow-lg
+           shadow-card hover:shadow-xl hover:-translate-y-1 hover:ring-2 hover:ring-primary
            transition-all duration-300">
-    <div @click="goToVideo" class="cursor-pointer relative">
-      <img :src="video.thumbnailUrl" alt="video thumbnail" class="w-full h-52 object-cover rounded-t-2xl" />
+    <div @click="goToVideo" class="cursor-pointer relative overflow-hidden">
+      <img :src="video.thumbnailUrl" alt="video thumbnail"
+        class="w-full h-52 object-cover rounded-t-2xl transition-transform duration-300 group-hover:scale-110" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent
+             opacity-0 group-hover:opacity-100 transition-opacity duration-300
+             flex items-end p-3 pointer-events-none">
+        <p class="text-xs text-grayCustom-200 line-clamp-2">{{ video.description }}</p>
+      </div>
     </div>
     <div class="p-3 flex flex-col gap-1">
       <div class="flex items-center justify-between">
