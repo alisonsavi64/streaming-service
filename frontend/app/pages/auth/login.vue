@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
 
-definePageMeta({ layout: 'default-no-aside', middleware: 'no-auth' })
+definePageMeta({ middleware: 'no-auth' })
 
 const { t } = useI18n()
 

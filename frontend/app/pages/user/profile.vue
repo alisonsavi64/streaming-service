@@ -4,8 +4,7 @@ import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
 
 definePageMeta({
-  middleware: 'only-auth',
-  layout: "default-no-aside"
+  middleware: 'only-auth'
 })
 
 const { t } = useI18n()

@@ -6,8 +6,7 @@ import Swal from 'sweetalert2'
 import { useContentService } from '../../../composables/useContentService'
 
 definePageMeta({
-  middleware: 'only-auth',
-  layout: 'default-no-aside'
+  middleware: 'only-auth'
 })
 
 const { t } = useI18n()

@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { navigateTo } from '#app'
 import Swal from 'sweetalert2'
 
-definePageMeta({ layout: 'default-no-aside', middleware: 'no-auth' })
+definePageMeta({ middleware: 'no-auth' })
 
 const { t } = useI18n()
 
