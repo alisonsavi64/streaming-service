@@ -7,7 +7,8 @@
     "register": "Register",
     "myvideos": "My Videos",
     "loading": {
-        "videos": "Loading videos…"
+        "videos": "Loading videos…",
+        "video": "Loading video…"
     },
     "empty": {
         "mineVideos": "No videos yet. Upload the first one and kick things off.",

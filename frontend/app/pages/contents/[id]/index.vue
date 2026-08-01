@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="videoMeta"
-    class="fixed inset-0 flex items-center justify-center bg-secondary dark:bg-secondary-dark z-[9999]"
+    class="fixed inset-0 flex items-center justify-center bg-black z-[9999]"
     @mousemove="showControlsNow"
     @click="showControlsNow"
   >
@@ -9,7 +9,7 @@
       ref="videoEl"
       autoplay
       playsinline
-      class="w-full h-full object-contain bg-secondary-dark"
+      class="w-full h-full object-contain bg-black"
       @timeupdate="onTimeUpdate"
       @loadedmetadata="onLoadedMetadata"
     />
@@ -18,10 +18,16 @@
       <button
         v-if="showControls"
         @click.stop="togglePlay"
-        class="absolute inset-0 flex items-center justify-center text-primary text-7xl bg-black/30 rounded-full hover:bg-black/50 transition"
+        class="absolute inset-0 flex items-center justify-center text-primary bg-black/20 hover:bg-black/30 transition"
       >
-        <span v-if="videoEl?.paused">▶</span>
-        <span v-else>⏸</span>
+        <span class="p-5 rounded-full bg-black/40">
+          <svg v-if="videoEl?.paused" class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+          <svg v-else class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+          </svg>
+        </span>
       </button>
     </transition>
 
@@ -50,27 +56,39 @@
           />
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-3">
           <button
             @click.stop="seek(-10)"
             class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Rewind 10s"
-          >⏪</button>
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 5V1L7 6l5 5V7a6 6 0 11-6 6H4a8 8 0 108-8z" />
+            </svg>
+          </button>
 
           <button
             @click.stop="togglePlay"
-            class="p-3 bg-primary/20 hover:bg-primary/40 rounded-full transition text-2xl"
+            class="p-3 bg-primary/20 hover:bg-primary/40 rounded-full transition"
             title="Play/Pause"
           >
-            <span v-if="videoEl?.paused">▶</span>
-            <span v-else>⏸</span>
+            <svg v-if="videoEl?.paused" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+            </svg>
           </button>
 
           <button
             @click.stop="seek(10)"
             class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Forward 10s"
-          >⏩</button>
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 5V1l5 5-5 5V7a6 6 0 106 6h2a8 8 0 11-8-8z" />
+            </svg>
+          </button>
 
           <span class="text-sm opacity-80 font-mono">
             {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
@@ -90,17 +108,24 @@
 
           <button
             @click.stop="toggleFullscreen"
-            class="p-2 hover:bg-primary/20 rounded transition"
+            class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Fullscreen"
           >
-            <span v-if="isFullscreen">🡽</span>
-            <span v-else>🡾</span>
+            <svg v-if="isFullscreen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 15v4.5M9 15H4.5M9 15l-5.5 5.5M15 15v4.5m0-4.5h4.5M15 15l5.5 5.5M9 9V4.5M9 9H4.5M9 9L3.5 3.5M15 9V4.5M15 9h4.5M15 9l5.5-5.5" />
+            </svg>
+            <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 8V4.5A.5.5 0 014.5 4H9m11 4V4.5a.5.5 0 00-.5-.5H15m5 11v3.5a.5.5 0 01-.5.5H15m5-4v3.5m-16-3.5V19.5a.5.5 0 00.5.5H9" />
+            </svg>
           </button>
 
           <select
             v-model.number="selectedQuality"
             @change="changeQuality(selectedQuality)"
-            class="bg-black/60 text-white text-sm rounded-lg px-3 py-1 hover:bg-black/80 transition"
+            class="bg-black/60 text-white text-sm rounded-lg px-3 py-1.5 border border-white/10
+                   hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-primary transition"
           >
             <option v-for="q in qualities" :key="q.level" :value="q.level">
               {{ q.label }}
@@ -110,18 +135,20 @@
       </div>
     </transition>
   </div>
-  <div v-else class="flex items-center justify-center h-screen text-white text-xl animate-pulse">
-    Loading video...
+  <div v-else class="flex items-center justify-center h-screen bg-black text-white text-xl animate-pulse">
+    {{ t('loading.video') }}
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import Hls from 'hls.js'
 import { useContentService } from '../../../composables/useContentService'
 
 const route = useRoute()
+const { t } = useI18n()
 const videoEl = ref<HTMLVideoElement | null>(null)
 const videoMeta = ref<any>(null)
 
