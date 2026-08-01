@@ -56,7 +56,7 @@ services:
       - backend
     environment:
       PORT: 3003
-      STORAGE_HOST: http://localhost:8080
+      STORAGE_HOST: http://localhost:8081
     ports:
       - "3003:3003"
     volumes:
@@ -105,7 +105,7 @@ services:
         DATABASE_NAME: streaming
         JWT_SECRET: HyywqAF76ltr+u91zWBWp4+KkEaI4gw0Pvw9pPDIP4w=
         API_BASE_URL: http://localhost:3001
-        THUMBNAIL_BASE_URL: http://localhost:8080
+        THUMBNAIL_BASE_URL: http://localhost:8081
         CORS_ORIGINS: "http://localhost:3000,http://frontend:3000"
         NODE_ENV: production
       ports:
@@ -156,6 +156,18 @@ services:
       K6_VUS: 10
       K6_DURATION: "30s"
 
+  seed:
+    build:
+      context: ./seed
+      dockerfile: Dockerfile
+    container_name: seed
+    depends_on:
+      - backend
+      - video-processor
+    environment:
+      BACKEND_URL: "http://backend:3001"
+      SEED_VIDEO_COUNT: 30
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -182,7 +194,7 @@ services:
     depends_on:
       - video-processor
     ports:
-      - "8080:80"
+      - "8081:80"
     volumes:
       - storage:/storage:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
