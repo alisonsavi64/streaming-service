@@ -81,6 +81,7 @@
         "invalidCredentials": "Invalid email or password"
     },
     "content": {
+        "viewsCount": "{count} views",
         "uploadedTitle": "Uploaded!",
         "uploadedText": "Content uploaded successfully.",
         "uploadFailedTitle": "Upload failed",

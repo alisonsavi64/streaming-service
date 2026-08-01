@@ -39,9 +39,9 @@
       </div>
 
       <div class="flex items-center gap-2 text-xs text-grayCustom-400 mt-1">
-        <span>{{ 0 }} views</span>
-        <span>•</span>
-        <span>{{ new Date(Date.now()).toLocaleDateString() }}</span>
+        <span>{{ t('content.viewsCount', { count: video.viewsCount ?? 0 }) }}</span>
+        <span v-if="video.createdAt">•</span>
+        <span v-if="video.createdAt">{{ new Date(video.createdAt).toLocaleDateString() }}</span>
       </div>
 
       <div v-if="isOwner" class="flex gap-2 mt-3">

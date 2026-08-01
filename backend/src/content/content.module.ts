@@ -12,6 +12,7 @@ import { UploadContentUseCase } from './application/upload-content.use-case';
 import { DeleteContentUseCase } from './application/delete-content.use-case';
 import { UpdateContentUseCase } from './application/update-content.use-case';
 import { MarkContentProcessedUseCase } from './application/mark-content-processed.use-case';
+import { IncrementContentViewsUseCase } from './application/increment-content-views.use-case';
 
 import { ContentRepository } from './domain/content.repository';
 import { CONTENT_REPOSITORY, STORAGE_PORT } from './domain/content.tokens';
@@ -86,6 +87,12 @@ import { ScheduleModule } from '@nestjs/schedule';
       provide: ListUserContentsUseCase,
       useFactory: (repository: ContentRepository) =>
         new ListUserContentsUseCase(repository),
+      inject: [CONTENT_REPOSITORY],
+    },
+    {
+      provide: IncrementContentViewsUseCase,
+      useFactory: (repository: ContentRepository) =>
+        new IncrementContentViewsUseCase(repository),
       inject: [CONTENT_REPOSITORY],
     },
     MarkContentProcessedUseCase,

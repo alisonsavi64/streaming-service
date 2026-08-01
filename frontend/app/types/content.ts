@@ -9,4 +9,6 @@ export interface Content {
   userId: string
   thumbnailUrl: string
   genre?: ContentGenre
+  viewsCount?: number
+  createdAt?: string
 }

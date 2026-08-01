@@ -14,6 +14,7 @@ describe('ListContentsUseCase', () => {
     update: jest.fn(),
     findStuckVideos: jest.fn(),
     search: jest.fn(),
+    incrementViews: jest.fn(),
   });
 
   const buildContent = (title: string) =>

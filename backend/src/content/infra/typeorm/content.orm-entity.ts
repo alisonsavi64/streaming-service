@@ -44,6 +44,9 @@ export class ContentOrmEntity {
   })
   genre?: ContentGenre;
 
+  @Column({ type: 'int', default: 0 })
+  viewsCount: number;
+
   @Column()
   userId: string;
 
