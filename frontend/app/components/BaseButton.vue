@@ -3,8 +3,8 @@
     :type="type"
     class="w-full py-3 rounded-lg font-semibold
            bg-primary hover:bg-primary-dark
-           transition text-white
-           dark:bg-primary-dark dark:hover:bg-primary"
+           transition text-zinc-950
+           dark:bg-primary dark:hover:bg-primary-light"
   >
     <span v-if="label">{{ t(label) }}</span>
     <slot v-else />

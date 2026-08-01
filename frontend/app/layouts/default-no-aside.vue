@@ -3,7 +3,7 @@
     <header class="sticky top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-secondary/90
              border-b border-grayCustom-200 dark:border-grayCustom-800">
       <div class="min-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-6">
-        <NuxtLink to="/" :class="['text-2xl font-bold', isDark ? 'text-white' : 'text-primary']">
+        <NuxtLink to="/" class="text-2xl font-bold text-primary">
           WatchTube
         </NuxtLink>
         <div class="flex-1 max-w-xlg">
@@ -30,7 +30,7 @@
             </svg>
           </button>
           <NuxtLink to="/contents/upload" title="Upload"
-            class="p-2 rounded-full bg-primary hover:bg-primary-dark text-white transition shadow-md">
+            class="p-2 rounded-full bg-primary hover:bg-primary-dark text-zinc-950 transition shadow-md">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
