@@ -122,7 +122,8 @@
         "play": "Assistir Agora"
     },
     "browse": {
-        "title": "Em Alta"
+        "title": "Em Alta",
+        "uncategorized": "Mais para Explorar"
     },
     "categories": {
         "all": "Todos",
