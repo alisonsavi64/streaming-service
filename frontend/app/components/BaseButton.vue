@@ -2,9 +2,8 @@
   <button
     :type="type"
     class="w-full py-3 rounded-lg font-semibold
-           bg-primary hover:bg-primary-dark
-           transition text-zinc-950
-           dark:bg-primary dark:hover:bg-primary-light"
+           bg-primary hover:bg-primary-light
+           transition text-zinc-950"
   >
     <span v-if="label">{{ t(label) }}</span>
     <slot v-else />

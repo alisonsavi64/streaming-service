@@ -1,5 +1,4 @@
 export default {
-  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -9,8 +8,7 @@ export default {
           light: '#E9CD6E',
         },
         secondary: {
-          DEFAULT: '#0f0f0f',
-          light: '#F9F9F9',
+          DEFAULT: '#17181C',
         },
         accent: {
           DEFAULT: '#D4AF37',

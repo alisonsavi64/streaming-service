@@ -50,11 +50,11 @@ onMounted(fetchContents)
 <template>
   <section class="max-w-7xl mx-auto transition-colors">
     <div v-if="loading"
-      class="flex justify-center items-center h-64 text-grayCustom-500 dark:text-grayCustom-400 text-lg animate-pulse">
+      class="flex justify-center items-center h-64 text-grayCustom-400 text-lg animate-pulse">
       {{ t('loading.videos') }}
     </div>
     <div v-else-if="filteredContents.length === 0"
-      class="flex flex-col items-center text-center mt-20 text-grayCustom-500 dark:text-grayCustom-400">
+      class="flex flex-col items-center text-center mt-20 text-grayCustom-400">
       <span class="text-8xl mb-4">🎬</span>
       <p class="text-xl max-w-md mb-4">{{ t('empty.allVideos') }}</p>
       <NuxtLink to="/contents/upload"
@@ -115,7 +115,7 @@ onMounted(fetchContents)
         'categories.finance',
         'categories.programming'
       ]" />
-      <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">{{ t('browse.title') }}</h2>
+      <h2 class="text-xl font-bold mb-4 text-white">{{ t('browse.title') }}</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <ContentCard v-for="video in filteredContents" :key="video.id" :video="video" @edit="editVideo"
           @delete="deleteVideo" />

@@ -1,7 +1,7 @@
 <template>
   <article class="group rounded-2xl overflow-hidden border
-           bg-white dark:bg-grayCustom-800
-           border-grayCustom-200 dark:border-grayCustom-700
+           bg-grayCustom-800
+           border-grayCustom-700
            shadow-card hover:shadow-xl hover:-translate-y-1 hover:ring-2 hover:ring-primary
            transition-all duration-300">
     <div @click="goToVideo" class="cursor-pointer relative overflow-hidden">
@@ -20,10 +20,8 @@
         </h3>
         <span v-if="status" :class="[
           status.color, // background color from contentStatusConfig
-          'text-xs px-2 py-0.5 rounded-md font-semibold flex items-center gap-1',
-          status.pulse ? 'animate-pulse' : '',
-          'dark:text-white',     // white text in dark mode
-          'text-gray-900'        // black text in light mode
+          'text-xs px-2 py-0.5 rounded-md font-semibold flex items-center gap-1 text-white',
+          status.pulse ? 'animate-pulse' : ''
         ]">
           <template v-if="video.status === 'FAILED'">⚠️</template>
           <template v-else-if="video.status === 'PROCESSED'">✅</template>
@@ -35,7 +33,7 @@
       </div>
 
       <div class="flex items-center gap-2 mt-1">
-        <span class="text-xs text-grayCustom-500 dark:text-grayCustom-400 truncate">
+        <span class="text-xs text-grayCustom-400 truncate">
           {{ 'UserTest' }}
         </span>
       </div>
@@ -48,8 +46,8 @@
 
       <div v-if="isOwner" class="flex gap-2 mt-3">
         <button @click="$emit('edit', video.id)" class="flex-1 px-3 py-1 text-xs rounded-md
-                 bg-grayCustom-300 dark:bg-grayCustom-700 hover:bg-grayCustom-400 dark:hover:bg-grayCustom-600
-                 text-grayCustom-900 dark:text-grayCustom-50 transition font-semibold">
+                 bg-grayCustom-700 hover:bg-grayCustom-600
+                 text-grayCustom-50 transition font-semibold">
           {{ t('actions.edit') }}
         </button>
 

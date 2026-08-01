@@ -1,18 +1,18 @@
 <template>
   <div class="w-full relative">
-    <label v-if="label" class="block text-sm font-medium mb-1 text-zinc-700 dark:text-zinc-300">
+    <label v-if="label" class="block text-sm font-medium mb-1 text-zinc-300">
       {{ t(label) }}
     </label>
 
     <input :type="currentType" :value="modelValue" @input="onInput" v-bind="$attrs" class="w-full px-4 py-3 rounded-lg
-             border border-zinc-300 dark:border-zinc-700
-             bg-zinc-100 dark:bg-zinc-800
-             text-zinc-900 dark:text-white
+             border border-zinc-700
+             bg-zinc-800
+             text-white
              focus:outline-none focus:ring-2 focus:ring-primary
              transition pr-10" />
 
     <button v-if="type === 'password'" type="button" @click="togglePassword"
-      class="absolute right-3 top-1/2 -translate-y-1/1 flex items-center justify-center text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition h-5 w-5">
+      class="absolute right-3 top-1/2 -translate-y-1/1 flex items-center justify-center text-gray-300 hover:text-white transition h-5 w-5">
       <svg v-if="showPassword" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
         stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round"
