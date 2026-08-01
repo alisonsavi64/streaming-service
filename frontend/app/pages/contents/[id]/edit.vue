@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Swal from 'sweetalert2'
 import { useContentService } from '../../../composables/useContentService'
+import { contentGenres } from '~/constants/contentGenre'
 
 definePageMeta({
   middleware: 'only-auth'
@@ -17,6 +18,7 @@ const contentService = useContentService()
 const video = ref<any>(null)
 const title = ref('')
 const description = ref('')
+const genre = ref('')
 const thumbnailFile = ref<File | null>(null)
 const loading = ref(false)
 
@@ -32,6 +34,7 @@ onMounted(async () => {
     video.value = data
     title.value = data.title
     description.value = data.description
+    genre.value = data.genre || ''
   } catch (err: any) {
     if(err?.statusCode == 401) router.push("/auth/login")
     console.error('Failed to load video:', err)
@@ -50,6 +53,7 @@ const updateVideo = async () => {
   const formData = new FormData()
   formData.append('title', title.value)
   formData.append('description', description.value)
+  if (genre.value) formData.append('genre', genre.value)
   if (thumbnailFile.value) formData.append('thumbnail', thumbnailFile.value)
 
   try {
@@ -114,6 +118,25 @@ const updateVideo = async () => {
         :label="t('uploadPage.videoDescription') || 'Description'"
         textarea
       />
+
+      <div class="w-full">
+        <label class="block text-sm font-medium mb-1 text-zinc-300">
+          {{ t('uploadPage.genre') }}
+        </label>
+        <select
+          v-model="genre"
+          class="w-full px-4 py-3 rounded-lg
+                 border border-zinc-700
+                 bg-zinc-800 text-white
+                 focus:outline-none focus:ring-2 focus:ring-primary
+                 transition"
+        >
+          <option value="" disabled>{{ t('uploadPage.selectGenrePlaceholder') }}</option>
+          <option v-for="g in contentGenres" :key="g.value" :value="g.value">
+            {{ t(g.label) }}
+          </option>
+        </select>
+      </div>
 
       <BaseFileInput
         v-model="thumbnailFile"

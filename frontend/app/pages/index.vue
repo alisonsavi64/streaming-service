@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
 import ContentCard from '~/components/ContentCard.vue'
+import { contentGenres } from '~/constants/contentGenre'
 
 const router = useRouter()
 const route = useRoute()
@@ -13,6 +14,8 @@ const contentService = useContentService()
 
 const contents = ref<any[]>([])
 const loading = ref(true)
+const selectedGenre = ref('ALL')
+const genreOptions = [{ value: 'ALL', label: 'categories.all' }, ...contentGenres]
 
 const featured = computed(() =>
   contents.value.find(v => v.status === 'PROCESSED') || null
@@ -30,10 +33,9 @@ const fetchContents = async () => {
 
 const filteredContents = computed(() => {
   const q = (route.query.q as string || '').toLowerCase()
-  if (!q) return contents.value
-  return contents.value.filter(v =>
-    v.title.toLowerCase().includes(q)
-  )
+  return contents.value
+    .filter(v => !q || v.title.toLowerCase().includes(q))
+    .filter(v => selectedGenre.value === 'ALL' || v.genre === selectedGenre.value)
 })
 
 const deleteVideo = async (id: string) => {
@@ -63,7 +65,7 @@ onMounted(fetchContents)
       </NuxtLink>
     </div>
     <div v-else>
-      <div v-if="featured && !route.query.q"
+      <div v-if="featured && !route.query.q && selectedGenre === 'ALL'"
         class="relative -mx-4 sm:mx-0 mb-10 h-[50vh] min-h-[320px] sm:rounded-2xl overflow-hidden bg-grayCustom-900">
         <img :src="featured.thumbnailUrl" alt=""
           class="absolute inset-0 w-full h-full object-cover" />
@@ -90,31 +92,7 @@ onMounted(fetchContents)
         </div>
       </div>
 
-      <CategoriesCarousel :categories="[
-        'categories.all',
-        'categories.music',
-        'categories.lifestyle',
-        'categories.gaming',
-        'categories.movies',
-        'categories.education',
-        'categories.tech',
-        'categories.science',
-        'categories.sports',
-        'categories.news',
-        'categories.health',
-        'categories.travel',
-        'categories.food',
-        'categories.arts',
-        'categories.comedy',
-        'categories.beauty',
-        'categories.cars',
-        'categories.pets',
-        'categories.photography',
-        'categories.books',
-        'categories.motivation',
-        'categories.finance',
-        'categories.programming'
-      ]" />
+      <CategoriesCarousel v-model="selectedGenre" :categories="genreOptions" />
       <h2 class="text-xl font-bold mb-4 text-white">{{ t('browse.title') }}</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <ContentCard v-for="video in filteredContents" :key="video.id" :video="video" @edit="editVideo"

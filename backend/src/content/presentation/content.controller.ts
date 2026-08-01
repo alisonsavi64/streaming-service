@@ -23,6 +23,7 @@ import { UploadContentUseCase } from '../application/upload-content.use-case';
 import { DeleteContentUseCase } from '../application/delete-content.use-case';
 import { UpdateContentUseCase } from '../application/update-content.use-case';
 import { ContentNotFoundError } from '../domain/content.errors';
+import { ContentGenre } from '../domain/content.genre';
 import { ListUserContentsUseCase } from '../application/list-user-contents.use-case';
 import {
   CreateContentDto,
@@ -149,6 +150,7 @@ export class ContentController {
     let thumbnailMimeType = '';
     let title = '';
     let description = '';
+    let genre: ContentGenre | undefined;
 
     try {
       for await (const part of parts) {
@@ -167,6 +169,9 @@ export class ContentController {
         if (part.type === 'field') {
           if (part.fieldname === 'title') title = part.value as string;
           if (part.fieldname === 'description') description = part.value as string;
+          if (part.fieldname === 'genre' && Object.values(ContentGenre).includes(part.value as ContentGenre)) {
+            genre = part.value as ContentGenre;
+          }
         }
       }
 
@@ -177,6 +182,7 @@ export class ContentController {
       const content = await this.uploadContentUseCase.execute({
         title,
         description,
+        genre,
         video: { buffer: videoBuffer, filename: videoFilename, mimeType: videoMimeType },
         thumbnail: { buffer: thumbnailBuffer, filename: thumbnailFilename, mimeType: thumbnailMimeType },
         userId,
@@ -212,7 +218,7 @@ export class ContentController {
     let thumbnailBuffer: Buffer | null = null;
     let thumbnailFilename = '';
     let thumbnailMimeType = '';
-    let bodyData: { title?: string; description?: string } = {};
+    let bodyData: { title?: string; description?: string; genre?: ContentGenre } = {};
 
     try {
       for await (const part of parts) {
@@ -223,6 +229,9 @@ export class ContentController {
         } else if (part.type === 'field') {
           if (part.fieldname === 'title') bodyData.title = part.value as string;
           if (part.fieldname === 'description') bodyData.description = part.value as string;
+          if (part.fieldname === 'genre' && Object.values(ContentGenre).includes(part.value as ContentGenre)) {
+            bodyData.genre = part.value as ContentGenre;
+          }
         }
       }
 

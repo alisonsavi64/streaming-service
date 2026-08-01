@@ -1,0 +1,26 @@
+export const contentGenres = [
+  { value: 'MUSIC', label: 'categories.music' },
+  { value: 'LIFESTYLE', label: 'categories.lifestyle' },
+  { value: 'GAMING', label: 'categories.gaming' },
+  { value: 'MOVIES', label: 'categories.movies' },
+  { value: 'EDUCATION', label: 'categories.education' },
+  { value: 'TECH', label: 'categories.tech' },
+  { value: 'SCIENCE', label: 'categories.science' },
+  { value: 'SPORTS', label: 'categories.sports' },
+  { value: 'NEWS', label: 'categories.news' },
+  { value: 'HEALTH', label: 'categories.health' },
+  { value: 'TRAVEL', label: 'categories.travel' },
+  { value: 'FOOD', label: 'categories.food' },
+  { value: 'ARTS', label: 'categories.arts' },
+  { value: 'COMEDY', label: 'categories.comedy' },
+  { value: 'BEAUTY', label: 'categories.beauty' },
+  { value: 'CARS', label: 'categories.cars' },
+  { value: 'PETS', label: 'categories.pets' },
+  { value: 'PHOTOGRAPHY', label: 'categories.photography' },
+  { value: 'BOOKS', label: 'categories.books' },
+  { value: 'MOTIVATION', label: 'categories.motivation' },
+  { value: 'FINANCE', label: 'categories.finance' },
+  { value: 'PROGRAMMING', label: 'categories.programming' },
+] as const
+
+export type ContentGenre = typeof contentGenres[number]['value']

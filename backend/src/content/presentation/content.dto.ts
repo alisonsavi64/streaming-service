@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ContentStatus } from '../domain/content.status';
+import { ContentGenre } from '../domain/content.genre';
 
 export class FileDto {
   @ApiProperty({ type: 'string', format: 'binary', description: 'Video file (.mov, .mkv or any video/* type)' })
@@ -24,6 +25,9 @@ export class CreateContentDto {
 
   @ApiProperty({ type: 'string', format: 'binary', description: 'Thumbnail image' })
   thumbnail: any;
+
+  @ApiProperty({ description: 'Genre of the content', enum: ContentGenre, required: false })
+  genre?: ContentGenre;
 }
 
 export class UpdateContentDto {
@@ -35,6 +39,9 @@ export class UpdateContentDto {
 
   @ApiProperty({ type: 'string', format: 'binary', description: 'Thumbnail image', required: false })
   thumbnail?: any;
+
+  @ApiProperty({ description: 'Genre of the content', enum: ContentGenre, required: false })
+  genre?: ContentGenre;
 }
 
 export class ContentResponseDto {
@@ -61,6 +68,9 @@ export class ContentResponseDto {
 
   @ApiProperty({ description: 'Updated at timestamp' })
   updatedAt: Date;
+
+  @ApiProperty({ description: 'Genre of the content', enum: ContentGenre, required: false })
+  genre?: ContentGenre;
 }
 
 export class ContentMineResponseDto {
@@ -93,4 +103,7 @@ export class ContentMineResponseDto {
     enum: ContentStatus,
   })
   status: ContentStatus;
+
+  @ApiProperty({ description: 'Genre of the content', enum: ContentGenre, required: false })
+  genre?: ContentGenre;
 }
