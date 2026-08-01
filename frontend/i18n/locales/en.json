@@ -121,7 +121,8 @@
         "play": "Play Now"
     },
     "browse": {
-        "title": "Trending Now"
+        "title": "Trending Now",
+        "uncategorized": "More to Explore"
     },
     "categories": {
         "all": "All",

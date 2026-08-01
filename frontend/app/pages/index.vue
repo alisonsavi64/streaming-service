@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '~/store/auth'
 import { useI18n } from 'vue-i18n'
 import ContentCard from '~/components/ContentCard.vue'
+import ContentRail from '~/components/ContentRail.vue'
 import { contentGenres } from '~/constants/contentGenre'
 
 const router = useRouter()
@@ -17,9 +18,7 @@ const loading = ref(true)
 const selectedGenre = ref('ALL')
 const genreOptions = [{ value: 'ALL', label: 'categories.all' }, ...contentGenres]
 
-const featured = computed(() =>
-  contents.value.find(v => v.status === 'PROCESSED') || null
-)
+const featured = computed(() => contents.value[0] || null)
 
 const fetchContents = async () => {
   try {
@@ -36,6 +35,25 @@ const filteredContents = computed(() => {
   return contents.value
     .filter(v => !q || v.title.toLowerCase().includes(q))
     .filter(v => selectedGenre.value === 'ALL' || v.genre === selectedGenre.value)
+})
+
+const isBrowsingAll = computed(() => selectedGenre.value === 'ALL' && !route.query.q)
+
+const genreRails = computed(() => {
+  if (!isBrowsingAll.value) return []
+  const sections = contentGenres
+    .map(g => ({
+      label: g.label,
+      videos: contents.value.filter(v => v.genre === g.value),
+    }))
+    .filter(section => section.videos.length > 0)
+
+  const uncategorized = contents.value.filter(v => !v.genre)
+  if (uncategorized.length > 0) {
+    sections.push({ label: 'browse.uncategorized', videos: uncategorized })
+  }
+
+  return sections
 })
 
 const deleteVideo = async (id: string) => {
@@ -93,11 +111,24 @@ onMounted(fetchContents)
       </div>
 
       <CategoriesCarousel v-model="selectedGenre" :categories="genreOptions" />
-      <h2 class="text-xl font-bold mb-4 text-white">{{ t('browse.title') }}</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <ContentCard v-for="video in filteredContents" :key="video.id" :video="video" @edit="editVideo"
-          @delete="deleteVideo" />
-      </div>
+
+      <template v-if="isBrowsingAll">
+        <ContentRail
+          v-for="section in genreRails"
+          :key="section.label"
+          :title="t(section.label)"
+          :videos="section.videos"
+          @edit="editVideo"
+          @delete="deleteVideo"
+        />
+      </template>
+      <template v-else>
+        <h2 class="text-xl font-bold mb-4 text-white">{{ t('browse.title') }}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <ContentCard v-for="video in filteredContents" :key="video.id" :video="video" @edit="editVideo"
+            @delete="deleteVideo" />
+        </div>
+      </template>
     </div>
 
   </section>
