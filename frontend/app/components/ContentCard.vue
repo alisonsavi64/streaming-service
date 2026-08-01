@@ -48,7 +48,7 @@
         </button>
 
         <button @click="$emit('delete', video.id)" class="flex-1 px-3 py-1 text-xs rounded-md
-                 bg-primary hover:bg-primary-dark text-white transition font-semibold">
+                 bg-red-600 hover:bg-red-700 text-white transition font-semibold">
           {{ t('actions.delete') }}
         </button>
       </div>
