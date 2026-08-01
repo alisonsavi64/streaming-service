@@ -2,16 +2,16 @@
   <div class="min-h-screen bg-grayCustom-50 dark:bg-secondary text-gray-900 dark:text-gray-50">
     <header class="sticky top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-secondary/90
              border-b border-grayCustom-200 dark:border-grayCustom-800">
-      <div class="min-w-7xl mx-auto px-6 py-3 flex items-center justify-between gap-6">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 sm:gap-6">
         <NuxtLink to="/" class="text-2xl font-bold text-primary">
           WatchTube
         </NuxtLink>
-        <div class="flex-1 max-w-xlg">
+        <div class="order-3 sm:order-none w-full sm:flex-1 sm:max-w-xl">
           <input v-model="search" @keyup.enter="goSearch" type="text" :placeholder="t('search')" class="w-full px-4 py-2 rounded-full border border-grayCustom-300
                    bg-grayCustom-100 text-gray-900 dark:bg-grayCustom-800 dark:text-white
                    placeholder-grayCustom-400 focus:outline-none focus:ring-2 focus:ring-primary transition" />
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3 ml-auto sm:ml-0">
           <select v-model="locale" @change="onLocaleChange" class="px-3 py-2 rounded-lg text-sm border border-grayCustom-300
                    bg-grayCustom-100 dark:bg-grayCustom-800 dark:border-grayCustom-700 focus:outline-none">
             <option v-for="l in locales" :key="l.code" :value="l.code">{{ l.name }}</option>
@@ -75,7 +75,7 @@
       </div>
     </header>
 
-    <main class="min-w-7xl mx-auto px-6 py-8">
+    <main class="max-w-7xl mx-auto px-6 py-8">
       <slot />
     </main>
   </div>

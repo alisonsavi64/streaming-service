@@ -2,11 +2,11 @@
   <div class="min-h-screen flex flex-col bg-grayCustom-50 dark:bg-secondary text-gray-900 dark:text-gray-50">
 
     <header
-      class="sticky top-0 z-50 flex items-center justify-between px-6 py-3 backdrop-blur-md bg-white/90 dark:bg-secondary/90 border-b border-transparent">
+      class="sticky top-0 z-50 flex flex-wrap items-center gap-3 px-4 sm:px-6 py-3 backdrop-blur-md bg-white/90 dark:bg-secondary/90 border-b border-transparent">
 
-      <div>
+      <div class="flex items-center">
         <button @click="collapsed = !collapsed"
-          class="mr-4 p-2 rounded-full hover:bg-grayCustom-100 dark:hover:bg-grayCustom-800 transition">
+          class="hidden sm:block mr-4 p-2 rounded-full hover:bg-grayCustom-100 dark:hover:bg-grayCustom-800 transition">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -16,12 +16,12 @@
         </NuxtLink>
       </div>
 
-      <div class="flex-1 max-w-xl mx-6">
+      <div class="order-3 sm:order-none w-full sm:flex-1 sm:max-w-xl sm:mx-6">
         <input v-model="search" @keyup.enter="goSearch" type="text" :placeholder="t('search')" class="w-full px-4 py-2 rounded-full border border-grayCustom-300
                  bg-grayCustom-100 text-gray-900 dark:bg-grayCustom-900 dark:text-white
                  placeholder-grayCustom-400 focus:outline-none focus:ring-2 focus:ring-primary transition" />
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 sm:gap-3 ml-auto sm:ml-0">
         <select v-model="locale" @change="onLocaleChange" class="px-3 py-2 rounded-lg text-sm border border-grayCustom-300
                    bg-grayCustom-100 dark:bg-grayCustom-800 dark:border-grayCustom-700 focus:outline-none">
           <option v-for="l in locales" :key="l.code" :value="l.code">{{ l.name }}</option>
@@ -87,7 +87,7 @@
     </header>
     <div class="flex flex-1">
       <aside
-        :class="['transition-all duration-300 bg-white dark:bg-secondary border-r border-transparent dark:border-transparent', collapsed ? 'w-20' : 'w-64']">
+        :class="['hidden sm:block transition-all duration-300 bg-white dark:bg-secondary border-r border-transparent dark:border-transparent', collapsed ? 'w-20' : 'w-64']">
         <div class="flex flex-col h-full">
           <nav class="flex-1 mt-4 flex flex-col">
             <NuxtLink to="/"
@@ -130,7 +130,7 @@
           </nav>
         </div>
       </aside>
-      <main class="flex-1 overflow-y-auto px-6 py-4">
+      <main class="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
         <slot />
       </main>
     </div>

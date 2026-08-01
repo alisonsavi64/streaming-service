@@ -48,7 +48,7 @@ onMounted(fetchContents)
 </script>
 
 <template>
-  <section class="min-w-7xl mx-auto transition-colors">
+  <section class="max-w-7xl mx-auto transition-colors">
     <div v-if="loading"
       class="flex justify-center items-center h-64 text-grayCustom-500 dark:text-grayCustom-400 text-lg animate-pulse">
       {{ t('loading.videos') }}
