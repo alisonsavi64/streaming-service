@@ -56,26 +56,26 @@
           />
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 sm:gap-3">
           <button
             @click.stop="seek(-10)"
             class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Rewind 10s"
           >
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 5V1L7 6l5 5V7a6 6 0 11-6 6H4a8 8 0 108-8z" />
             </svg>
           </button>
 
           <button
             @click.stop="togglePlay"
-            class="p-3 bg-primary/20 hover:bg-primary/40 rounded-full transition"
+            class="p-2.5 sm:p-3 bg-primary/20 hover:bg-primary/40 rounded-full transition"
             title="Play/Pause"
           >
-            <svg v-if="videoEl?.paused" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <svg v-if="videoEl?.paused" class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z" />
             </svg>
-            <svg v-else class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <svg v-else class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
             </svg>
           </button>
@@ -85,12 +85,12 @@
             class="p-2 hover:bg-primary/20 rounded-full transition"
             title="Forward 10s"
           >
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 5V1l5 5-5 5V7a6 6 0 106 6h2a8 8 0 11-8-8z" />
             </svg>
           </button>
 
-          <span class="text-sm opacity-80 font-mono">
+          <span class="text-xs sm:text-sm opacity-80 font-mono whitespace-nowrap">
             {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
           </span>
 
@@ -103,7 +103,7 @@
             step="0.01"
             v-model.number="volume"
             @input="changeVolume(volume)"
-            class="w-24 h-1 bg-white/30 rounded-lg accent-primary"
+            class="hidden sm:block w-24 h-1 bg-white/30 rounded-lg accent-primary"
           />
 
           <button
@@ -124,7 +124,7 @@
           <select
             v-model.number="selectedQuality"
             @change="changeQuality(selectedQuality)"
-            class="bg-black/60 text-white text-sm rounded-lg px-3 py-1.5 border border-white/10
+            class="hidden sm:block bg-black/60 text-white text-sm rounded-lg px-3 py-1.5 border border-white/10
                    hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-primary transition"
           >
             <option v-for="q in qualities" :key="q.level" :value="q.level">
